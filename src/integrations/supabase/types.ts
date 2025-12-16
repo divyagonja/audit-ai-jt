@@ -14,7 +14,191 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_issues: {
+        Row: {
+          audit_id: string
+          category: string
+          created_at: string | null
+          current_score: number | null
+          description: string | null
+          difficulty: number | null
+          fix_code: string | null
+          fix_steps: string[] | null
+          id: string
+          impact: string | null
+          is_resolved: boolean | null
+          potential_score: number | null
+          revenue_impact: number | null
+          severity: string
+          time_estimate: string | null
+          title: string
+        }
+        Insert: {
+          audit_id: string
+          category: string
+          created_at?: string | null
+          current_score?: number | null
+          description?: string | null
+          difficulty?: number | null
+          fix_code?: string | null
+          fix_steps?: string[] | null
+          id?: string
+          impact?: string | null
+          is_resolved?: boolean | null
+          potential_score?: number | null
+          revenue_impact?: number | null
+          severity: string
+          time_estimate?: string | null
+          title: string
+        }
+        Update: {
+          audit_id?: string
+          category?: string
+          created_at?: string | null
+          current_score?: number | null
+          description?: string | null
+          difficulty?: number | null
+          fix_code?: string | null
+          fix_steps?: string[] | null
+          id?: string
+          impact?: string | null
+          is_resolved?: boolean | null
+          potential_score?: number | null
+          revenue_impact?: number | null
+          severity?: string
+          time_estimate?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_issues_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audits: {
+        Row: {
+          completed_at: string | null
+          content_score: number | null
+          created_at: string | null
+          critical_issues: number | null
+          id: string
+          info_issues: number | null
+          name: string | null
+          overall_score: number | null
+          performance_score: number | null
+          revenue_impact: number | null
+          security_score: number | null
+          seo_score: number | null
+          status: string | null
+          url: string
+          user_id: string
+          ux_score: number | null
+          warning_issues: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          content_score?: number | null
+          created_at?: string | null
+          critical_issues?: number | null
+          id?: string
+          info_issues?: number | null
+          name?: string | null
+          overall_score?: number | null
+          performance_score?: number | null
+          revenue_impact?: number | null
+          security_score?: number | null
+          seo_score?: number | null
+          status?: string | null
+          url: string
+          user_id: string
+          ux_score?: number | null
+          warning_issues?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          content_score?: number | null
+          created_at?: string | null
+          critical_issues?: number | null
+          id?: string
+          info_issues?: number | null
+          name?: string | null
+          overall_score?: number | null
+          performance_score?: number | null
+          revenue_impact?: number | null
+          security_score?: number | null
+          seo_score?: number | null
+          status?: string | null
+          url?: string
+          user_id?: string
+          ux_score?: number | null
+          warning_issues?: number | null
+        }
+        Relationships: []
+      }
+      competitors: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          overall_score: number | null
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          overall_score?: number | null
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          overall_score?: number | null
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
