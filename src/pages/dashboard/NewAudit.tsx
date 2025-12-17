@@ -52,32 +52,52 @@ const NewAudit = () => {
       return;
     }
 
+    // Ensure URL has protocol
+    let formattedUrl = url.trim();
+    if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+      formattedUrl = `https://${formattedUrl}`;
+    }
+
     setLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase.from("audits").insert({
+      // Create the audit record first
+      const { data: audit, error: auditError } = await supabase.from("audits").insert({
         user_id: user.id,
-        url,
-        name: auditName || url,
-        status: "running",
-        overall_score: Math.floor(Math.random() * 40) + 50,
-        seo_score: Math.floor(Math.random() * 40) + 50,
-        performance_score: Math.floor(Math.random() * 40) + 50,
-        ux_score: Math.floor(Math.random() * 40) + 50,
-        content_score: Math.floor(Math.random() * 40) + 50,
-        security_score: Math.floor(Math.random() * 40) + 50,
-        critical_issues: Math.floor(Math.random() * 10),
-        warning_issues: Math.floor(Math.random() * 20),
-        info_issues: Math.floor(Math.random() * 30),
-        revenue_impact: Math.floor(Math.random() * 50000),
+        url: formattedUrl,
+        name: auditName || formattedUrl,
+        status: "pending",
       }).select().single();
 
-      if (error) throw error;
+      if (auditError) throw auditError;
 
-      toast({ title: "Audit started!", description: "Your audit is now running." });
-      navigate(`/dashboard/audits/${data.id}`);
+      toast({ 
+        title: "Audit started!", 
+        description: "AI is analyzing your website. This may take a minute." 
+      });
+
+      // Navigate immediately so user can see progress
+      navigate(`/dashboard/audits/${audit.id}`);
+
+      // Trigger the audit processing in the background
+      const { error: processError } = await supabase.functions.invoke("process-audit", {
+        body: { 
+          auditId: audit.id, 
+          url: formattedUrl, 
+          scopes: selectedScopes 
+        },
+      });
+
+      if (processError) {
+        console.error("Audit processing error:", processError);
+        toast({ 
+          title: "Processing Issue", 
+          description: "Audit started but processing may be delayed.", 
+          variant: "destructive" 
+        });
+      }
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {

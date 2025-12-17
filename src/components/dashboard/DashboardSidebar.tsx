@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -65,6 +66,7 @@ const DashboardSidebar = () => {
   const insightNavItems = [
     { to: "/dashboard/reports", icon: BarChart3, label: "Reports" },
     { to: "/dashboard/ai-analysis", icon: Brain, label: "AI Analysis" },
+    { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
 
   const settingsNavItems = [
