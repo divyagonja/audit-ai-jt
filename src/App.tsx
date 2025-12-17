@@ -17,6 +17,7 @@ import Reports from "./pages/dashboard/Reports";
 import Competitors from "./pages/dashboard/Competitors";
 import DomainOverview from "./pages/dashboard/DomainOverview";
 import AIAnalysis from "./pages/dashboard/AIAnalysis";
+import Roadmap from "./pages/dashboard/Roadmap";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="competitors" element={<Competitors />} />
             <Route path="domain-overview" element={<DomainOverview />} />
             <Route path="ai-analysis" element={<AIAnalysis />} />
+            <Route path="roadmap" element={<Roadmap />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
