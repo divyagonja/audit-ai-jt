@@ -31,6 +31,7 @@ interface NavItemProps {
 const NavItem = ({ to, icon: Icon, label, collapsed }: NavItemProps) => (
   <NavLink
     to={to}
+    end={to === "/dashboard"}
     className={({ isActive }) =>
       cn(
         "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
@@ -59,12 +60,13 @@ const DashboardSidebar = () => {
     { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/dashboard/new-audit", icon: Plus, label: "New Audit" },
     { to: "/dashboard/audits", icon: FileText, label: "All Audits" },
-    { to: "/dashboard/domain-overview", icon: Globe, label: "Domain Overview" },
-    { to: "/dashboard/competitors", icon: Target, label: "Competitor Analysis" },
+    { to: "/dashboard/clients", icon: Users, label: "Clients" },
+    { to: "/dashboard/reports", icon: BarChart3, label: "Reports" },
   ];
 
   const insightNavItems = [
-    { to: "/dashboard/reports", icon: BarChart3, label: "Reports" },
+    { to: "/dashboard/domain-overview", icon: Globe, label: "Domain Overview" },
+    { to: "/dashboard/competitors", icon: Target, label: "Competitor Analysis" },
     { to: "/dashboard/ai-analysis", icon: Brain, label: "AI Analysis" },
     { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
@@ -77,7 +79,7 @@ const DashboardSidebar = () => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-navy border-r border-slate-800 flex flex-col transition-all duration-300 z-50",
+        "fixed left-0 top-0 h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-50",
         collapsed ? "w-20" : "w-72"
       )}
     >

@@ -18,6 +18,7 @@ import Competitors from "./pages/dashboard/Competitors";
 import DomainOverview from "./pages/dashboard/DomainOverview";
 import AIAnalysis from "./pages/dashboard/AIAnalysis";
 import Roadmap from "./pages/dashboard/Roadmap";
+import Clients from "./pages/dashboard/Clients";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="new-audit" element={<NewAudit />} />
             <Route path="audits" element={<AllAudits />} />
             <Route path="audits/:id" element={<AuditResults />} />
+            <Route path="clients" element={<Clients />} />
             <Route path="settings" element={<Settings />} />
             <Route path="billing" element={<Billing />} />
             <Route path="reports" element={<Reports />} />
