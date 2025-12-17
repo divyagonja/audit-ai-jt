@@ -28,6 +28,7 @@ export type Database = {
           impact: string | null
           is_resolved: boolean | null
           potential_score: number | null
+          recommendation: string | null
           revenue_impact: number | null
           severity: string
           time_estimate: string | null
@@ -46,6 +47,7 @@ export type Database = {
           impact?: string | null
           is_resolved?: boolean | null
           potential_score?: number | null
+          recommendation?: string | null
           revenue_impact?: number | null
           severity: string
           time_estimate?: string | null
@@ -64,6 +66,7 @@ export type Database = {
           impact?: string | null
           is_resolved?: boolean | null
           potential_score?: number | null
+          recommendation?: string | null
           revenue_impact?: number | null
           severity?: string
           time_estimate?: string | null
