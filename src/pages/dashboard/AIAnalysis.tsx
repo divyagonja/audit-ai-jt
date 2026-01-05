@@ -6,6 +6,7 @@ import { Brain, Send, Sparkles, User, Bot, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import SimpleMarkdown from "@/components/ui/SimpleMarkdown";
 
 interface Message {
   role: "user" | "assistant";
@@ -56,24 +57,27 @@ const AIAnalysis = () => {
     // Build audit context
     const auditContext = recentAudits?.length
       ? {
-          website: recentAudits[0]?.url,
-          score: recentAudits[0]?.overall_score,
-          issueCount: recentAudits[0]?.audit_issues?.length || 0,
-          categories: ["SEO", "Performance", "UX", "Security"],
-          issues: recentAudits[0]?.audit_issues?.slice(0, 5),
-        }
+        website: recentAudits[0]?.url,
+        score: recentAudits[0]?.overall_score,
+        issueCount: recentAudits[0]?.audit_issues?.length || 0,
+        categories: ["SEO", "Performance", "UX", "Security"],
+        issues: recentAudits[0]?.audit_issues?.slice(0, 5),
+      }
       : null;
 
     let assistantContent = "";
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-chat`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            "Authorization": `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
           },
           body: JSON.stringify({
             messages: [...messages, userMessage],
@@ -181,11 +185,18 @@ const AIAnalysis = () => {
                 {suggestions.map((suggestion, i) => (
                   <button
                     key={i}
-                    onClick={() => setQuery(suggestion)}
-                    className="p-4 bg-secondary border border-border rounded-lg text-left hover:border-primary transition-colors flex items-center gap-3"
+                    onClick={() => {
+                      setQuery(suggestion);
+                      // Use a timeout to ensure state update before submit
+                      setTimeout(() => {
+                        const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
+                        handleSubmit(fakeEvent);
+                      }, 0);
+                    }}
+                    className="p-4 bg-secondary border border-border rounded-lg text-left hover:border-primary transition-colors flex items-center gap-3 group"
                   >
-                    <Sparkles className="h-5 w-5 text-accent flex-shrink-0" />
-                    <span className="text-foreground">{suggestion}</span>
+                    <Sparkles className="h-5 w-5 text-accent flex-shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="text-foreground font-medium">{suggestion}</span>
                   </button>
                 ))}
               </div>
@@ -214,8 +225,10 @@ const AIAnalysis = () => {
                       : "bg-card border border-border text-foreground"
                   )}
                 >
-                  <div className="whitespace-pre-wrap text-sm">
-                    {message.content || (
+                  <div className="w-full overflow-hidden">
+                    {message.content ? (
+                      <SimpleMarkdown content={message.content} />
+                    ) : (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     )}
                   </div>

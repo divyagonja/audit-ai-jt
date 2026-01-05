@@ -46,8 +46,12 @@ const NavItem = ({ to, icon: Icon, label, collapsed }: NavItemProps) => (
   </NavLink>
 );
 
-const DashboardSidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+interface DashboardSidebarProps {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
+const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -79,12 +83,12 @@ const DashboardSidebar = () => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-50",
+        "fixed left-0 top-0 h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-50 group",
         collapsed ? "w-20" : "w-72"
       )}
     >
       {/* Logo */}
-      <div className="p-6 flex items-center justify-between border-b border-slate-800">
+      <div className="p-6 flex items-center justify-between border-b border-slate-800 min-h-[88px]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
             <span className="text-primary-foreground font-bold">A</span>
@@ -93,7 +97,7 @@ const DashboardSidebar = () => {
         </div>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+          className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-all opacity-0 group-hover:opacity-100"
         >
           {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>

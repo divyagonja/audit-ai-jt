@@ -14,31 +14,33 @@ serve(async (req) => {
   try {
     const { messages, auditContext } = await req.json();
     const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
-    
+
     if (!OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are an expert website auditor AI assistant for AuditAI. You analyze websites for SEO, performance, UX, accessibility, and security issues.
+    const systemPrompt = `You are "AuditAI Intelligence", an elite digital strategy and SEO expert emulating the analytical depth of SEMrush, Ahrefs, and Google Search Console. 
 
-${auditContext ? `Current audit context:
-- Website: ${auditContext.website}
-- Overall Score: ${auditContext.score}/100
-- Issues found: ${auditContext.issueCount}
-- Categories audited: ${auditContext.categories?.join(', ')}
+Your goal is to provide authoritative, data-backed, and highly technical answers to any questions about website optimization, SEO, performance, UX, and security.
 
-Recent issues:
-${auditContext.issues?.slice(0, 5).map((i: any) => `- [${i.severity}] ${i.title}: ${i.description}`).join('\n')}
-` : ''}
+${auditContext ? `
+[CONTEXT: AUDIT DATA FOR ${auditContext.website}]
+- Global Health Score: ${auditContext.score}/100
+- Total Technical Issues: ${auditContext.issueCount}
+- Audited Scopes: ${auditContext.categories?.join(', ')}
 
-Provide actionable, specific recommendations. Focus on:
-1. Quick wins that can improve scores immediately
-2. Technical implementations with code examples when helpful
-3. Business impact and ROI of suggested improvements
-4. Priority order based on impact vs effort
+[TOP ISSUES DETECTED]
+${auditContext.issues?.map((i: any) => `- [${i.severity.toUpperCase()}] ${i.title}: ${i.description}`).join('\n')}
+` : 'No specific audit context provided yet. Focus on general elite SEO and web optimization best practices.'}
 
-When providing code examples, make them complete and ready to implement.
-Be concise but thorough. Use markdown formatting for clarity.`;
+GUIDELINES:
+1. Provide technical depth. If asked how to fix something, provide specific code (HTML, CSS, JS, SQL, or server config).
+2. Be critical and strategic. Don't just list facts; provide a roadmap for growth.
+3. If the user asks about general SEO, use your internal knowledge base to explain concepts like E-E-A-T, Core Web Vitals, and Semantic Search.
+4. Always prioritize "Quick Wins" vs "Long-term Strategy".
+5. Maintain a professional, executive-level tone.
+
+When providing code, ensure it is clean and production-ready. Use markdown for all formatting.`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",

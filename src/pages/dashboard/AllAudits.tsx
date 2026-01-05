@@ -134,8 +134,17 @@ const AllAudits = () => {
                   <tr key={audit.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
-                          <Globe className="h-5 w-5 text-slate-600" />
+                        <div className="w-10 h-10 rounded-lg bg-white border border-slate-100 flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0">
+                          <img
+                            src={`https://www.google.com/s2/favicons?domain=${audit.url}&sz=128`}
+                            alt=""
+                            className="w-6 h-6 object-contain"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'https://www.google.com/s2/favicons?domain=google.com&sz=128';
+                              target.className = 'w-6 h-6 opacity-20 grayscale';
+                            }}
+                          />
                         </div>
                         <a
                           href={`https://${audit.url}`}
@@ -171,13 +180,12 @@ const AllAudits = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        audit.status === "completed"
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${audit.status === "completed"
                           ? "bg-success/10 text-success"
                           : audit.status === "running"
-                          ? "bg-primary/10 text-primary"
-                          : "bg-slate-100 text-slate-600"
-                      }`}>
+                            ? "bg-primary/10 text-primary"
+                            : "bg-slate-100 text-slate-600"
+                        }`}>
                         {audit.status || "completed"}
                       </span>
                     </td>
