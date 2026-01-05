@@ -160,116 +160,130 @@ const AIAnalysis = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <DashboardHeader
-        title="AI Analysis"
-        subtitle="Get AI-powered insights about your website"
-      />
+    <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30 flex flex-col">
+      <div className="relative z-10 w-full flex-1 flex flex-col">
+        <DashboardHeader
+          title="AI Analysis"
+          subtitle="Get AI-powered insights about your website"
+        />
 
-      <div className="flex-1 p-8 max-w-4xl mx-auto w-full flex flex-col">
-        {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="bg-card border border-border rounded-xl p-8 text-center mb-8 w-full">
-              <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
-                <Brain className="h-8 w-8 text-accent" />
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                AI-Powered Website Intelligence
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Ask questions about your audits, get recommendations, and
-                discover insights
-              </p>
+        <div className="flex-1 p-6 md:p-8 max-w-5xl mx-auto w-full flex flex-col h-[calc(100vh-100px)]">
+          <div className="glass-card flex-1 flex flex-col rounded-3xl overflow-hidden border border-white/5 shadow-2xl animate-fade-in-up">
 
-              <div className="grid md:grid-cols-2 gap-4 mb-6">
-                {suggestions.map((suggestion, i) => (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setQuery(suggestion);
-                      // Use a timeout to ensure state update before submit
-                      setTimeout(() => {
-                        const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
-                        handleSubmit(fakeEvent);
-                      }, 0);
-                    }}
-                    className="p-4 bg-secondary border border-border rounded-lg text-left hover:border-primary transition-colors flex items-center gap-3 group"
-                  >
-                    <Sparkles className="h-5 w-5 text-accent flex-shrink-0 group-hover:scale-110 transition-transform" />
-                    <span className="text-foreground font-medium">{suggestion}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "flex gap-3",
-                  message.role === "user" ? "justify-end" : "justify-start"
-                )}
-              >
-                {message.role === "assistant" && (
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Bot className="h-4 w-4 text-primary" />
+            {/* Chat Area */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth custom-scrollbar">
+              {messages.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center h-full text-center p-8">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-purple-900/30 animate-pulse">
+                    <Brain className="h-10 w-10 text-white" />
                   </div>
-                )}
-                <div
-                  className={cn(
-                    "max-w-[80%] rounded-xl px-4 py-3",
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card border border-border text-foreground"
-                  )}
-                >
-                  <div className="w-full overflow-hidden">
-                    {message.content ? (
-                      <SimpleMarkdown content={message.content} />
-                    ) : (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    )}
+                  <h2 className="text-3xl font-bold text-white mb-3">
+                    AI-Powered Intelligence
+                  </h2>
+                  <p className="text-slate-400 mb-8 max-w-md text-lg">
+                    Ask deep questions about your audit data, get technical code fixes, and strategy advice.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-4 w-full max-w-2xl">
+                    {suggestions.map((suggestion, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setQuery(suggestion);
+                          setTimeout(() => {
+                            const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
+                            handleSubmit(fakeEvent);
+                          }, 0);
+                        }}
+                        className="p-4 bg-slate-800/50 border border-white/5 rounded-xl text-left hover:bg-slate-700/50 hover:border-blue-500/30 transition-all flex items-center gap-3 group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                          <Sparkles className="h-4 w-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <span className="text-slate-200 text-sm font-medium">{suggestion}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
-                {message.role === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <User className="h-4 w-4 text-accent" />
-                  </div>
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
+              ) : (
+                <div className="space-y-6 pb-4">
+                  {messages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex gap-4 max-w-4xl mx-auto",
+                        message.role === "user" ? "justify-end" : "justify-start"
+                      )}
+                    >
+                      {message.role === "assistant" && (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                          <Bot className="h-5 w-5 text-white" />
+                        </div>
+                      )}
+                      <div
+                        className={cn(
+                          "max-w-[85%] rounded-2xl px-6 py-4 shadow-md",
+                          message.role === "user"
+                            ? "bg-blue-600 text-white rounded-br-sm"
+                            : "bg-slate-800/80 border border-white/5 text-slate-100 rounded-bl-sm backdrop-blur-sm"
+                        )}
+                      >
+                        <div className="prose prose-invert prose-sm max-w-none">
+                          {message.content ? (
+                            <SimpleMarkdown content={message.content} />
+                          ) : (
+                            <div className="flex items-center gap-2 text-slate-400">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <span className="text-xs">Processing...</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      {message.role === "user" && (
+                        <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0 border border-white/10">
+                          <User className="h-5 w-5 text-slate-300" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
 
-        <form onSubmit={handleSubmit} className="relative">
-          <Textarea
-            placeholder="Ask about your website performance, SEO improvements, or get personalized recommendations..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit();
-              }
-            }}
-            className="min-h-24 pr-16 resize-none"
-          />
-          <Button
-            type="submit"
-            className="absolute bottom-3 right-3 gap-2"
-            disabled={!query.trim() || isLoading}
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-            {isLoading ? "Thinking..." : "Ask AI"}
-          </Button>
-        </form>
+            {/* Input Area */}
+            <div className="p-4 bg-slate-900/50 border-t border-white/5">
+              <form onSubmit={handleSubmit} className="relative max-w-4xl mx-auto">
+                <Textarea
+                  placeholder="Ask anything about your website..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit();
+                    }
+                  }}
+                  className="min-h-[60px] pl-6 pr-20 py-4 bg-slate-950/50 border-white/10 text-white rounded-2xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 resize-none shadow-inner"
+                />
+                <Button
+                  type="submit"
+                  className="absolute bottom-3 right-3 h-10 w-10 p-0 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                  disabled={!query.trim() || isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Send className="h-5 w-5" />
+                  )}
+                </Button>
+              </form>
+              <p className="text-center text-xs text-slate-600 mt-2">
+                AI can make mistakes. Review generated code before implementation.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

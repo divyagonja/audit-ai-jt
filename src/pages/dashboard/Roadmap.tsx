@@ -1,6 +1,7 @@
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { CheckCircle2, Circle, Clock, Rocket, Sparkles, Star, Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Roadmap = () => {
     const roadmapItems = [
@@ -47,61 +48,69 @@ const Roadmap = () => {
     ];
 
     return (
-        <div className="min-h-screen dashboard-bg">
+        <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
             <div className="relative z-10">
                 <DashboardHeader
-                    title="Product Roadmap"
-                    subtitle="See what's coming next to Audit AI"
+                    title="Growth Roadmap"
+                    subtitle="Our technical evolution and planned system enhancements"
                 />
 
-                <div className="p-8 max-w-5xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-8">
-                        <div className="flex items-center gap-3 mb-8">
-                            <div className="p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
+                <div className="p-8 max-w-5xl mx-auto animate-fade-in-up">
+                    <div className="glass-card rounded-3xl overflow-hidden border border-white/5 p-10 shadow-2xl relative group">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -mr-32 -mt-32 transition-colors group-hover:bg-blue-600/10"></div>
+
+                        <div className="flex items-center gap-4 mb-12 relative z-10">
+                            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl shadow-blue-900/20">
                                 <Rocket className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-slate-900">Future Features</h2>
-                                <p className="text-slate-500">Our journey to build the ultimate audit platform</p>
+                                <h2 className="text-2xl font-black text-white premium-gradient-text tracking-tight">Future Capabilities</h2>
+                                <p className="text-slate-400 text-sm font-medium">Tracking the progression of our neural infrastructure</p>
                             </div>
                         </div>
 
-                        <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                        <div className="space-y-12 relative z-10 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
                             {roadmapItems.map((item, index) => (
-                                <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
 
                                     {/* Icon Marker */}
-                                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-slate-200 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="flex items-center justify-center w-10 h-10 rounded-xl border border-white/10 bg-slate-900 shadow-xl shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 group-hover:scale-110 group-hover:border-blue-500/50 transition-all duration-500">
                                         {item.status === 'completed' ? (
-                                            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                                            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                                         ) : item.status === 'in-progress' ? (
-                                            <Clock className="w-5 h-5 text-blue-600 animate-pulse" />
+                                            <Clock className="w-5 h-5 text-blue-400 animate-pulse" />
                                         ) : (
-                                            <Circle className="w-5 h-5 text-slate-400" />
+                                            <Circle className="w-5 h-5 text-slate-600" />
                                         )}
                                     </div>
 
                                     {/* Content Card */}
-                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group-hover:-translate-y-1">
-                                        <div className={`absolute top-0 left-0 w-1 h-full ${item.bgColor.replace('bg-', 'bg-gradient-to-b from-').replace('100', '500')} to-transparent opacity-50`}></div>
+                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 shadow-xl backdrop-blur-sm transition-all duration-500 relative overflow-hidden group-hover:-translate-y-1">
+                                        <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${item.status === 'completed' ? 'from-emerald-500' : item.status === 'in-progress' ? 'from-blue-500' : 'from-slate-700'} to-transparent opacity-30`}></div>
 
-                                        <div className="flex justify-between items-start mb-2">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.bgColor} ${item.color} border ${item.borderColor}`}>
+                                        <div className="flex justify-between items-start mb-3">
+                                            <span className={cn(
+                                                "inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border",
+                                                item.status === 'completed' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                                                    item.status === 'in-progress' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" :
+                                                        "bg-slate-500/10 text-slate-400 border-slate-500/20"
+                                            )}>
                                                 {item.quarter}
                                             </span>
                                             {item.status === 'in-progress' && (
-                                                <span className="text-xs font-semibold text-blue-600 animate-pulse">In Progress</span>
-                                            )}
-                                            {item.status === 'completed' && (
-                                                <span className="text-xs font-semibold text-emerald-600">Completed</span>
+                                                <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded animate-pulse">ACTIVE MISSION</span>
                                             )}
                                         </div>
 
-                                        <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                            <item.icon className={`w-5 h-5 ${item.color}`} />
+                                        <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                                            <item.icon className={cn("w-5 h-5",
+                                                item.status === 'completed' ? "text-emerald-400" :
+                                                    item.status === 'in-progress' ? "text-blue-400" :
+                                                        "text-slate-400"
+                                            )} />
                                             {item.title}
                                         </h3>
-                                        <p className="text-slate-600 text-sm leading-relaxed">
+                                        <p className="text-slate-400 text-sm leading-relaxed font-medium">
                                             {item.description}
                                         </p>
                                     </div>

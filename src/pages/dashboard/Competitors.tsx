@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ScoreCircle from "@/components/dashboard/ScoreCircle";
@@ -14,12 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { 
-  Plus, 
-  Target, 
-  TrendingUp, 
-  TrendingDown, 
-  ExternalLink, 
+import {
+  Plus,
+  Target,
+  TrendingUp,
+  TrendingDown,
+  ExternalLink,
   Trash2,
   Search,
   Zap,
@@ -30,6 +31,7 @@ import {
   XCircle,
   ArrowRight,
   BarChart3,
+  Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -169,310 +171,278 @@ const Competitors = () => {
   const [newCompetitor, setNewCompetitor] = useState("");
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <DashboardHeader 
-        title="Competitor Analysis" 
-        subtitle="Track and compare competitor performance with AI-powered insights" 
-      />
-      
-      <div className="p-8">
-        {/* Header Actions */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="gap-1">
-              <Target className="h-3 w-3" />
-              {mockCompetitors.length} competitors tracked
-            </Badge>
-          </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Add Competitor
-          </Button>
-        </div>
+    <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
+      <div className="relative z-10 w-full">
+        <DashboardHeader
+          title="Competitor Analysis"
+          subtitle="Track and compare competitor performance with AI-powered insights"
+        />
 
-        {/* Comparison Table */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Competitor Comparison</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[250px]">Competitor</TableHead>
-                  <TableHead className="text-center">Overall Score</TableHead>
-                  <TableHead className="text-center">SEO Score</TableHead>
-                  <TableHead className="text-center">Speed Score</TableHead>
-                  <TableHead className="text-center">Backlinks</TableHead>
-                  <TableHead className="text-center">Keywords</TableHead>
-                  <TableHead className="text-center">Change</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {/* Your Site Row */}
-                <TableRow className="bg-primary/5 border-l-4 border-l-primary">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-lg">
-                        ⭐
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">{yourSite.name}</p>
-                        <p className="text-sm text-muted-foreground">{yourSite.url}</p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Badge variant="outline" className="font-bold">{yourSite.overallScore}</Badge>
-                  </TableCell>
-                  <TableCell className="text-center">{yourSite.seoScore}</TableCell>
-                  <TableCell className="text-center">{yourSite.speedScore}</TableCell>
-                  <TableCell className="text-center">{yourSite.backlinks.toLocaleString()}</TableCell>
-                  <TableCell className="text-center">{yourSite.keywords.toLocaleString()}</TableCell>
-                  <TableCell className="text-center">—</TableCell>
-                  <TableCell className="text-right">—</TableCell>
-                </TableRow>
-                
-                {/* Competitor Rows */}
-                {mockCompetitors.map((comp) => (
-                  <TableRow key={comp.id}>
-                    <TableCell>
+        <div className="p-8 max-w-[1600px] mx-auto animate-fade-in-up">
+          {/* Header Actions */}
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center gap-4">
+              <div className="px-4 py-2 rounded-xl bg-slate-900/50 border border-white/10 flex items-center gap-2">
+                <Target className="h-4 w-4 text-blue-400" />
+                <span className="text-sm font-semibold text-slate-200">{mockCompetitors.length} competitors tracked</span>
+              </div>
+            </div>
+            <Button className="gap-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20">
+              <Plus className="h-4 w-4" />
+              Add Competitor
+            </Button>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="glass-card border border-white/5 rounded-3xl overflow-hidden mb-8 shadow-2xl">
+            <div className="p-6 border-b border-white/5">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-400" />
+                Market Landscape
+              </h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-white/[0.02] border-b border-white/5">
+                  <tr>
+                    <th className="text-left px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Competitor</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Overall</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">SEO</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Speed</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Backlinks</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Keywords</th>
+                    <th className="text-center px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Trend</th>
+                    <th className="text-right px-6 py-4 text-slate-400 text-xs uppercase tracking-wider font-semibold">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {/* Your Site Row */}
+                  <tr className="bg-blue-600/5 border-l-4 border-l-blue-500">
+                    <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-lg">
-                          {comp.favicon}
+                        <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-xl border border-blue-500/20">
+                          ⭐
                         </div>
                         <div>
-                          <p className="font-semibold text-foreground">{comp.name}</p>
-                          <a 
-                            href={`https://${comp.url}`} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
-                          >
-                            {comp.url}
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
+                          <p className="font-bold text-white">{yourSite.name}</p>
+                          <p className="text-xs text-blue-300">You</p>
                         </div>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Badge 
-                        variant={comp.overallScore >= yourSite.overallScore ? "default" : "secondary"}
-                        className={cn(
-                          comp.overallScore >= yourSite.overallScore 
-                            ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" 
-                            : ""
-                        )}
-                      >
-                        {comp.overallScore}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className={cn(
-                      "text-center font-medium",
-                      comp.seoScore > yourSite.seoScore ? "text-emerald-600" : "text-foreground"
-                    )}>
-                      {comp.seoScore}
-                    </TableCell>
-                    <TableCell className={cn(
-                      "text-center font-medium",
-                      comp.speedScore > yourSite.speedScore ? "text-emerald-600" : "text-foreground"
-                    )}>
-                      {comp.speedScore}
-                    </TableCell>
-                    <TableCell className={cn(
-                      "text-center font-medium",
-                      comp.backlinks > yourSite.backlinks ? "text-emerald-600" : "text-foreground"
-                    )}>
-                      {comp.backlinks.toLocaleString()}
-                    </TableCell>
-                    <TableCell className={cn(
-                      "text-center font-medium",
-                      comp.keywords > yourSite.keywords ? "text-emerald-600" : "text-foreground"
-                    )}>
-                      {comp.keywords.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <span className={cn(
-                        "flex items-center justify-center gap-1 font-medium",
-                        comp.trend === "up" ? "text-emerald-600" : "text-red-600"
-                      )}>
-                        {comp.trend === "up" ? (
-                          <TrendingUp className="h-4 w-4" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4" />
-                        )}
-                        {comp.change}
+                    </td>
+                    <td className="text-center px-6 py-4">
+                      <span className="inline-flex items-center justify-center w-10 h-8 rounded-lg bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-500/20">
+                        {yourSite.overallScore}
                       </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <BarChart3 className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                    </td>
+                    <td className="text-center px-6 py-4 font-medium text-slate-300">{yourSite.seoScore}</td>
+                    <td className="text-center px-6 py-4 font-medium text-slate-300">{yourSite.speedScore}</td>
+                    <td className="text-center px-6 py-4 font-medium text-slate-300">{yourSite.backlinks.toLocaleString()}</td>
+                    <td className="text-center px-6 py-4 font-medium text-slate-300">{yourSite.keywords.toLocaleString()}</td>
+                    <td className="text-center px-6 py-4 text-slate-500">—</td>
+                    <td className="text-right px-6 py-4 text-slate-500">—</td>
+                  </tr>
 
-        {/* Charts Row */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Radar Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-primary" />
-                Score Comparison
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <RadarChart data={radarData}>
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="metric" />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                  <Radar
-                    name="Your Site"
-                    dataKey="you"
-                    stroke="hsl(var(--primary))"
-                    fill="hsl(var(--primary))"
-                    fillOpacity={0.3}
-                  />
-                  <Radar
-                    name="TechCorp"
-                    dataKey="competitor1"
-                    stroke="#10b981"
-                    fill="#10b981"
-                    fillOpacity={0.2}
-                  />
-                  <Radar
-                    name="Digital Dynamics"
-                    dataKey="competitor2"
-                    stroke="#8b5cf6"
-                    fill="#8b5cf6"
-                    fillOpacity={0.2}
-                  />
-                  <Legend />
-                </RadarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+                  {/* Competitor Rows */}
+                  {mockCompetitors.map((comp) => (
+                    <tr key={comp.id} className="hover:bg-white/[0.02] transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-slate-800 border border-white/5 flex items-center justify-center text-lg shadow-sm">
+                            {comp.favicon}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-slate-200">{comp.name}</p>
+                            <a
+                              href={`https://${comp.url}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-slate-500 hover:text-blue-400 flex items-center gap-1 transition-colors"
+                            >
+                              {comp.url}
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="text-center px-6 py-4">
+                        <span className={cn(
+                          "inline-flex items-center justify-center w-10 h-8 rounded-lg font-bold text-sm",
+                          comp.overallScore >= yourSite.overallScore
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            : "bg-slate-800 text-slate-400 border border-white/5"
+                        )}>
+                          {comp.overallScore}
+                        </span>
+                      </td>
+                      <td className={cn("text-center px-6 py-4 font-medium", comp.seoScore > yourSite.seoScore ? "text-emerald-400" : "text-slate-400")}>{comp.seoScore}</td>
+                      <td className={cn("text-center px-6 py-4 font-medium", comp.speedScore > yourSite.speedScore ? "text-emerald-400" : "text-slate-400")}>{comp.speedScore}</td>
+                      <td className={cn("text-center px-6 py-4 font-medium", comp.backlinks > yourSite.backlinks ? "text-emerald-400" : "text-slate-400")}>{comp.backlinks.toLocaleString()}</td>
+                      <td className={cn("text-center px-6 py-4 font-medium", comp.keywords > yourSite.keywords ? "text-emerald-400" : "text-slate-400")}>{comp.keywords.toLocaleString()}</td>
+                      <td className="text-center px-6 py-4">
+                        <span className={cn(
+                          "flex items-center justify-center gap-1 font-medium text-xs",
+                          comp.trend === "up" ? "text-emerald-400" : "text-red-400"
+                        )}>
+                          {comp.trend === "up" ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                          {comp.change}
+                        </span>
+                      </td>
+                      <td className="text-right px-6 py-4">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10">
+                            <BarChart3 className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-600 hover:text-red-400 hover:bg-red-500/10">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-          {/* Feature Comparison */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                Feature Comparison Matrix
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Feature</TableHead>
-                    <TableHead className="text-center">You</TableHead>
-                    <TableHead className="text-center">Avg</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {featureComparison.map((item) => {
-                    const competitorHas = item.competitors.filter(Boolean).length;
-                    return (
-                      <TableRow key={item.feature}>
-                        <TableCell className="font-medium">{item.feature}</TableCell>
-                        <TableCell className="text-center">
-                          {item.you ? (
-                            <CheckCircle className="h-5 w-5 text-emerald-600 mx-auto" />
-                          ) : (
-                            <XCircle className="h-5 w-5 text-red-400 mx-auto" />
-                          )}
-                        </TableCell>
-                        <TableCell className="text-center text-sm text-muted-foreground">
-                          {competitorHas}/{item.competitors.length}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Charts Row */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+            {/* Radar Chart */}
+            <div className="glass-card border border-white/5 rounded-3xl p-8 shadow-xl">
+              <div className="flex items-center gap-2 mb-6">
+                <Target className="h-5 w-5 text-purple-400" />
+                <h3 className="font-bold text-white text-lg">Score Comparison</h3>
+              </div>
+              <div className="h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart data={radarData}>
+                    <PolarGrid stroke="#334155" />
+                    <PolarAngleAxis dataKey="metric" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                    <Radar
+                      name="Your Site"
+                      dataKey="you"
+                      stroke="#3b82f6"
+                      fill="#3b82f6"
+                      fillOpacity={0.4}
+                    />
+                    <Radar
+                      name="TechCorp"
+                      dataKey="competitor1"
+                      stroke="#10b981"
+                      fill="#10b981"
+                      fillOpacity={0.2}
+                    />
+                    <Radar
+                      name="Digital Dynamics"
+                      dataKey="competitor2"
+                      stroke="#a855f7"
+                      fill="#a855f7"
+                      fillOpacity={0.2}
+                    />
+                    <Legend wrapperStyle={{ color: '#cbd5e1' }} />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
 
-        {/* Insights Panel */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* What Competitors Do Better */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-red-600">
+            {/* Feature Comparison */}
+            <div className="glass-card border border-white/5 rounded-3xl p-8 shadow-xl">
+              <div className="flex items-center gap-2 mb-6">
+                <FileText className="h-5 w-5 text-amber-400" />
+                <h3 className="font-bold text-white text-lg">Feature Matrix</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/5">
+                      <th className="text-left pb-4 text-xs font-semibold text-slate-400 uppercase">Feature</th>
+                      <th className="text-center pb-4 text-xs font-semibold text-slate-400 uppercase">You</th>
+                      <th className="text-center pb-4 text-xs font-semibold text-slate-400 uppercase">Avg</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {featureComparison.map((item) => {
+                      const competitorHas = item.competitors.filter(Boolean).length;
+                      return (
+                        <tr key={item.feature}>
+                          <td className="py-3 font-medium text-slate-200 text-sm">{item.feature}</td>
+                          <td className="text-center py-3">
+                            {item.you ? (
+                              <CheckCircle className="h-5 w-5 text-emerald-500 mx-auto" />
+                            ) : (
+                              <XCircle className="h-5 w-5 text-red-500/50 mx-auto" />
+                            )}
+                          </td>
+                          <td className="text-center py-3 text-sm text-slate-500">
+                            {competitorHas}/{item.competitors.length}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Insights Panel */}
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* What Competitors Do Better */}
+            <div className="glass-card border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-2xl -mr-12 -mt-12 transition-colors group-hover:bg-red-500/20"></div>
+              <h3 className="flex items-center gap-2 text-red-400 font-bold mb-4">
                 <TrendingUp className="h-5 w-5" />
-                What Competitors Do Better
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
+                Weaknesses
+              </h3>
+              <ul className="space-y-4">
                 {insights.competitorAdvantages.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
                     {item}
                   </li>
                 ))}
               </ul>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Your Advantages */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-emerald-600">
+            {/* Your Advantages */}
+            <div className="glass-card border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl -mr-12 -mt-12 transition-colors group-hover:bg-emerald-500/20"></div>
+              <h3 className="flex items-center gap-2 text-emerald-400 font-bold mb-4">
                 <CheckCircle className="h-5 w-5" />
-                Your Advantages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
+                Your Edge
+              </h3>
+              <ul className="space-y-4">
                 {insights.yourAdvantages.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                     {item}
                   </li>
                 ))}
               </ul>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Quick Wins */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
+            {/* Quick Wins */}
+            <div className="glass-card border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-12 -mt-12 transition-colors group-hover:bg-blue-500/20"></div>
+              <h3 className="flex items-center gap-2 text-blue-400 font-bold mb-4">
                 <Lightbulb className="h-5 w-5" />
-                Quick Wins to Close Gaps
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
+                Quick Wins
+              </h3>
+              <ul className="space-y-4">
                 {insights.quickWins.map((item, i) => (
                   <li key={i} className="text-sm">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="font-medium">{item.action}</span>
-                      <Badge variant="secondary" className="shrink-0 text-emerald-700 bg-emerald-100">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <span className="font-medium text-slate-200">{item.action}</span>
+                      <span className="shrink-0 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                         {item.impact}
-                      </Badge>
+                      </span>
                     </div>
-                    <p className="text-muted-foreground text-xs mt-1">Est. effort: {item.effort}</p>
+                    <p className="text-slate-500 text-xs">Est. effort: {item.effort}</p>
                   </li>
                 ))}
               </ul>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -52,23 +52,23 @@ const categoryIcons: Record<string, React.ElementType> = {
 
 const severityConfig = {
   critical: {
-    color: "border-rose-500",
-    bg: "bg-rose-50",
-    text: "text-rose-600",
+    color: "border-rose-500/50",
+    bg: "bg-rose-500/10",
+    text: "text-rose-400",
     badge: "destructive" as const,
     label: "Critical Infrastructure Risk"
   },
   warning: {
-    color: "border-amber-500",
-    bg: "bg-amber-50",
-    text: "text-amber-600",
-    badge: "warning" as const,
+    color: "border-amber-500/50",
+    bg: "bg-amber-500/10",
+    text: "text-amber-400",
+    badge: "outline" as const,
     label: "Strategic Opportunity"
   },
   info: {
-    color: "border-sky-500",
-    bg: "bg-sky-50",
-    text: "text-sky-600",
+    color: "border-blue-500/50",
+    bg: "bg-blue-500/10",
+    text: "text-blue-400",
     badge: "secondary" as const,
     label: "Optimization Insight"
   },
@@ -491,41 +491,41 @@ const AuditResults = () => {
     const config = severityConfig[issue.severity as keyof typeof severityConfig] || severityConfig.info;
 
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all">
+      <div className="glass-card rounded-2xl border border-white/5 overflow-hidden shadow-lg hover:shadow-xl transition-all hover:border-blue-500/30 group">
         <button onClick={() => setExpandedIssue(isExpanded ? null : issue.id)} className="w-full text-left p-6">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-3">
-                <Badge variant={config.badge} className="uppercase text-[10px] tracking-widest font-bold font-sans">
+                <Badge variant={config.badge} className={cn("uppercase text-[10px] tracking-widest font-bold font-sans border-0", config.bg, config.text)}>
                   {issue.severity}
                 </Badge>
-                <span className="text-slate-400 text-xs font-medium">/ {issue.category}</span>
+                <span className="text-slate-500 text-xs font-medium">/ {issue.category}</span>
               </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-1">{issue.title}</h4>
-              <p className="text-slate-500 text-sm line-clamp-1">{issue.description}</p>
+              <h4 className="text-lg font-bold text-slate-100 mb-1 group-hover:text-blue-400 transition-colors">{issue.title}</h4>
+              <p className="text-slate-400 text-sm line-clamp-1">{issue.description}</p>
             </div>
             <motion.div animate={{ rotate: isExpanded ? 180 : 0 }}>
-              <ChevronDown className="h-5 w-5 text-slate-400" />
+              <ChevronDown className="h-5 w-5 text-slate-500 group-hover:text-blue-400 transition-colors" />
             </motion.div>
           </div>
         </button>
 
         <AnimatePresence>
           {isExpanded && (
-            <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden bg-slate-50/50">
+            <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden bg-slate-900/30">
               <div className="p-6 pt-0 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white p-4 rounded-xl border border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Impact</p>
-                    <p className="text-emerald-600 font-bold text-lg">+{issue.conversionLift || 0}% Conversion</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-6">
+                  <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Impact</p>
+                    <p className="text-emerald-400 font-bold text-lg">+{issue.conversionLift || 0}% Conversion</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl border border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Revenue Lift</p>
-                    <p className="text-emerald-600 font-bold text-lg">+${issue.revenueImpact}/mo</p>
+                  <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Revenue Lift</p>
+                    <p className="text-emerald-400 font-bold text-lg">+${issue.revenueImpact}/mo</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl border border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Time to Fix</p>
-                    <p className="text-slate-900 font-bold text-lg">{issue.timeEstimate}</p>
+                  <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Time to Fix</p>
+                    <p className="text-slate-200 font-bold text-lg">{issue.timeEstimate}</p>
                   </div>
                 </div>
 
@@ -533,8 +533,8 @@ const AuditResults = () => {
                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Implementation Steps</p>
                   <ul className="space-y-2">
                     {issue.fixSteps.map((step: string, sIdx: number) => (
-                      <li key={sIdx} className="flex gap-3 text-sm text-slate-600">
-                        <span className="flex-shrink-0 w-5 h-5 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold">
+                      <li key={sIdx} className="flex gap-3 text-sm text-slate-300">
+                        <span className="flex-shrink-0 w-5 h-5 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-[10px] font-bold border border-blue-500/20">
                           {sIdx + 1}
                         </span>
                         {step}
@@ -543,14 +543,14 @@ const AuditResults = () => {
                   </ul>
                 </div>
 
-                <div className="bg-slate-900 rounded-xl p-4">
+                <div className="bg-slate-950 rounded-xl p-4 border border-white/5">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-bold text-slate-500 uppercase">Production-Ready Code</span>
-                    <Button variant="ghost" size="sm" onClick={() => copyCode(issue.fixCode, issue.id)} className="text-slate-400 hover:text-white h-7">
-                      {copiedCode === issue.id ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    <Button variant="ghost" size="sm" onClick={() => copyCode(issue.fixCode, issue.id)} className="text-slate-400 hover:text-white h-7 hover:bg-white/10">
+                      {copiedCode === issue.id ? <CheckCircle className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
                     </Button>
                   </div>
-                  <pre className="text-xs text-blue-400 font-mono overflow-x-auto whitespace-pre-wrap p-2"><code>{issue.fixCode}</code></pre>
+                  <pre className="text-xs text-blue-300 font-mono overflow-x-auto whitespace-pre-wrap p-2 custom-scrollbar"><code>{issue.fixCode}</code></pre>
                 </div>
               </div>
             </motion.div>
@@ -645,222 +645,224 @@ const AuditResults = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-slate-50/50">
-      <div className="bg-[#0f172a] text-white pt-12 pb-24 px-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/10 to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-blue-400 font-bold uppercase text-[10px] tracking-widest">
-              <Sparkles className="h-3 w-3" /> AI Strategic Intelligence
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
+      <div className="relative z-10 w-full">
+        <div className="glass-card border-b border-white/5 pt-12 pb-24 px-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/10 to-transparent pointer-events-none" />
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-blue-400 font-bold uppercase text-[10px] tracking-widest">
+                <Sparkles className="h-3 w-3" /> AI Strategic Intelligence
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <img
+                    src={`https://www.google.com/s2/favicons?domain=${audit?.url}&sz=128`}
+                    alt=""
+                    className="w-7 h-7 object-contain filter grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
+                  />
+                </div>
+                <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white premium-gradient-text">{audit?.url || "yourwebsite.com"}</h1>
+              </div>
+              <div className="flex items-center gap-4 text-slate-400 text-sm">
+                <div className="flex items-center gap-2"><Calendar className="h-4 w-4" /> {new Date(audit?.completed_at || Date.now()).toLocaleDateString()}</div>
+                <div className="flex items-center gap-2"><Target className="h-4 w-4" /> Global Benchmark Analysis</div>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
-                <img
-                  src={`https://www.google.com/s2/favicons?domain=${audit?.url}&sz=128`}
-                  alt=""
-                  className="w-7 h-7 object-contain"
-                />
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight">{audit?.url || "yourwebsite.com"}</h1>
-            </div>
-            <div className="flex items-center gap-4 text-slate-400 text-sm">
-              <div className="flex items-center gap-2"><Calendar className="h-4 w-4" /> {new Date(audit?.completed_at || Date.now()).toLocaleDateString()}</div>
-              <div className="flex items-center gap-2"><Target className="h-4 w-4" /> Global Benchmark Analysis</div>
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-6">
-            <ScoreCircle score={audit?.overall_score || 72} size="lg" label="Health Score" />
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="bg-white/5 border-white/10 text-white hover:bg-white/10 rounded-xl">
-                <Download className="h-4 w-4 mr-2" /> Export
-              </Button>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg shadow-blue-500/20">
-                <RefreshCw className="h-4 w-4 mr-2" /> Re-audit
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-8 -mt-12 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((cat, idx) => (
-            <motion.div key={cat.key} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-xl transition-all group">
-              <div className="flex items-center justify-between mb-4">
-                <cat.icon className="h-5 w-5 text-slate-400 group-hover:text-blue-600 transition-colors" />
-                <span className={cn("text-xl font-black font-display", cat.score >= 80 ? "text-emerald-500" : cat.score >= 60 ? "text-amber-500" : "text-rose-500")}>
-                  <CountUp end={cat.score} />
-                </span>
-              </div>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{cat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Market Intelligence - Dynamic from AI */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="rounded-2xl border-slate-200 shadow-sm overflow-hidden bg-white group hover:border-blue-500 transition-colors">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Authority Score</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900">
-                  {marketMetrics && marketMetrics.authorityScore !== undefined ? marketMetrics.authorityScore : (audit?.overall_score || 0)}
-                </span>
-                <Badge className={cn(
-                  "border-none text-[8px] font-bold",
-                  (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) > 80 ? "bg-blue-100 text-blue-700" :
-                    (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) < 20 ? "bg-rose-100 text-rose-700" :
-                      "bg-slate-100 text-slate-700"
-                )}>
-                  {(marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) > 80 ? "INDUSTRY LEADER" :
-                    (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) < 20 ? "LOW AUTHORITY" : "GROWING BRAND"}
-                </Badge>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">Based on global domain integrity</p>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border-slate-200 shadow-sm overflow-hidden bg-white group hover:border-blue-500 transition-colors">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Organic Traffic</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900">
-                  {marketMetrics?.organicTraffic || "0"}
-                </span>
-                <span className="text-[10px] font-bold text-emerald-500">{marketMetrics?.organicTrafficGrowth || "+0%"}</span>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">Estimated monthly sessions</p>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border-slate-200 shadow-sm overflow-hidden bg-white group hover:border-blue-500 transition-colors">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Organic Keywords</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900">
-                  {marketMetrics?.organicKeywords || "0"}
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">Total ranking search terms</p>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border-slate-200 shadow-sm overflow-hidden bg-white group hover:border-blue-500 transition-colors">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Backlinks</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900">
-                  {marketMetrics?.backlinks || "0"}
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">Total referring external URLs</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 mb-24">
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-black text-slate-900 tracking-tight">Intelligence Feed</h3>
+            <div className="flex flex-col items-center gap-6">
+              <ScoreCircle score={audit?.overall_score || 72} size="lg" label="Health Score" />
               <div className="flex gap-2">
-                <Badge variant="destructive" className="bg-rose-50 text-rose-600 border-rose-100 uppercase text-[9px] tracking-widest">
-                  {criticalIssues.length > 0 ? criticalIssues.length : (audit?.critical_issues || 0)} Critical
-                </Badge>
-                <Badge variant="secondary" className="bg-slate-50 text-slate-600 border-slate-100 uppercase text-[9px] tracking-widest">
-                  {displayIssues.length > 0 ? displayIssues.length : ((audit?.critical_issues || 0) + (audit?.warning_issues || 0) + (audit?.info_issues || 0))} Total
-                </Badge>
-              </div>
-            </div>
-            {displayIssues.length > 0 ? (
-              displayIssues.map((issue, idx) => (
-                <motion.div key={issue.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + (idx * 0.05) }}>
-                  <IssueCard issue={issue} />
-                </motion.div>
-              ))
-            ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-20 text-center space-y-4">
-                <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
-                  <Search className="h-8 w-8 text-slate-300" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-slate-900">
-                    {(audit?.critical_issues || 0) > 0
-                      ? `Analyzing ${audit.critical_issues} Critical Issues...`
-                      : "Intelligence optimization in progress"}
-                  </h4>
-                  <p className="text-slate-500 text-sm max-w-sm mx-auto mt-2">
-                    {(audit?.critical_issues || 0) > 0
-                      ? "The AI has identified critical vulnerabilities. Syncing detailed technical breakdown..."
-                      : "Our AI is refining the technical snippets. If they don't appear in 5 seconds, please click refresh."}
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={() => (audit?.critical_issues || 0) > 0 ? handleRegenerate() : fetchIssues()}
-                  className="rounded-xl"
-                  disabled={isSyncing}
-                >
-                  <RefreshCw className={cn("h-4 w-4 mr-2", isSyncing && "animate-spin")} />
-                  {isSyncing ? "Verifying..." : ((audit?.critical_issues || 0) > 0 ? "Regenerate Report" : "Load Intelligence Data")}
+                <Button className="bg-white/5 border border-white/10 text-white hover:bg-white/10 rounded-xl px-4 py-2 transition-all">
+                  <Download className="h-4 w-4 mr-2" /> Export
+                </Button>
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg shadow-blue-500/20 text-white">
+                  <RefreshCw className="h-4 w-4 mr-2" /> Re-audit
                 </Button>
               </div>
-            )}
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-8 -mt-12 relative z-20">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((cat, idx) => (
+              <motion.div key={cat.key} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
+                className="glass-card bg-slate-900/60 rounded-2xl p-5 shadow-lg border border-white/5 hover:border-blue-500/30 hover:shadow-blue-500/10 transition-all group backdrop-blur-md">
+                <div className="flex items-center justify-between mb-4">
+                  <cat.icon className="h-5 w-5 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                  <span className={cn("text-xl font-black font-display", cat.score >= 80 ? "text-emerald-400" : cat.score >= 60 ? "text-amber-400" : "text-rose-400")}>
+                    <CountUp end={cat.score} />
+                  </span>
+                </div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{cat.label}</p>
+              </motion.div>
+            ))}
           </div>
 
-          <div className="lg:col-span-4 space-y-6">
-            <Card className="rounded-2xl border-slate-200 shadow-sm overflow-hidden">
-              <CardHeader className="bg-slate-50 border-b border-slate-100">
-                <CardTitle className="text-sm font-bold flex items-center gap-2"><TrendingUp className="h-4 w-4 text-blue-600" /> Executive Summary</CardTitle>
+          {/* Market Intelligence - Dynamic from AI */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="glass-card rounded-2xl border-white/5 shadow-lg overflow-hidden group hover:border-blue-500/30 transition-colors bg-slate-900/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Authority Score</CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center text-sm font-medium">
-                    <span className="text-slate-500">Infrastructure Health</span>
-                    <span className={cn(
-                      "font-bold",
-                      marketMetrics?.infrastructureHealth?.toLowerCase().includes('crit') ? "text-rose-600" : "text-emerald-600"
-                    )}>{marketMetrics?.infrastructureHealth || "Good"}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm font-medium">
-                    <span className="text-slate-500">Security Risk</span>
-                    <span className={cn(
-                      "font-bold",
-                      marketMetrics?.securityRisk?.toLowerCase().includes('high') ? "text-rose-600" : "text-amber-600"
-                    )}>{marketMetrics?.securityRisk || "Low"}</span>
-                  </div>
+              <CardContent>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white">
+                    {marketMetrics && marketMetrics.authorityScore !== undefined ? marketMetrics.authorityScore : (audit?.overall_score || 0)}
+                  </span>
+                  <Badge className={cn(
+                    "border-none text-[8px] font-bold",
+                    (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) > 80 ? "bg-blue-500/10 text-blue-400" :
+                      (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) < 20 ? "bg-rose-500/10 text-rose-400" :
+                        "bg-slate-800 text-slate-400"
+                  )}>
+                    {(marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) > 80 ? "INDUSTRY LEADER" :
+                      (marketMetrics?.authorityScore ?? audit?.overall_score ?? 0) < 20 ? "LOW AUTHORITY" : "GROWING BRAND"}
+                  </Badge>
                 </div>
-                <div className="pt-6 border-t border-slate-100">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Potential Revenue Impact</p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-emerald-600 font-display">+$<CountUp end={displayIssues.reduce((acc, i) => acc + i.revenue_impact || 0, 0)} /></span>
-                    <span className="text-slate-400 text-xs">/mo</span>
-                  </div>
-                </div>
-                <PDFDownloadLink
-                  document={<AuditReportPDF audit={audit} issues={auditIssues} />}
-                  fileName={`AuditAI_Report_${audit?.url.replace(/[^a-z0-9]/gi, '_')}.pdf`}
-                  className="w-full"
-                >
-                  {({ loading: pdfLoading }) => (
-                    <Button
-                      className="w-full bg-slate-900 hover:bg-black text-white rounded-xl h-11"
-                      disabled={pdfLoading}
-                    >
-                      {pdfLoading ? "Preparing Report..." : "Download Audit Report"}
-                    </Button>
-                  )}
-                </PDFDownloadLink>
+                <p className="text-[10px] text-slate-400 mt-1">Based on global domain integrity</p>
               </CardContent>
             </Card>
+
+            <Card className="glass-card rounded-2xl border-white/5 shadow-lg overflow-hidden group hover:border-blue-500/30 transition-colors bg-slate-900/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Organic Traffic</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white">
+                    {marketMetrics?.organicTraffic || "0"}
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-400">{marketMetrics?.organicTrafficGrowth || "+0%"}</span>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">Estimated monthly sessions</p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card rounded-2xl border-white/5 shadow-lg overflow-hidden group hover:border-blue-500/30 transition-colors bg-slate-900/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Organic Keywords</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white">
+                    {marketMetrics?.organicKeywords || "0"}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">Total ranking search terms</p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card rounded-2xl border-white/5 shadow-lg overflow-hidden group hover:border-blue-500/30 transition-colors bg-slate-900/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Backlinks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white">
+                    {marketMetrics?.backlinks || "0"}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">Total referring external URLs</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 mb-24">
+            <div className="lg:col-span-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-black text-white tracking-tight">Intelligence Feed</h3>
+                <div className="flex gap-2">
+                  <Badge variant="destructive" className="bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase text-[9px] tracking-widest">
+                    {criticalIssues.length > 0 ? criticalIssues.length : (audit?.critical_issues || 0)} Critical
+                  </Badge>
+                  <Badge variant="secondary" className="bg-slate-800 text-slate-400 border border-white/5 uppercase text-[9px] tracking-widest">
+                    {displayIssues.length > 0 ? displayIssues.length : ((audit?.critical_issues || 0) + (audit?.warning_issues || 0) + (audit?.info_issues || 0))} Total
+                  </Badge>
+                </div>
+              </div>
+              {displayIssues.length > 0 ? (
+                displayIssues.map((issue, idx) => (
+                  <motion.div key={issue.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + (idx * 0.05) }}>
+                    <IssueCard issue={issue} />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="glass-card rounded-2xl border border-dashed border-white/10 p-20 text-center space-y-4">
+                  <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                    <Search className="h-8 w-8 text-slate-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-white">
+                      {(audit?.critical_issues || 0) > 0
+                        ? `Analyzing ${audit.critical_issues} Critical Issues...`
+                        : "Intelligence optimization in progress"}
+                    </h4>
+                    <p className="text-slate-500 text-sm max-w-sm mx-auto mt-2">
+                      {(audit?.critical_issues || 0) > 0
+                        ? "The AI has identified critical vulnerabilities. Syncing detailed technical breakdown..."
+                        : "Our AI is refining the technical snippets. If they don't appear in 5 seconds, please click refresh."}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => (audit?.critical_issues || 0) > 0 ? handleRegenerate() : fetchIssues()}
+                    className="rounded-xl border-white/10 bg-white/5 text-white hover:bg-white/10"
+                    disabled={isSyncing}
+                  >
+                    <RefreshCw className={cn("h-4 w-4 mr-2", isSyncing && "animate-spin")} />
+                    {isSyncing ? "Verifying..." : ((audit?.critical_issues || 0) > 0 ? "Regenerate Report" : "Load Intelligence Data")}
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="lg:col-span-4 space-y-6">
+              <Card className="glass-card rounded-2xl border-white/5 shadow-lg overflow-hidden">
+                <CardHeader className="bg-slate-900/50 border-b border-white/5">
+                  <CardTitle className="text-sm font-bold flex items-center gap-2 text-white"><TrendingUp className="h-4 w-4 text-blue-400" /> Executive Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center text-sm font-medium">
+                      <span className="text-slate-400">Infrastructure Health</span>
+                      <span className={cn(
+                        "font-bold",
+                        marketMetrics?.infrastructureHealth?.toLowerCase().includes('crit') ? "text-rose-400" : "text-emerald-400"
+                      )}>{marketMetrics?.infrastructureHealth || "Good"}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm font-medium">
+                      <span className="text-slate-400">Security Risk</span>
+                      <span className={cn(
+                        "font-bold",
+                        marketMetrics?.securityRisk?.toLowerCase().includes('high') ? "text-rose-400" : "text-amber-400"
+                      )}>{marketMetrics?.securityRisk || "Low"}</span>
+                    </div>
+                  </div>
+                  <div className="pt-6 border-t border-white/5">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Potential Revenue Impact</p>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-black text-emerald-400 font-display">+$<CountUp end={displayIssues.reduce((acc, i) => acc + i.revenue_impact || 0, 0)} /></span>
+                      <span className="text-slate-500 text-xs">/mo</span>
+                    </div>
+                  </div>
+                  <PDFDownloadLink
+                    document={<AuditReportPDF audit={audit} issues={auditIssues} />}
+                    fileName={`AuditAI_Report_${audit?.url.replace(/[^a-z0-9]/gi, '_')}.pdf`}
+                    className="w-full"
+                  >
+                    {({ loading: pdfLoading }) => (
+                      <Button
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-xl h-11"
+                        disabled={pdfLoading}
+                      >
+                        {pdfLoading ? "Preparing Report..." : "Download Audit Report"}
+                      </Button>
+                    )}
+                  </PDFDownloadLink>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

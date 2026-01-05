@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
+import { cn } from "@/lib/utils";
 
 const DashboardLayout = () => {
   const [loading, setLoading] = useState(true);
@@ -38,11 +39,21 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="min-h-screen flex w-full">
+    <div className="min-h-screen dashboard-bg overflow-x-auto lg:overflow-x-hidden flex">
+      <div className="fixed inset-0 pointer-events-none dashboard-bg-overlay opacity-20 z-0"></div>
+
       <DashboardSidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
+
+      {/* Dynamic Spacer for the fixed sidebar */}
+      <div
+        className={cn(
+          "transition-all duration-500 flex-shrink-0",
+          sidebarCollapsed ? "w-20" : "w-72"
+        )}
+      />
+
       <main
-        className={`flex-1 min-h-screen transition-all duration-300 ${sidebarCollapsed ? "ml-20" : "ml-72"
-          }`}
+        className="min-h-screen flex-1 min-w-0 transition-all duration-300 pb-24 relative z-10 overflow-y-auto overflow-x-auto"
       >
         <Outlet />
       </main>

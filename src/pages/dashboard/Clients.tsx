@@ -1,11 +1,10 @@
 import { useState } from "react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -20,13 +19,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { 
-  Plus, 
-  Search, 
+import {
+  Plus,
+  Search,
   MoreHorizontal,
   ExternalLink,
   Mail,
-  Phone,
   Building,
   Calendar,
   TrendingUp,
@@ -38,6 +36,7 @@ import {
   Users,
   DollarSign,
   Target,
+  Filter
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -48,11 +47,9 @@ const mockClients = [
     name: "TechCorp Solutions",
     website: "techcorp.com",
     email: "contact@techcorp.com",
-    phone: "+1 (555) 123-4567",
     industry: "Technology",
-    logo: null,
     initials: "TC",
-    color: "bg-blue-500",
+    color: "bg-blue-600",
     totalAudits: 12,
     avgScore: 78,
     scoreChange: "+5",
@@ -66,11 +63,9 @@ const mockClients = [
     name: "Green Earth Organics",
     website: "greenearth.co",
     email: "hello@greenearth.co",
-    phone: "+1 (555) 234-5678",
     industry: "E-commerce",
-    logo: null,
     initials: "GE",
-    color: "bg-emerald-500",
+    color: "bg-emerald-600",
     totalAudits: 8,
     avgScore: 65,
     scoreChange: "+12",
@@ -84,11 +79,9 @@ const mockClients = [
     name: "Metro Financial Group",
     website: "metrofinancial.com",
     email: "info@metrofinancial.com",
-    phone: "+1 (555) 345-6789",
     industry: "Finance",
-    logo: null,
     initials: "MF",
-    color: "bg-purple-500",
+    color: "bg-purple-600",
     totalAudits: 15,
     avgScore: 82,
     scoreChange: "+3",
@@ -102,89 +95,15 @@ const mockClients = [
     name: "Coastal Realty Partners",
     website: "coastalrealty.net",
     email: "team@coastalrealty.net",
-    phone: "+1 (555) 456-7890",
     industry: "Real Estate",
-    logo: null,
     initials: "CR",
-    color: "bg-amber-500",
+    color: "bg-amber-600",
     totalAudits: 6,
     avgScore: 71,
     scoreChange: "-2",
     trend: "down",
     lastAudit: "2024-01-10",
     monthlyRevenue: 1500,
-    status: "active",
-  },
-  {
-    id: "5",
-    name: "Wellness Medical Center",
-    website: "wellnessmedical.org",
-    email: "admin@wellnessmedical.org",
-    phone: "+1 (555) 567-8901",
-    industry: "Healthcare",
-    logo: null,
-    initials: "WM",
-    color: "bg-red-500",
-    totalAudits: 10,
-    avgScore: 74,
-    scoreChange: "+8",
-    trend: "up",
-    lastAudit: "2024-01-22",
-    monthlyRevenue: 2100,
-    status: "active",
-  },
-  {
-    id: "6",
-    name: "Urban Eats Restaurant",
-    website: "urbaneats.menu",
-    email: "hello@urbaneats.menu",
-    phone: "+1 (555) 678-9012",
-    industry: "Food & Beverage",
-    logo: null,
-    initials: "UE",
-    color: "bg-orange-500",
-    totalAudits: 4,
-    avgScore: 58,
-    scoreChange: "+15",
-    trend: "up",
-    lastAudit: "2024-01-08",
-    monthlyRevenue: 900,
-    status: "active",
-  },
-  {
-    id: "7",
-    name: "Summit Legal Associates",
-    website: "summitlegal.law",
-    email: "contact@summitlegal.law",
-    phone: "+1 (555) 789-0123",
-    industry: "Legal",
-    logo: null,
-    initials: "SL",
-    color: "bg-slate-600",
-    totalAudits: 7,
-    avgScore: 69,
-    scoreChange: "+4",
-    trend: "up",
-    lastAudit: "2024-01-12",
-    monthlyRevenue: 1650,
-    status: "paused",
-  },
-  {
-    id: "8",
-    name: "Creative Studio X",
-    website: "creativestudiox.com",
-    email: "team@creativestudiox.com",
-    phone: "+1 (555) 890-1234",
-    industry: "Creative Agency",
-    logo: null,
-    initials: "CS",
-    color: "bg-pink-500",
-    totalAudits: 9,
-    avgScore: 76,
-    scoreChange: "+6",
-    trend: "up",
-    lastAudit: "2024-01-19",
-    monthlyRevenue: 2000,
     status: "active",
   },
 ];
@@ -205,258 +124,180 @@ const Clients = () => {
   const totalAudits = mockClients.reduce((acc, c) => acc + c.totalAudits, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <DashboardHeader 
-        title="Clients" 
-        subtitle="Manage your client accounts and track their performance" 
-      />
-      
-      <div className="p-8">
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Users className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Clients</p>
-                  <p className="text-2xl font-bold">{mockClients.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                  <DollarSign className="h-5 w-5 text-emerald-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Monthly Revenue</p>
-                  <p className="text-2xl font-bold">${totalRevenue.toLocaleString()}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <Target className="h-5 w-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Avg. Score</p>
-                  <p className="text-2xl font-bold">{avgScore}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Audits</p>
-                  <p className="text-2xl font-bold">{totalAudits}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+    <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
+      <div className="relative z-10 w-full">
+        <DashboardHeader
+          title="My Clients"
+          subtitle="Manage and track performance for all your client accounts"
+        />
 
-        {/* Actions Bar */}
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search clients..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
+        <div className="p-8 max-w-[1600px] mx-auto space-y-8 animate-fade-in-up">
+          {/* Stats Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Users, label: "Total Clients", value: mockClients.length, color: "text-blue-400", bg: "bg-blue-500/10" },
+              { icon: DollarSign, label: "Portfolio Value", value: `$${totalRevenue.toLocaleString()}`, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+              { icon: Target, label: "Aggregate Score", value: avgScore, color: "text-purple-400", bg: "bg-purple-500/10" },
+              { icon: FileText, label: "System Audits", value: totalAudits, color: "text-amber-400", bg: "bg-amber-500/10" },
+            ].map((stat, i) => (
+              <div key={i} className="glass-card border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group">
+                <div className={cn("absolute -top-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-20 transition-opacity group-hover:opacity-40", stat.bg)}></div>
+                <div className="flex items-center gap-5 relative z-10">
+                  <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border border-white/5", stat.bg)}>
+                    <stat.icon className={cn("h-6 w-6", stat.color)} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.label}</p>
+                    <p className="text-2xl font-black text-white tracking-tight">{stat.value}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Controls Bar */}
+          <div className="flex flex-col xl:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full xl:w-auto">
+              <div className="relative w-full md:w-96 group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+                <Input
+                  placeholder="Filter by name, URL, or industry..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-11 h-12 bg-slate-900/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50"
+                />
+              </div>
+              <div className="flex bg-slate-900/50 p-1 rounded-xl border border-white/10 w-full md:w-auto">
+                {["All", "Active", "Paused"].map((status) => (
+                  <button
+                    key={status}
+                    onClick={() => setFilterStatus(status === "All" ? null : status.toLowerCase())}
+                    className={cn(
+                      "flex-1 md:flex-none px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all",
+                      (status === "All" && filterStatus === null) || filterStatus === status.toLowerCase()
+                        ? "bg-blue-600 text-white shadow-lg"
+                        : "text-slate-400 hover:text-white"
+                    )}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant={filterStatus === null ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterStatus(null)}
-              >
-                All
-              </Button>
-              <Button
-                variant={filterStatus === "active" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterStatus("active")}
-              >
-                Active
-              </Button>
-              <Button
-                variant={filterStatus === "paused" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterStatus("paused")}
-              >
-                Paused
-              </Button>
+            <Button className="w-full xl:w-auto gap-3 h-12 px-8 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20 font-bold uppercase tracking-widest text-xs">
+              <Plus className="h-4 w-4" /> Add New Client
+            </Button>
+          </div>
+
+          {/* Clients Matrix */}
+          <div className="glass-card border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-white/[0.02] border-b border-white/5 hover:bg-transparent">
+                    <TableHead className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Client</TableHead>
+                    <TableHead className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Industry</TableHead>
+                    <TableHead className="px-8 py-5 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest">Audits</TableHead>
+                    <TableHead className="px-8 py-5 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest">Avg Score</TableHead>
+                    <TableHead className="px-8 py-5 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest">Trend</TableHead>
+                    <TableHead className="px-8 py-5 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest">Monthly Revenue</TableHead>
+                    <TableHead className="px-8 py-5 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest">Status</TableHead>
+                    <TableHead className="px-8 py-5 text-right text-[10px] font-black text-slate-500 uppercase tracking-widest">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredClients.map((client) => (
+                    <TableRow key={client.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group cursor-pointer">
+                      <TableCell className="px-8 py-5">
+                        <div className="flex items-center gap-4">
+                          <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-inner", client.color)}>
+                            {client.initials}
+                          </div>
+                          <div>
+                            <p className="font-bold text-white text-base group-hover:text-blue-400 transition-colors">{client.name}</p>
+                            <div className="flex items-center gap-1 text-slate-500 text-xs">
+                              {client.website} <ExternalLink className="h-3 w-3" />
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-8 py-5">
+                        <Badge className="bg-white/5 border border-white/10 text-slate-400 font-bold tracking-wide uppercase text-[9px]">
+                          {client.industry}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="px-8 py-5 text-center font-mono text-slate-400">{client.totalAudits}</TableCell>
+                      <TableCell className="px-8 py-5 text-center">
+                        <div className={cn(
+                          "inline-flex items-center justify-center w-10 h-8 rounded-lg font-black text-sm border",
+                          client.avgScore >= 75 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                            client.avgScore >= 60 ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                              "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                        )}>
+                          {client.avgScore}
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-8 py-5 text-center">
+                        <span className={cn(
+                          "flex items-center justify-center gap-1 text-xs font-bold",
+                          client.trend === "up" ? "text-emerald-400" : "text-rose-400"
+                        )}>
+                          {client.trend === "up" ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                          {client.scoreChange}
+                        </span>
+                      </TableCell>
+                      <TableCell className="px-8 py-5 text-center font-bold text-slate-200">
+                        ${client.monthlyRevenue.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="px-8 py-5 text-center">
+                        <span className={cn(
+                          "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border",
+                          client.status === "active"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]"
+                            : "bg-slate-800 text-slate-500 border-white/5"
+                        )}>
+                          {client.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="px-8 py-5 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-10 w-10 p-0 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl">
+                              <MoreHorizontal className="h-5 w-5" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="glass-card border-white/10 text-slate-200">
+                            <DropdownMenuItem className="gap-3 focus:bg-white/5 cursor-pointer py-2.5">
+                              <Eye className="h-4 w-4 text-blue-400" /> View Analytics
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="gap-3 focus:bg-white/5 cursor-pointer py-2.5">
+                              <FileText className="h-4 w-4 text-emerald-400" /> Dispatch Audit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="gap-3 focus:bg-white/5 cursor-pointer py-2.5">
+                              <Edit className="h-4 w-4 text-slate-400" /> Modify Node
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="gap-3 focus:bg-white/5 cursor-pointer py-2.5 text-rose-400 focus:text-rose-400">
+                              <Trash2 className="h-4 w-4" /> Decommission
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Add Client
-          </Button>
+
+          {/* Empty Context */}
+          {filteredClients.length === 0 && (
+            <div className="glass-card border border-white/10 border-dashed rounded-3xl py-20 text-center animate-pulse">
+              <Users className="h-16 w-16 text-slate-700 mx-auto mb-6" />
+              <h3 className="text-xl font-bold text-slate-400 mb-2">No Managed Nodes Identified</h3>
+              <p className="text-slate-600 text-sm max-w-sm mx-auto">Initialization of new client data required to populate this interface.</p>
+            </div>
+          )}
         </div>
-
-        {/* Clients Table */}
-        <Card>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[300px]">Client</TableHead>
-                  <TableHead>Industry</TableHead>
-                  <TableHead className="text-center">Audits</TableHead>
-                  <TableHead className="text-center">Avg. Score</TableHead>
-                  <TableHead className="text-center">Change</TableHead>
-                  <TableHead>Last Audit</TableHead>
-                  <TableHead className="text-center">Revenue</TableHead>
-                  <TableHead className="text-center">Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredClients.map((client) => (
-                  <TableRow key={client.id} className="cursor-pointer hover:bg-slate-50">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={client.logo || undefined} />
-                          <AvatarFallback className={cn("text-white text-sm font-semibold", client.color)}>
-                            {client.initials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-semibold text-foreground">{client.name}</p>
-                          <a 
-                            href={`https://${client.website}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
-                          >
-                            {client.website}
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{client.industry}</Badge>
-                    </TableCell>
-                    <TableCell className="text-center font-medium">{client.totalAudits}</TableCell>
-                    <TableCell className="text-center">
-                      <Badge 
-                        variant="secondary"
-                        className={cn(
-                          "font-bold",
-                          client.avgScore >= 75 ? "bg-emerald-100 text-emerald-700" :
-                          client.avgScore >= 60 ? "bg-amber-100 text-amber-700" :
-                          "bg-red-100 text-red-700"
-                        )}
-                      >
-                        {client.avgScore}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <span className={cn(
-                        "flex items-center justify-center gap-1 font-medium",
-                        client.trend === "up" ? "text-emerald-600" : "text-red-600"
-                      )}>
-                        {client.trend === "up" ? (
-                          <TrendingUp className="h-4 w-4" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4" />
-                        )}
-                        {client.scoreChange}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        {new Date(client.lastAudit).toLocaleDateString()}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center font-semibold text-emerald-600">
-                      ${client.monthlyRevenue}/mo
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Badge 
-                        variant={client.status === "active" ? "default" : "secondary"}
-                        className={cn(
-                          client.status === "active" 
-                            ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" 
-                            : "bg-slate-100 text-slate-600"
-                        )}
-                      >
-                        {client.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="gap-2">
-                            <Eye className="h-4 w-4" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-2">
-                            <FileText className="h-4 w-4" />
-                            Run Audit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-2">
-                            <Mail className="h-4 w-4" />
-                            Send Report
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-2">
-                            <Edit className="h-4 w-4" />
-                            Edit Client
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-2 text-red-600">
-                            <Trash2 className="h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Empty State */}
-        {filteredClients.length === 0 && (
-          <Card className="mt-4">
-            <CardContent className="py-12 text-center">
-              <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No clients found</h3>
-              <p className="text-muted-foreground mb-4">
-                {searchQuery ? "Try adjusting your search query" : "Add your first client to get started"}
-              </p>
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Add Client
-              </Button>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );

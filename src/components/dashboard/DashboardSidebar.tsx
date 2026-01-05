@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,8 @@ import {
   ChevronRight,
   LogOut,
   Map,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -34,15 +36,22 @@ const NavItem = ({ to, icon: Icon, label, collapsed }: NavItemProps) => (
     end={to === "/dashboard"}
     className={({ isActive }) =>
       cn(
-        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+        "flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 group/nav",
         isActive
-          ? "bg-primary/10 text-primary border-l-2 border-primary"
-          : "text-slate-400 hover:text-white hover:bg-slate-800"
+          ? "bg-blue-600 shadow-lg shadow-blue-900/40 text-white"
+          : "text-slate-400 hover:text-white hover:bg-white/5"
       )
     }
   >
-    <Icon className="h-5 w-5 shrink-0" />
-    {!collapsed && <span className="font-medium">{label}</span>}
+    {({ isActive }) => (
+      <>
+        <Icon className={cn("h-5 w-5 shrink-0 transition-transform group-hover/nav:scale-110")} />
+        {!collapsed && <span className="font-bold text-sm tracking-wide">{label}</span>}
+        {isActive && !collapsed && (
+          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_white]" />
+        )}
+      </>
+    )}
   </NavLink>
 );
 
@@ -64,13 +73,13 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
     { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/dashboard/new-audit", icon: Plus, label: "New Audit" },
     { to: "/dashboard/audits", icon: FileText, label: "All Audits" },
-    { to: "/dashboard/clients", icon: Users, label: "Clients" },
+    { to: "/dashboard/clients", icon: Users, label: "My Clients" },
     { to: "/dashboard/reports", icon: BarChart3, label: "Reports" },
   ];
 
   const insightNavItems = [
-    { to: "/dashboard/domain-overview", icon: Globe, label: "Domain Overview" },
-    { to: "/dashboard/competitors", icon: Target, label: "Competitor Analysis" },
+    { to: "/dashboard/domain-overview", icon: Globe, label: "Domain Health" },
+    { to: "/dashboard/competitors", icon: Target, label: "Competitors" },
     { to: "/dashboard/ai-analysis", icon: Brain, label: "AI Analysis" },
     { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
@@ -83,61 +92,69 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-50 group",
+        "fixed left-0 top-0 h-screen bg-slate-950/80 backdrop-blur-2xl border-r border-white/5 flex flex-col transition-all duration-500 z-50 group",
         collapsed ? "w-20" : "w-72"
       )}
     >
+      {/* Glow Effect */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-blue-600/5 blur-[100px] pointer-events-none" />
+
       {/* Logo */}
-      <div className="p-6 flex items-center justify-between border-b border-slate-800 min-h-[88px]">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
-            <span className="text-primary-foreground font-bold">A</span>
+      <div className="p-6 flex items-center justify-between min-h-[88px] relative z-10">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/40 border border-white/10 group-hover:scale-105 transition-transform duration-500">
+            <Sparkles className="h-5 w-5 text-white" />
           </div>
-          {!collapsed && <span className="text-xl font-bold text-white">AuditAI</span>}
+          {!collapsed && (
+            <div className="flex flex-col">
+              <span className="text-lg font-black text-white tracking-tighter leading-none">AUDIT<span className="text-blue-500">AI</span></span>
+              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Neural OS</span>
+            </div>
+          )}
         </div>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-all opacity-0 group-hover:opacity-100"
+          className="p-1.5 rounded-xl hover:bg-white/5 text-slate-500 hover:text-white transition-all opacity-0 group-hover:opacity-100"
         >
           {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
-        <div className="space-y-1">
+      <nav className="flex-1 p-4 space-y-8 overflow-y-auto custom-scrollbar relative z-10">
+        <div className="space-y-2">
           {!collapsed && (
-            <span className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Main
+            <span className="px-4 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] block mb-2">
+              Main Navigation
             </span>
           )}
-          <div className="space-y-1 mt-2">
+          <div className="space-y-1">
             {mainNavItems.map((item) => (
               <NavItem key={item.to} {...item} collapsed={collapsed} />
             ))}
           </div>
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-2">
           {!collapsed && (
-            <span className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Insights
+            <span className="px-4 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] block mb-2">
+              Analytics
             </span>
           )}
-          <div className="space-y-1 mt-2">
+          <div className="space-y-1">
             {insightNavItems.map((item) => (
               <NavItem key={item.to} {...item} collapsed={collapsed} />
             ))}
           </div>
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-2">
           {!collapsed && (
-            <span className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Account
+            <span className="px-4 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] block mb-2">
+              Configuration
             </span>
           )}
-          <div className="space-y-1 mt-2">
+          <div className="space-y-1">
             {settingsNavItems.map((item) => (
               <NavItem key={item.to} {...item} collapsed={collapsed} />
             ))}
@@ -146,15 +163,20 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
       </nav>
 
       {/* Usage Card & Sign Out */}
-      <div className="p-4 border-t border-slate-800 space-y-3">
+      <div className="p-4 border-t border-white/5 space-y-4 relative z-10">
         {!collapsed && (
-          <div className="bg-slate-800/50 rounded-lg p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-slate-400">Audits Used</span>
-              <span className="text-white font-semibold">15/100</span>
+          <div className="glass-card bg-white/[0.02] border border-white/5 rounded-2xl p-5 relative overflow-hidden group/usage">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 blur-2xl -mr-12 -mt-12 group-hover/usage:bg-blue-600/10 transition-colors" />
+            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-3 relative z-10">
+              <span className="text-slate-500">Resource Load</span>
+              <span className="text-white">15%</span>
             </div>
-            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full" style={{ width: "15%" }} />
+            <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden relative z-10 p-0.5 border border-white/5">
+              <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]" style={{ width: "15%" }} />
+            </div>
+            <div className="mt-3 flex items-center justify-between relative z-10">
+              <span className="text-[9px] font-bold text-slate-600 italic">85 Audits Remaining</span>
+              <Zap className="h-3 w-3 text-amber-500" />
             </div>
           </div>
         )}
@@ -162,13 +184,13 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
         <Button
           variant="ghost"
           className={cn(
-            "w-full justify-start text-slate-400 hover:text-white hover:bg-slate-800",
+            "w-full justify-start text-slate-500 hover:text-white hover:bg-rose-500/10 hover:text-rose-400 group/exit h-12 rounded-xl border border-transparent hover:border-rose-500/20",
             collapsed && "justify-center px-0"
           )}
           onClick={handleSignOut}
         >
-          <LogOut className="h-5 w-5 shrink-0" />
-          {!collapsed && <span className="ml-3">Sign Out</span>}
+          <LogOut className="h-5 w-5 shrink-0 transition-transform group-hover/exit:-translate-x-1" />
+          {!collapsed && <span className="ml-3 font-bold text-sm tracking-wide">Sign Out</span>}
         </Button>
       </div>
     </aside>
