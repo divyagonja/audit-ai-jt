@@ -39,7 +39,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="min-h-screen dashboard-bg overflow-x-auto lg:overflow-x-hidden flex">
+    <div className="min-h-screen dashboard-bg flex overflow-hidden">
       <div className="fixed inset-0 pointer-events-none dashboard-bg-overlay opacity-20 z-0"></div>
 
       <DashboardSidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />

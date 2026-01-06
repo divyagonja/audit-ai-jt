@@ -648,18 +648,33 @@ const AuditResults = () => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
       <div className="relative z-10 w-full">
         <div className="glass-card border-b border-white/5 pt-12 pb-24 px-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/10 to-transparent pointer-events-none" />
+          {/* Branded Logo Background Watermark - Centered behind Content */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+            <img
+              src={`https://www.google.com/s2/favicons?domain=${audit?.url}&sz=128`}
+              alt=""
+              className="w-[1000px] h-[1000px] object-contain opacity-[0.12] blur-[80px] grayscale-[0.3]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-transparent" />
+          </div>
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-400 font-bold uppercase text-[10px] tracking-widest">
                 <Sparkles className="h-3 w-3" /> AI Strategic Intelligence
               </div>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 relative group/favicon">
+                  {/* Favicon Background Glow */}
+                  <div className="absolute inset-0 bg-blue-500/10 group-hover/favicon:bg-blue-500/20 transition-colors" />
                   <img
                     src={`https://www.google.com/s2/favicons?domain=${audit?.url}&sz=128`}
                     alt=""
-                    className="w-7 h-7 object-contain filter grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
+                    className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-150"
+                  />
+                  <img
+                    src={`https://www.google.com/s2/favicons?domain=${audit?.url}&sz=128`}
+                    alt=""
+                    className="w-7 h-7 object-contain relative z-10"
                   />
                 </div>
                 <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white premium-gradient-text">{audit?.url || "yourwebsite.com"}</h1>

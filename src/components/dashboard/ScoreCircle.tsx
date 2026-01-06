@@ -10,51 +10,80 @@ interface ScoreCircleProps {
 
 const ScoreCircle = ({ score, size = "md", label, showCountUp = true }: ScoreCircleProps) => {
   const radius = size === "sm" ? 28 : size === "md" ? 45 : 60;
-  const strokeWidth = size === "sm" ? 4 : size === "md" ? 6 : 8;
+  const strokeWidth = size === "sm" ? 3 : size === "md" ? 5 : 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
 
-  const getColorClasses = (score: number) => {
-    if (score >= 80) return "from-emerald-400 to-emerald-600 text-emerald-600";
-    if (score >= 60) return "from-amber-400 to-amber-600 text-amber-600";
-    return "from-red-400 to-red-600 text-red-600";
+  const getColorTheme = (score: number) => {
+    if (score >= 80) return {
+      text: "text-emerald-400",
+      glow: "shadow-[0_0_20px_rgba(52,211,153,0.3)]",
+      stop1: "#34d399",
+      stop2: "#059669",
+      bgLayer: "bg-emerald-500/5"
+    };
+    if (score >= 60) return {
+      text: "text-amber-400",
+      glow: "shadow-[0_0_20px_rgba(251,191,36,0.2)]",
+      stop1: "#fbbf24",
+      stop2: "#d97706",
+      bgLayer: "bg-amber-500/5"
+    };
+    return {
+      text: "text-red-400",
+      glow: "shadow-[0_0_20px_rgba(248,113,113,0.3)]",
+      stop1: "#f87171",
+      stop2: "#dc2626",
+      bgLayer: "bg-red-500/5"
+    };
   };
 
-  const getStrokeColor = (score: number) => {
-    if (score >= 80) return "stroke-emerald-500";
-    if (score >= 60) return "stroke-amber-500";
-    return "stroke-red-500";
-  };
+  const theme = getColorTheme(score);
 
   const dimensions = {
-    sm: { wrapper: "w-16 h-16", text: "text-lg" },
-    md: { wrapper: "w-28 h-28", text: "text-3xl" },
-    lg: { wrapper: "w-44 h-44", text: "text-5xl" },
+    sm: { wrapper: "w-16 h-16", text: "text-base xl:text-lg", labelSize: "text-[7px]" },
+    md: { wrapper: "w-28 h-28", text: "text-3xl", labelSize: "text-[8px]" },
+    lg: { wrapper: "w-44 h-44", text: "text-5xl", labelSize: "text-[10px]" },
   };
 
-  const colorClass = getColorClasses(score);
-  const strokeClass = getStrokeColor(score);
-
-  const gradId = `grad-${label?.replace(/\s+/g, '-').toLowerCase() || Math.random().toString(36).substr(2, 9)}`;
+  const gradId = `neural-grad-${Math.random().toString(36).substring(2, 9)}`;
 
   return (
-    <div className={cn("relative flex items-center justify-center p-2 rounded-full bg-white/50 backdrop-blur-sm border border-slate-100 shadow-inner", dimensions[size].wrapper)}>
-      <svg className="w-full h-full -rotate-90 filter drop-shadow-sm">
+    <div className={cn(
+      "relative flex items-center justify-center rounded-full transition-all duration-700",
+      "bg-slate-950/40 backdrop-blur-xl border border-white/10 shadow-2xl",
+      theme.glow,
+      dimensions[size].wrapper
+    )}>
+      {/* Background Neural Glow */}
+      <div className={cn("absolute inset-2 rounded-full blur-xl opacity-20", theme.bgLayer)} />
+
+      <svg className="absolute inset-0 w-full h-full -rotate-90 group-hover:scale-105 transition-transform duration-700">
         <defs>
           <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: score >= 80 ? '#34d399' : score >= 60 ? '#fbbf24' : '#f87171' }} />
-            <stop offset="100%" style={{ stopColor: score >= 80 ? '#059669' : score >= 60 ? '#d97706' : '#dc2626' }} />
+            <stop offset="0%" stopColor={theme.stop1} />
+            <stop offset="100%" stopColor={theme.stop2} />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
+
+        {/* Track */}
         <circle
           cx="50%"
           cy="50%"
           r={radius}
           fill="none"
-          stroke="currentColor"
+          stroke="rgba(255,255,255,0.03)"
           strokeWidth={strokeWidth}
-          className="text-slate-100 stroke-slate-50"
         />
+
+        {/* Progress */}
         <circle
           cx="50%"
           cy="50%"
@@ -65,18 +94,29 @@ const ScoreCircle = ({ score, size = "md", label, showCountUp = true }: ScoreCir
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className="transition-all duration-1500 ease-in-out"
-          style={{
-            transitionDelay: '200ms',
-            filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.1))'
-          }}
+          className="transition-all duration-1000 ease-in-out"
+          filter="url(#glow)"
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={cn("font-bold font-display tracking-tight", dimensions[size].text, colorClass.split(" ").pop())}>
-          {showCountUp ? <CountUp end={score} /> : score}
-        </span>
-        {label && <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mt-1">{label}</span>}
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center">
+          <span className={cn(
+            "font-black tracking-tighter transition-all duration-500",
+            theme.text,
+            dimensions[size].text
+          )}>
+            {showCountUp ? <CountUp end={score} /> : score}
+          </span>
+          {label && (
+            <span className={cn(
+              "uppercase tracking-[0.15em] font-black text-slate-500 opacity-80",
+              dimensions[size].labelSize
+            )}>
+              {label}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
