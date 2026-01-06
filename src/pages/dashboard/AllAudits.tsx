@@ -95,9 +95,9 @@ const AllAudits = () => {
                                 Relay Data
                             </Button>
                             <Link to="/dashboard/new-audit">
-                                <Button className="gap-3 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white shadow-2xl shadow-blue-900/40 px-8 transition-all duration-300 group">
-                                    <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-500" />
-                                    <span className="font-bold uppercase text-xs tracking-wider">Initialize Scan</span>
+                                <Button className="gap-2 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white shadow-2xl shadow-blue-900/30 px-4 transition-all duration-300 group ring-offset-0 border-none">
+                                    <Plus className="h-3.5 w-3.5 group-hover:rotate-90 transition-transform duration-500" />
+                                    <span className="font-black uppercase text-[10px] tracking-widest">Initialize Scan</span>
                                 </Button>
                             </Link>
                         </div>

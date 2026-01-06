@@ -91,8 +91,8 @@ const DashboardHome = () => {
               System Online
             </div>
             <Link to="/dashboard/new-audit">
-              <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20 px-6 py-6 h-auto text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 border-none ring-offset-0">
-                <Plus className="mr-2 h-5 w-5" />
+              <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/20 px-4 h-9 text-[11px] font-black uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 border-none ring-offset-0">
+                <Plus className="mr-1.5 h-3.5 w-3.5" />
                 New Audit
               </Button>
             </Link>
