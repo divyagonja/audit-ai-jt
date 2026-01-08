@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Bell, Search, User, LogOut, CreditCard, Settings, UserCircle, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface DashboardHeaderProps {
   title: string;
@@ -20,6 +22,34 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setProfile({
+          name: user.user_metadata?.full_name || "Admin",
+          email: user.email,
+          avatar_url: user.user_metadata?.avatar_url,
+        });
+      }
+    };
+    fetchProfile();
+
+    // Listen for auth changes to update header
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setProfile({
+          name: session.user.user_metadata?.full_name || "Admin",
+          email: session.user.email,
+          avatar_url: session.user.user_metadata?.avatar_url,
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -61,16 +91,20 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105">
-                <User className="h-5 w-5 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 overflow-hidden">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <User className="h-5 w-5 text-white" />
+                )}
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 glass-card border-white/10 text-slate-200">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">My Account</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    manage@example.com
+                  <p className="text-sm font-bold leading-none text-white">{profile?.name || "Admin User"}</p>
+                  <p className="text-xs leading-none text-slate-400 truncate">
+                    {profile?.email || "manage@example.com"}
                   </p>
                 </div>
               </DropdownMenuLabel>

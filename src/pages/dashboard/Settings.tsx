@@ -20,39 +20,95 @@ import {
   CreditCard,
   Lock,
   Smartphone,
-  Check
+  Check,
+  Briefcase,
+  MapPin,
+  Linkedin,
+  Calendar,
+  Fingerprint,
+  Sparkles,
+  FileText,
+  BadgeCheck,
+  Languages
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Settings = () => {
   const [profile, setProfile] = useState({
+    avatar_url: "",
     full_name: "",
     company: "",
     email: "",
+    job_title: "",
+    bio: "",
+    region: "",
+    timezone: "UTC-5 (EST)",
+    phone: "",
+    website: "",
+    linkedin: "",
+    account_id: "AID-88291-ZX",
+    member_since: "Oct 2023",
   });
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        setProfile({
+        setProfile(prev => ({
+          ...prev,
           full_name: user.user_metadata?.full_name || "",
           company: user.user_metadata?.company || "",
           email: user.email || "",
-        });
+          job_title: user.user_metadata?.job_title || "",
+          bio: user.user_metadata?.bio || "",
+          region: user.user_metadata?.region || "",
+          phone: user.user_metadata?.phone || "",
+          website: user.user_metadata?.website || "",
+          linkedin: user.user_metadata?.linkedin || "",
+          avatar_url: user.user_metadata?.avatar_url || "",
+          member_since: new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+          account_id: `AID-${user.id.substring(0, 8).toUpperCase()}`,
+        }));
+        if (user.user_metadata?.avatar_url) {
+          setAvatarPreview(user.user_metadata.avatar_url);
+        }
       }
     };
     fetchProfile();
   }, []);
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = async () => {
     setLoading(true);
     try {
+      // Use the preview (base64) as the persistent URL to bypass storage bucket issues
+      const finalAvatarUrl = avatarPreview || profile.avatar_url;
+
       const { error } = await supabase.auth.updateUser({
         data: {
           full_name: profile.full_name,
           company: profile.company,
+          job_title: profile.job_title,
+          bio: profile.bio,
+          region: profile.region,
+          phone: profile.phone,
+          website: profile.website,
+          linkedin: profile.linkedin,
+          avatar_url: finalAvatarUrl,
         },
       });
       if (error) throw error;
@@ -105,12 +161,26 @@ const Settings = () => {
 
                   <div className="flex flex-col lg:flex-row items-start gap-12 mb-10">
                     <div className="relative group/avatar">
-                      <div className="w-32 h-32 rounded-3xl bg-slate-950/50 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden transition-all group-hover/avatar:border-blue-500/50 group-hover/avatar:bg-slate-900/50">
-                        <User className="h-16 w-16 text-slate-600 group-hover/avatar:scale-110 group-hover/avatar:text-blue-400 transition-all" />
+                      <div className="w-32 h-32 rounded-3xl bg-slate-950/50 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden transition-all group-hover/avatar:border-blue-500/50 group-hover/avatar:bg-slate-900/50 relative">
+                        {avatarPreview ? (
+                          <img src={avatarPreview} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                          <User className="h-16 w-16 text-slate-600 group-hover/avatar:scale-110 group-hover/avatar:text-blue-400 transition-all" />
+                        )}
                       </div>
-                      <button className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:bg-blue-500 shadow-xl shadow-blue-900/40 transition-transform active:scale-90">
+                      <label
+                        htmlFor="avatar-upload"
+                        className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:bg-blue-500 shadow-xl shadow-blue-900/40 transition-transform active:scale-90 cursor-pointer z-20"
+                      >
                         <Camera className="h-5 w-5" />
-                      </button>
+                        <input
+                          id="avatar-upload"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleAvatarChange}
+                        />
+                      </label>
                     </div>
 
                     <div className="flex-1 w-full space-y-8">
@@ -142,6 +212,113 @@ const Settings = () => {
                         </div>
                       </div>
 
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <Label htmlFor="jobTitle" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Professional Title</Label>
+                          <div className="relative">
+                            <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <Input
+                              id="jobTitle"
+                              placeholder="e.g. SEO Strategist"
+                              value={profile.job_title}
+                              onChange={(e) => setProfile({ ...profile, job_title: e.target.value })}
+                              className="pl-11 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          <Label htmlFor="phone" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Contact Number</Label>
+                          <div className="relative">
+                            <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <Input
+                              id="phone"
+                              placeholder="+1 (555) 000-0000"
+                              value={profile.phone}
+                              onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                              className="pl-11 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label htmlFor="bio" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Professional Bio / Neural Signature</Label>
+                        <div className="relative">
+                          <FileText className="absolute left-4 top-4 h-4.5 w-4.5 text-slate-500" />
+                          <textarea
+                            id="bio"
+                            placeholder="Brief description for generated reports..."
+                            value={profile.bio}
+                            onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                            className="w-full pl-11 pr-4 py-3 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium min-h-[100px] outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <Label htmlFor="region" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Primary Region</Label>
+                          <div className="relative">
+                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <Input
+                              id="region"
+                              placeholder="e.g. United States"
+                              value={profile.region}
+                              onChange={(e) => setProfile({ ...profile, region: e.target.value })}
+                              className="pl-11 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          <Label htmlFor="timezone" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">System Timezone</Label>
+                          <div className="relative">
+                            <Languages className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <select
+                              id="timezone"
+                              value={profile.timezone}
+                              onChange={(e) => setProfile({ ...profile, timezone: e.target.value })}
+                              className="w-full pl-11 pr-4 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium appearance-none outline-none"
+                            >
+                              <option value="UTC-5 (EST)">UTC-5 (EST)</option>
+                              <option value="UTC+0 (GMT)">UTC+0 (GMT)</option>
+                              <option value="UTC+5:30 (IST)">UTC+5:30 (IST)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <Label htmlFor="website" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Primary Portfolio / Website</Label>
+                          <div className="relative">
+                            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <Input
+                              id="website"
+                              placeholder="yoursite.com"
+                              value={profile.website}
+                              onChange={(e) => setProfile({ ...profile, website: e.target.value })}
+                              className="pl-11 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          <Label htmlFor="linkedin" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">LinkedIn Profile</Label>
+                          <div className="relative">
+                            <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-500" />
+                            <Input
+                              id="linkedin"
+                              placeholder="linkedin.com/in/username"
+                              value={profile.linkedin}
+                              onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
+                              className="pl-11 h-12 bg-slate-950/50 border-white/10 text-white rounded-xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="space-y-3">
                         <Label htmlFor="email" className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Synchronized Email</Label>
                         <div className="relative">
@@ -158,6 +335,30 @@ const Settings = () => {
                           </div>
                         </div>
                         <p className="text-[10px] text-slate-600 mt-1.5 ml-1">To change your primary identity, contact system administration.</p>
+                      </div>
+
+                      {/* Account Metadata Badges */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <Fingerprint className="h-3 w-3" /> Account ID
+                          </span>
+                          <span className="text-xs font-mono text-slate-300">{profile.account_id}</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                            <Calendar className="h-3 w-3" /> Member Since
+                          </span>
+                          <span className="text-xs font-semibold text-slate-300">{profile.member_since}</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <Sparkles className="h-3 w-3" /> Tier Status
+                          </span>
+                          <span className="text-xs font-black text-white flex items-center gap-1.5">
+                            Founder Edition <BadgeCheck className="h-3.5 w-3.5 text-blue-400" />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

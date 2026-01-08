@@ -45,9 +45,17 @@ const mockChartData = [
 const DashboardHome = () => {
   const [audits, setAudits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState("Admin");
 
   useEffect(() => {
-    const fetchAudits = async () => {
+    const fetchDashboardData = async () => {
+      // Fetch User Name
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.user_metadata?.full_name) {
+        setUserName(user.user_metadata.full_name.split(' ')[0]);
+      }
+
+      // Fetch Audits
       const { data, error } = await supabase
         .from("audits")
         .select("*")
@@ -60,7 +68,7 @@ const DashboardHome = () => {
       setLoading(false);
     };
 
-    fetchAudits();
+    fetchDashboardData();
   }, []);
 
   const displayAudits = audits;
@@ -78,7 +86,7 @@ const DashboardHome = () => {
               </span>
             </h1>
             <p className="text-slate-400 text-lg font-medium">
-              Welcome back, Admin. Your system is running optimally.
+              Welcome back, {userName}. Your system is running optimally.
             </p>
           </div>
 
