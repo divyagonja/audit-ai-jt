@@ -2,7 +2,7 @@ import { Linkedin, Twitter, Github, ArrowUp } from "lucide-react";
 
 const Footer = () => {
   const footerLinks = {
-    Company: ["About Us", "Careers", "Press", "Contact"],
+    Company: ["About Us", "Newsroom", "Careers", "Press", "Contact"],
     Product: ["Features", "Pricing", "Enterprise", "Security"],
     Resources: ["Knowledge Base", "Blog", "Case Studies", "Webinars"],
     Legal: ["Privacy Policy", "Terms of Service", "Cookie Policy", "GDPR"],
@@ -77,7 +77,15 @@ const Footer = () => {
                                 ? "/pricing"
                                 : link === "Features"
                                   ? "/features"
-                                  : "#"
+                                  : link === "Careers"
+                                    ? "/careers"
+                                    : link === "Newsroom"
+                                      ? "/newsroom"
+                                      : link === "Webinars"
+                                        ? "/webinars"
+                                        : link === "Case Studies"
+                                          ? "/case-studies"
+                                          : "#"
                       }
                       className="text-slate-400 hover:text-white text-sm transition-colors"
                     >

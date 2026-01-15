@@ -9,6 +9,10 @@ import Pricing from "./pages/Pricing";
 import Features from "./pages/Features";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import AboutUs from "./pages/AboutUs";
+import Careers from "./pages/Careers";
+import Newsroom from "./pages/Newsroom";
+import Webinars from "./pages/Webinars";
+import CaseStudies from "./pages/CaseStudies";
 import NotFound from "./pages/NotFound";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
@@ -43,6 +47,10 @@ const App = () => (
           <Route path="/features" element={<Features />} />
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/newsroom" element={<Newsroom />} />
+          <Route path="/webinars" element={<Webinars />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="new-audit" element={<NewAudit />} />

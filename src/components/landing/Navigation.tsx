@@ -14,11 +14,20 @@ const Navigation = () => {
     { label: "Features", href: "/features" },
     { label: "Pricing", href: "/pricing" },
     {
+      label: "Resources",
+      children: [
+        { label: "Webinars", href: "/webinars" },
+        { label: "Case Studies", href: "/case-studies" },
+        { label: "Blog", href: "/blog" },
+        { label: "Knowledge Base", href: "/knowledge-base" },
+      ]
+    },
+    {
       label: "Company",
       children: [
         { label: "About Us", href: "/about-us" },
-        { label: "Newsroom", href: "#" },
-        { label: "Careers", href: "#" },
+        { label: "Newsroom", href: "/newsroom" },
+        { label: "Careers", href: "/careers" },
         { label: "Contact Us", href: "/contact" },
       ]
     },

@@ -8,13 +8,17 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 import {
   Plus,
   Target,
@@ -31,7 +35,9 @@ import {
   XCircle,
   ArrowRight,
   BarChart3,
-  Users
+  Users,
+  Building,
+  Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -167,8 +173,58 @@ const insights = {
 };
 
 const Competitors = () => {
+  const [competitors, setCompetitors] = useState(mockCompetitors);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newCompetitor, setNewCompetitor] = useState("");
+  const [newCompData, setNewCompData] = useState({ name: "", url: "" });
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddCompetitor = () => {
+    if (!newCompData.name || !newCompData.url) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter both a name and a URL.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAdding(true);
+
+    // Simulate AI analysis delay
+    setTimeout(() => {
+      const newEntry = {
+        id: (competitors.length + 1).toString(),
+        name: newCompData.name,
+        url: newCompData.url.replace(/https?:\/\//, ""),
+        favicon: "🔍",
+        overallScore: Math.floor(Math.random() * 30) + 60,
+        seoScore: Math.floor(Math.random() * 30) + 60,
+        speedScore: Math.floor(Math.random() * 30) + 60,
+        backlinks: Math.floor(Math.random() * 10000) + 1000,
+        keywords: Math.floor(Math.random() * 2000) + 500,
+        change: "+1",
+        trend: "up" as const,
+      };
+
+      setCompetitors([newEntry, ...competitors]);
+      setNewCompData({ name: "", url: "" });
+      setShowAddModal(false);
+      setIsAdding(false);
+
+      toast({
+        title: "Competitor Added",
+        description: `${newCompData.name} has been added to your tracking list.`,
+      });
+    }, 1500);
+  };
+
+  const handleDeleteCompetitor = (id: string) => {
+    setCompetitors(competitors.filter(c => c.id !== id));
+    toast({
+      title: "Competitor Removed",
+      description: "The competitor has been removed from your list.",
+    });
+  };
 
   return (
     <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
@@ -184,10 +240,13 @@ const Competitors = () => {
             <div className="flex items-center gap-4">
               <div className="px-4 py-2 rounded-xl bg-slate-900/50 border border-white/10 flex items-center gap-2">
                 <Target className="h-4 w-4 text-blue-400" />
-                <span className="text-sm font-semibold text-slate-200">{mockCompetitors.length} competitors tracked</span>
+                <span className="text-sm font-semibold text-slate-200">{competitors.length} competitors tracked</span>
               </div>
             </div>
-            <Button className="gap-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20">
+            <Button
+              onClick={() => setShowAddModal(true)}
+              className="gap-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20"
+            >
               <Plus className="h-4 w-4" />
               Add Competitor
             </Button>
@@ -243,8 +302,8 @@ const Competitors = () => {
                   </tr>
 
                   {/* Competitor Rows */}
-                  {mockCompetitors.map((comp) => (
-                    <tr key={comp.id} className="hover:bg-white/[0.02] transition-colors">
+                  {competitors.map((comp) => (
+                    <tr key={comp.id} className="hover:bg-white/[0.02] transition-colors group">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-xl bg-slate-800 border border-white/5 flex items-center justify-center text-lg shadow-sm">
@@ -292,7 +351,12 @@ const Competitors = () => {
                           <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10">
                             <BarChart3 className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-600 hover:text-red-400 hover:bg-red-500/10">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-slate-600 hover:text-red-400 hover:bg-red-500/10"
+                            onClick={() => handleDeleteCompetitor(comp.id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -445,6 +509,72 @@ const Competitors = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Competitor Modal */}
+      <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+        <DialogContent className="sm:max-w-[425px] bg-slate-950 border-white/10 text-white rounded-3xl p-8">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+              <Target className="h-6 w-6 text-blue-400" />
+              Add Competitor
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="grid gap-6 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="comp-name" className="text-sm font-semibold text-slate-400">Business Name</Label>
+              <div className="relative">
+                <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                <Input
+                  id="comp-name"
+                  placeholder="e.g. Acme Corp"
+                  className="pl-10 bg-slate-900/50 border-white/10 text-white h-12 rounded-xl focus:border-blue-500/50"
+                  value={newCompData.name}
+                  onChange={(e) => setNewCompData({ ...newCompData, name: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="comp-url" className="text-sm font-semibold text-slate-400">Website URL</Label>
+              <div className="relative">
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                <Input
+                  id="comp-url"
+                  placeholder="acmecorp.com"
+                  className="pl-10 bg-slate-900/50 border-white/10 text-white h-12 rounded-xl focus:border-blue-500/50"
+                  value={newCompData.url}
+                  onChange={(e) => setNewCompData({ ...newCompData, url: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="mt-4">
+            <Button
+              variant="ghost"
+              onClick={() => setShowAddModal(false)}
+              className="text-slate-400 hover:text-white"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddCompetitor}
+              disabled={isAdding}
+              className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-8 h-12 shadow-lg shadow-blue-900/20"
+            >
+              {isAdding ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Analyzing...
+                </div>
+              ) : (
+                "Add to Tracking"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
