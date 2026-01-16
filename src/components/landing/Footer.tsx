@@ -85,7 +85,9 @@ const Footer = () => {
                                         ? "/webinars"
                                         : link === "Case Studies"
                                           ? "/case-studies"
-                                          : "#"
+                                          : link === "Security"
+                                            ? "/security"
+                                            : "#"
                       }
                       className="text-slate-400 hover:text-white text-sm transition-colors"
                     >

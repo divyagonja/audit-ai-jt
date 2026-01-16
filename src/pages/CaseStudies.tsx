@@ -57,7 +57,10 @@ const CaseStudies = () => {
             <Navigation />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+            <section
+                className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950"
+                style={{ backgroundSize: '400% 400%', animation: 'gradient-xy 15s ease infinite' }}
+            >
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -mr-32 -mt-32 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -ml-32 -mb-32 pointer-events-none" />
 

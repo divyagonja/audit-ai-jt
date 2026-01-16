@@ -130,7 +130,10 @@ const Newsroom = () => {
             <Navigation />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-navy via-blue-900 to-navy">
+            <section
+                className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-navy via-blue-900 to-navy"
+                style={{ backgroundSize: '400% 400%', animation: 'gradient-xy 15s ease infinite' }}
+            >
                 {/* Animated Background */}
                 <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
