@@ -87,7 +87,15 @@ const Footer = () => {
                                           ? "/case-studies"
                                           : link === "Security"
                                             ? "/security"
-                                            : "#"
+                                            : link === "Privacy Policy"
+                                              ? "/privacy-policy"
+                                              : link === "Terms of Service"
+                                                ? "/terms-of-service"
+                                                : link === "Cookie Policy"
+                                                  ? "/cookie-policy"
+                                                  : link === "GDPR"
+                                                    ? "/gdpr"
+                                                    : "#"
                       }
                       className="text-slate-400 hover:text-white text-sm transition-colors"
                     >

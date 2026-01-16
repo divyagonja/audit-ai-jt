@@ -14,6 +14,11 @@ import Newsroom from "./pages/Newsroom";
 import Webinars from "./pages/Webinars";
 import CaseStudies from "./pages/CaseStudies";
 import Security from "./pages/Security";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
+import GDPR from "./pages/GDPR";
+import CookieConsent from "./components/common/CookieConsent";
 import NotFound from "./pages/NotFound";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
@@ -40,6 +45,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CookieConsent />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
@@ -53,6 +59,10 @@ const App = () => (
           <Route path="/webinars" element={<Webinars />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/security" element={<Security />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/gdpr" element={<GDPR />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="new-audit" element={<NewAudit />} />
