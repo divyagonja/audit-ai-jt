@@ -95,7 +95,13 @@ const Footer = () => {
                                                   ? "/cookie-policy"
                                                   : link === "GDPR"
                                                     ? "/gdpr"
-                                                    : "#"
+                                                    : link === "Enterprise"
+                                                      ? "/enterprise"
+                                                      : link === "Blog"
+                                                        ? "/blog"
+                                                        : link === "Press"
+                                                          ? "/press"
+                                                          : "#"
                       }
                       className="text-slate-400 hover:text-white text-sm transition-colors"
                     >

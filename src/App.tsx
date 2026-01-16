@@ -17,6 +17,9 @@ import Security from "./pages/Security";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
+import Enterprise from "./pages/Enterprise";
+import Blog from "./pages/Blog";
+import Press from "./pages/Press";
 import GDPR from "./pages/GDPR";
 import CookieConsent from "./components/common/CookieConsent";
 import NotFound from "./pages/NotFound";
@@ -63,6 +66,9 @@ const App = () => (
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/gdpr" element={<GDPR />} />
+          <Route path="/enterprise" element={<Enterprise />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/press" element={<Press />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="new-audit" element={<NewAudit />} />
