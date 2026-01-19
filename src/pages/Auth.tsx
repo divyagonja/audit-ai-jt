@@ -19,6 +19,10 @@ const Auth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = isLogin ? "Sign In - AuditAI" : "Sign Up - AuditAI";
+  }, [isLogin]);
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         navigate("/dashboard");

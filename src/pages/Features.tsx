@@ -9,6 +9,7 @@ import { useEffect } from "react";
 const Features = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Features - AuditAI";
     }, []);
 
     return (

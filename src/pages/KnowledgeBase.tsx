@@ -7,6 +7,7 @@ import { useEffect } from "react";
 const KnowledgeBase = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Knowledge Base - AuditAI";
     }, []);
 
     return (

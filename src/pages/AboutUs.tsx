@@ -8,6 +8,7 @@ import SocialProof from '@/components/landing/SocialProof';
 const AboutUs = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "About Us - AuditAI";
     }, []);
 
     return (

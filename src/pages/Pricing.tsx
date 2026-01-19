@@ -9,6 +9,7 @@ const Pricing = () => {
     // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Pricing - AuditAI";
     }, []);
 
     return (

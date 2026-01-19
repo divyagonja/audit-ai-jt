@@ -6,6 +6,7 @@ import { Scale, FileText, Check, AlertCircle, ChevronDown, ChevronUp } from 'luc
 const TermsOfService = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Terms of Service - AuditAI";
     }, []);
 
     const [openSection, setOpenSection] = useState<number | null>(0);
@@ -61,8 +62,8 @@ const TermsOfService = () => {
                             <div
                                 key={index}
                                 className={`rounded-3xl border transition-all duration-300 overflow-hidden ${openSection === index
-                                        ? 'bg-slate-900 border-amber-500/30 shadow-2xl shadow-amber-900/10'
-                                        : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
+                                    ? 'bg-slate-900 border-amber-500/30 shadow-2xl shadow-amber-900/10'
+                                    : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
                                     }`}
                             >
                                 <button

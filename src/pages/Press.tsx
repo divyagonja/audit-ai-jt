@@ -6,6 +6,7 @@ import { Download, Newspaper, Mail, ArrowRight, ExternalLink } from 'lucide-reac
 const Press = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Press - AuditAI";
     }, []);
 
     const mentions = [

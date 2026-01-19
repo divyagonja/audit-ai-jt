@@ -6,6 +6,7 @@ import { Shield, Lock, Eye, FileText, Mail, Server, Globe, UserCheck, Check } fr
 const PrivacyPolicy = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Privacy Policy - AuditAI";
     }, []);
 
     const dataCollection = [

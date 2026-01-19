@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 const Security = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Security & Compliance - AuditAI";
     }, []);
 
     const features = [

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const CaseStudies = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Case Studies - AuditAI";
     }, []);
 
     const studies = [

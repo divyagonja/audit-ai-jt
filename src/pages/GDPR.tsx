@@ -6,6 +6,7 @@ import { Flag, ShieldCheck, Globe, Database, UserCheck } from 'lucide-react';
 const GDPR = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "GDPR Compliance - AuditAI";
     }, []);
 
     const rights = [

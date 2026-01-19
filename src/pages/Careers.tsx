@@ -7,6 +7,7 @@ import { Briefcase, MapPin, Clock, ArrowRight, Users, Rocket, Heart, TrendingUp,
 const Careers = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Careers - AuditAI";
     }, []);
 
     const [hoveredJob, setHoveredJob] = useState<number | null>(null);

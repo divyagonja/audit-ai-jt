@@ -69,6 +69,7 @@ const DashboardHome = () => {
     };
 
     fetchDashboardData();
+    document.title = "Dashboard - AuditAI";
   }, []);
 
   const displayAudits = audits;

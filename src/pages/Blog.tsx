@@ -22,6 +22,7 @@ const Blog = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Blog - AuditAI";
     }, []);
 
     const [activeCategory, setActiveCategory] = useState("All");

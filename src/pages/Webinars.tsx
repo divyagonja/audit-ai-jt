@@ -79,6 +79,7 @@ const VIDEO_CHAPTERS: Record<number, VideoChapter[]> = {
 const Webinars = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Webinars - AuditAI";
     }, []);
 
     const [activeTab, setActiveTab] = useState<'upcoming' | 'ondemand'>('upcoming');
@@ -243,8 +244,8 @@ const Webinars = () => {
                         <button
                             onClick={() => setActiveTab('upcoming')}
                             className={`py-4 font-bold text-sm uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${activeTab === 'upcoming'
-                                    ? 'border-blue-600 text-blue-600'
-                                    : 'border-transparent text-slate-500 hover:text-navy'
+                                ? 'border-blue-600 text-blue-600'
+                                : 'border-transparent text-slate-500 hover:text-navy'
                                 }`}
                         >
                             Upcoming Sessions
@@ -252,8 +253,8 @@ const Webinars = () => {
                         <button
                             onClick={() => setActiveTab('ondemand')}
                             className={`py-4 font-bold text-sm uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${activeTab === 'ondemand'
-                                    ? 'border-purple-600 text-purple-600'
-                                    : 'border-transparent text-slate-500 hover:text-navy'
+                                ? 'border-purple-600 text-purple-600'
+                                : 'border-transparent text-slate-500 hover:text-navy'
                                 }`}
                         >
                             On-Demand Library

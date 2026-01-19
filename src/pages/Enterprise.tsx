@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 const Enterprise = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Enterprise Solutions - AuditAI";
     }, []);
 
     const features = [

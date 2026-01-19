@@ -6,6 +6,7 @@ import { Cookie, Settings, ShieldAlert, BarChart, X, Check } from 'lucide-react'
 const CookiePolicy = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Cookie Policy - AuditAI";
     }, []);
 
     const cookieTypes = [

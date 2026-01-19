@@ -7,6 +7,7 @@ import { Calendar, ArrowRight, TrendingUp, Award, Newspaper, ExternalLink, Searc
 const Newsroom = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = "Newsroom - AuditAI";
     }, []);
 
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
