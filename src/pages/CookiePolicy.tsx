@@ -36,6 +36,11 @@ const CookiePolicy = () => {
         }
     ];
 
+    const handleOpenSettings = () => {
+        // Dispatch custom event to trigger the CookieConsent component
+        window.dispatchEvent(new Event('showCookieConsent'));
+    };
+
     return (
         <div className="min-h-screen bg-slate-950 font-sans text-slate-300 selection:bg-indigo-500/30">
             <Navigation />
@@ -76,7 +81,10 @@ const CookiePolicy = () => {
                                             ALWAYS ACTIVE
                                         </div>
                                     ) : (
-                                        <button className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all shadow-lg flex items-center gap-2">
+                                        <button
+                                            onClick={handleOpenSettings}
+                                            className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all shadow-lg flex items-center gap-2"
+                                        >
                                             Manage
                                         </button>
                                     )}
@@ -91,7 +99,10 @@ const CookiePolicy = () => {
                         <p className="text-slate-400 mb-8 relative z-10">
                             You can change your cookie preferences at any time by clicking the button below. This will reopen the consent banner.
                         </p>
-                        <button className="px-8 py-4 bg-white text-indigo-950 font-bold rounded-xl hover:bg-indigo-50 transition-all shadow-xl relative z-10">
+                        <button
+                            onClick={handleOpenSettings}
+                            className="px-8 py-4 bg-white text-indigo-950 font-bold rounded-xl hover:bg-indigo-50 transition-all shadow-xl relative z-10"
+                        >
                             Open Cookie Settings
                         </button>
                     </div>

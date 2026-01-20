@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import Navigation from '@/components/landing/Navigation';
 import Footer from '@/components/landing/Footer';
-import { Building2, ShieldCheck, Zap, Users, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Building2, ShieldCheck, Zap, Users, BarChart3, ArrowRight, CheckCircle2, Globe, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Enterprise = () => {
     useEffect(() => {
@@ -90,16 +91,87 @@ const Enterprise = () => {
                                         <div className="flex justify-between items-end">
                                             <div>
                                                 <div className="text-sm text-slate-500 mb-1">Total Pages Crawled</div>
-                                                <div className="text-4xl font-bold text-white">5,240,192</div>
+                                                <div className="flex items-baseline gap-1">
+                                                    <motion.div
+                                                        initial={{ opacity: 0 }}
+                                                        whileInView={{ opacity: 1 }}
+                                                        className="text-4xl font-black text-white"
+                                                    >
+                                                        5,240,192
+                                                    </motion.div>
+                                                    <motion.div
+                                                        animate={{ opacity: [0, 1, 0.5, 1] }}
+                                                        transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 5 }}
+                                                        className="w-1.5 h-6 bg-indigo-500 rounded-sm"
+                                                    />
+                                                </div>
                                             </div>
-                                            <div className="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-sm font-medium">+12.5%</div>
+                                            <motion.div
+                                                initial={{ scale: 0.8, opacity: 0 }}
+                                                whileInView={{ scale: 1, opacity: 1 }}
+                                                className="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/20"
+                                            >
+                                                +12.5%
+                                            </motion.div>
                                         </div>
-                                        <div className="h-32 bg-indigo-500/10 rounded-xl border border-indigo-500/20 relative overflow-hidden">
-                                            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-indigo-500/20 to-transparent" />
-                                            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between px-4 pb-4 h-full gap-2">
-                                                {[40, 65, 45, 80, 55, 90, 70, 85].map((h, i) => (
-                                                    <div key={i} style={{ height: `${h}%` }} className="w-full bg-indigo-500/40 rounded-t-sm" />
+                                        <div className="h-40 bg-indigo-500/5 rounded-2xl border border-indigo-500/10 relative overflow-hidden group">
+                                            {/* Background Grid Lines */}
+                                            <div className="absolute inset-x-0 top-1/4 h-[1px] bg-white/[0.03]" />
+                                            <div className="absolute inset-x-0 top-2/4 h-[1px] bg-white/[0.03]" />
+                                            <div className="absolute inset-x-0 top-3/4 h-[1px] bg-white/[0.03]" />
+
+                                            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-indigo-500/10 to-transparent" />
+
+                                            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between px-6 pb-4 h-full gap-3">
+                                                {[45, 75, 55, 95, 65, 85, 72, 90, 60, 80, 50, 78].map((h, i) => (
+                                                    <div key={i} className="flex-1 flex flex-col justify-end h-full">
+                                                        <motion.div
+                                                            initial={{ height: 0 }}
+                                                            whileInView={{ height: `${h}%` }}
+                                                            transition={{
+                                                                duration: 1.2,
+                                                                delay: i * 0.08,
+                                                                type: "spring",
+                                                                damping: 15
+                                                            }}
+                                                            className="w-full bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-t-md relative group/bar shadow-[0_0_15px_rgba(79,70,229,0.2)]"
+                                                        >
+                                                            {/* Pulsing Light on top of bar */}
+                                                            <motion.div
+                                                                animate={{ opacity: [0.4, 1, 0.4] }}
+                                                                transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
+                                                                className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-white rounded-full blur-[2px]"
+                                                                style={{ marginTop: '-3px' }}
+                                                            />
+
+                                                            {/* Hover Tooltip/Effect */}
+                                                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-indigo-950 text-[10px] font-black px-2 py-0.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity">
+                                                                {h}k
+                                                            </div>
+                                                        </motion.div>
+                                                    </div>
                                                 ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Status Indicator Bar */}
+                                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3].map(i => (
+                                                        <motion.div
+                                                            key={i}
+                                                            animate={{ scaleX: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                                                            transition={{ duration: 3, repeat: Infinity, delay: i * 0.2 }}
+                                                            className="w-3 h-1 bg-indigo-500/40 rounded-full"
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Global Node Sync</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/5 border border-emerald-500/10 rounded-lg">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                <span className="text-[9px] font-bold text-emerald-500 uppercase">Live System</span>
                                             </div>
                                         </div>
                                     </div>
