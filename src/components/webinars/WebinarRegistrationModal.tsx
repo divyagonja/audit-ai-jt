@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, Clock, User, Mail, Building, Briefcase, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, User, Mail, CheckCircle, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Webinar {
     id: number;
@@ -9,7 +10,6 @@ interface Webinar {
     time?: string;
     duration: string;
     speakers?: { name: string; role: string; image: string }[];
-    image: string;
 }
 
 interface WebinarRegistrationModalProps {
@@ -19,239 +19,181 @@ interface WebinarRegistrationModalProps {
 }
 
 const WebinarRegistrationModal = ({ isOpen, onClose, webinar }: WebinarRegistrationModalProps) => {
-    const [step, setStep] = useState<'form' | 'success'>('form');
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        company: '',
-        role: ''
-    });
 
-    // Reset state when modal opens
     useEffect(() => {
         if (isOpen) {
-            setStep('form');
-            setFormData({ fullName: '', email: '', company: '', role: '' });
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+            setIsSubmitted(false);
         }
     }, [isOpen]);
-
-    if (!isOpen || !webinar) return null;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate API call
         setTimeout(() => {
             setIsLoading(false);
-            setStep('success');
+            setIsSubmitted(true);
         }, 1500);
     };
 
+    if (!webinar) return null;
+
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-            {/* Backdrop */}
-            <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-                onClick={onClose}
-            />
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-slate-950/80 backdrop-blur-xl">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        className="bg-slate-900 w-full max-w-4xl rounded-[40px] shadow-2xl overflow-hidden border border-white/10 flex flex-col md:flex-row relative"
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={onClose}
+                            className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-all border border-white/10"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
 
-            {/* Modal Content */}
-            <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-scale-in">
-                {/* Close Button */}
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 z-20 p-2 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white md:text-slate-500 transition-colors"
-                >
-                    <X className="w-5 h-5" />
-                </button>
+                        {/* Left Side: Info */}
+                        <div className="w-full md:w-[40%] bg-gradient-to-br from-indigo-600 via-blue-700 to-slate-900 p-8 md:p-12 relative overflow-hidden shrink-0">
+                            {/* Decorative Background */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -tr-16 -mt-16" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl -ml-16 -mb-16" />
 
-                {/* Left Side: Visuals & Info */}
-                <div className="w-full md:w-2/5 relative bg-navy text-white overflow-hidden">
-                    {/* Background Image with Overlay */}
-                    <div className="absolute inset-0">
-                        <img
-                            src={webinar.image}
-                            alt={webinar.title}
-                            className="w-full h-full object-cover opacity-60"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/80 to-transparent" />
-                    </div>
-
-                    <div className="relative z-10 p-8 h-full flex flex-col justify-end">
-                        <div className="mb-6">
-                            <span className="inline-block px-3 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full text-xs font-semibold text-blue-300 mb-4">
-                                Live Masterclass
-                            </span>
-                            <h2 className="text-2xl font-bold leading-tight mb-4">
-                                {webinar.title}
-                            </h2>
-                            <div className="flex flex-col gap-2 text-slate-300 text-sm">
-                                {webinar.date && (
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-4 h-4 text-blue-400" />
-                                        <span>{webinar.date}</span>
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="mb-10">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 mb-6 font-bold text-[10px] uppercase tracking-widest text-white">
+                                        <Zap className="w-3 h-3 text-indigo-300" />
+                                        <span>Official Reservation</span>
                                     </div>
-                                )}
-                                {webinar.time && (
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-purple-400" />
-                                        <span>{webinar.time} • {webinar.duration}</span>
+                                    <h2 className="text-3xl font-black text-white leading-tight tracking-tighter mb-4">
+                                        Secure Your <br />
+                                        <span className="text-indigo-200">Session Seat</span>
+                                    </h2>
+                                    <p className="text-blue-100/70 text-sm leading-relaxed">
+                                        Join our technical elite for a deep dive into the future of search intelligence.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-6 mt-auto">
+                                    <div className="flex items-center gap-4 text-white">
+                                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+                                            <Calendar className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 opacity-60">Date</p>
+                                            <p className="font-bold">{webinar.date}</p>
+                                        </div>
                                     </div>
-                                )}
+                                    <div className="flex items-center gap-4 text-white">
+                                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+                                            <Clock className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 opacity-60">Time</p>
+                                            <p className="font-bold">{webinar.time}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {webinar.speakers && (
-                            <div className="border-t border-white/10 pt-6">
-                                <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-                                    Featured Speakers
-                                </h4>
-                                <div className="space-y-3">
-                                    {webinar.speakers.map((speaker, idx) => (
-                                        <div key={idx} className="flex items-center gap-3">
-                                            <img
-                                                src={speaker.image}
-                                                alt={speaker.name}
-                                                className="w-8 h-8 rounded-full border border-white/20"
-                                            />
-                                            <div>
-                                                <div className="text-sm font-medium text-white">{speaker.name}</div>
-                                                <div className="text-xs text-slate-400">{speaker.role}</div>
+                        {/* Right Side: Form */}
+                        <div className="flex-1 p-8 md:p-12 bg-slate-900 overflow-y-auto max-h-[90vh]">
+                            {!isSubmitted ? (
+                                <motion.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                >
+                                    <div className="mb-8">
+                                        <h3 className="text-2xl font-black text-white tracking-tighter mb-2">{webinar.title}</h3>
+                                        <p className="text-slate-400 text-sm">Fill in your details to receive the private access link.</p>
+                                    </div>
+
+                                    <form onSubmit={handleSubmit} className="space-y-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">Full Name</label>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 transition-all font-medium"
+                                                    placeholder="Stark Industries"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">Work Email</label>
+                                                <input
+                                                    required
+                                                    type="email"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 transition-all font-medium"
+                                                    placeholder="ceo@enterprise.com"
+                                                />
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
 
-                {/* Right Side: Form */}
-                <div className="w-full md:w-3/5 p-8 md:p-10 bg-white">
-                    {step === 'form' ? (
-                        <>
-                            <h3 className="text-2xl font-bold text-navy mb-2">Reserve Your Spot</h3>
-                            <p className="text-slate-600 mb-8">
-                                Join us for this exclusive session. Space is limited.
-                            </p>
-
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium text-slate-700 ml-1">Full Name</label>
-                                    <div className="relative">
-                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                        <input
-                                            type="text"
-                                            required
-                                            placeholder="John Doe"
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                                            value={formData.fullName}
-                                            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium text-slate-700 ml-1">Work Email</label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                        <input
-                                            type="email"
-                                            required
-                                            placeholder="john@company.com"
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                                            value={formData.email}
-                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <label className="text-sm font-medium text-slate-700 ml-1">Company</label>
-                                        <div className="relative">
-                                            <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">Company / Organization</label>
                                             <input
-                                                type="text"
                                                 required
-                                                placeholder="Acme Inc."
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                                                value={formData.company}
-                                                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                                type="text"
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 transition-all font-medium"
+                                                placeholder="Global Systems Inc."
                                             />
                                         </div>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-sm font-medium text-slate-700 ml-1">Job Title</label>
-                                        <div className="relative">
-                                            <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                            <input
-                                                type="text"
-                                                required
-                                                placeholder="Marketing Manager"
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                                                value={formData.role}
-                                                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                                            />
+
+                                        <div className="p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10 flex gap-4">
+                                            <ShieldCheck className="w-8 h-8 text-indigo-400 shrink-0" />
+                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                By registering, you agree to our privacy framework. Your transmission data is encrypted and used solely for session management.
+                                            </p>
                                         </div>
+
+                                        <button
+                                            disabled={isLoading}
+                                            className="w-full py-4 bg-white text-slate-950 font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+                                        >
+                                            {isLoading ? "Processing..." : (
+                                                <>
+                                                    Transmit Reservation
+                                                    <ArrowRight className="w-4 h-4" />
+                                                </>
+                                            )}
+                                        </button>
+                                    </form>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="h-full flex flex-col items-center justify-center text-center py-10"
+                                >
+                                    <div className="w-24 h-24 rounded-[30px] bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                                        <CheckCircle className="w-12 h-12 text-green-500" />
                                     </div>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="w-full mt-6 bg-navy hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-900/10 hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:scale-100"
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <Loader2 className="w-5 h-5 animate-spin" />
-                                            Registering...
-                                        </>
-                                    ) : (
-                                        <>
-                                            Complete Registration
-                                            <ArrowRight className="w-5 h-5" />
-                                        </>
-                                    )}
-                                </button>
-                                <p className="text-xs text-slate-400 text-center mt-4">
-                                    By registering, you agree to our Terms of Service and Privacy Policy.
-                                </p>
-                            </form>
-                        </>
-                    ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-center py-10">
-                            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 animate-bounce-subtle">
-                                <CheckCircle className="w-10 h-10 text-green-600" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-navy mb-2">You're In!</h3>
-                            <p className="text-slate-600 mb-8 max-w-sm">
-                                Check your inbox for the calendar invite and joining details. We've sent a confirmation email to <strong>{formData.email}</strong>.
-                            </p>
-
-                            <div className="w-full space-y-3">
-                                <button
-                                    className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-navy font-semibold rounded-xl transition-colors"
-                                    onClick={() => {
-                                        // Add to calendar logic here
-                                        alert("Calendar invite downloaded (simulated)");
-                                    }}
-                                >
-                                    Add to Calendar
-                                </button>
-                                <button
-                                    className="w-full py-3 px-4 text-slate-500 hover:text-navy font-medium transition-colors"
-                                    onClick={onClose}
-                                >
-                                    Close
-                                </button>
-                            </div>
+                                    <h3 className="text-3xl font-black text-white tracking-tighter mb-4 uppercase">Transmission confirmed</h3>
+                                    <p className="text-slate-400 max-w-sm mb-10 text-lg leading-relaxed">
+                                        Reservation validated. A private access key has been dispatched to your corporate inbox.
+                                    </p>
+                                    <button
+                                        onClick={onClose}
+                                        className="px-10 py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-white/10 transition-all"
+                                    >
+                                        Close Terminal
+                                    </button>
+                                </motion.div>
+                            )}
                         </div>
-                    )}
+                    </motion.div>
                 </div>
-            </div>
-        </div>
+            )}
+        </AnimatePresence>
     );
 };
 

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import Navigation from '@/components/landing/Navigation';
 import Footer from '@/components/landing/Footer';
 import JobApplicationModal from '@/components/careers/JobApplicationModal';
-import { Briefcase, MapPin, Clock, ArrowRight, Users, Rocket, Heart, TrendingUp, Globe, Gift, Coffee, GraduationCap } from 'lucide-react';
+import { Briefcase, MapPin, Clock, ArrowRight, Users, Rocket, Heart, TrendingUp, Globe, Gift, Coffee, GraduationCap, ChevronRight, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Careers = () => {
     useEffect(() => {
@@ -29,8 +30,8 @@ const Careers = () => {
             department: 'Engineering',
             location: 'Remote / Hybrid',
             type: 'Full-time',
-            description: 'Build the next generation of AI-powered web intelligence tools.',
-            tags: ['React', 'Node.js', 'AI/ML', 'TypeScript'],
+            description: 'Architect the next generation of planetary-scale audit engines and distributed intelligence systems.',
+            tags: ['React', 'Node.js', 'Go', 'TypeScript'],
         },
         {
             id: 2,
@@ -38,106 +39,83 @@ const Careers = () => {
             department: 'AI Research',
             location: 'Remote / San Francisco',
             type: 'Full-time',
-            description: 'Drive innovation in NLP and machine learning for web analysis.',
-            tags: ['Python', 'TensorFlow', 'NLP', 'Deep Learning'],
+            description: 'Lead groundbreaking research in semantic intent mapping and LLM-driven site synthesis.',
+            tags: ['Python', 'PyTorch', 'NLP', 'Transformers'],
         },
         {
             id: 3,
-            title: 'Product Designer',
+            title: 'Executive Product Designer',
             department: 'Design',
             location: 'Remote',
             type: 'Full-time',
-            description: 'Create beautiful, intuitive experiences for our users.',
-            tags: ['Figma', 'UI/UX', 'Design Systems', 'User Research'],
+            description: 'Define the high-fidelity visual language for the world\'s most advanced web integrity platform.',
+            tags: ['Figma', 'Prototyping', 'Design Systems', 'UX Strat'],
         },
         {
             id: 4,
-            title: 'DevOps Engineer',
+            title: 'Cloud Infrastructure Architect',
             department: 'Engineering',
             location: 'Remote / Hybrid',
             type: 'Full-time',
-            description: 'Scale our infrastructure to handle millions of audits.',
-            tags: ['AWS', 'Kubernetes', 'Docker', 'CI/CD'],
+            description: 'Maintain 99.999% uptime across our global decentralized node infrastructure.',
+            tags: ['AWS', 'Kubernetes', 'Terraform', 'Rust'],
         },
         {
             id: 5,
-            title: 'Customer Success Manager',
+            title: 'Enterprise Success Counsel',
             department: 'Customer Success',
             location: 'Remote',
             type: 'Full-time',
-            description: 'Help our enterprise clients achieve their SEO goals.',
-            tags: ['SaaS', 'Communication', 'Analytics', 'Problem Solving'],
+            description: 'Advise Fortune 500 stakeholders on technical SEO strategy and competitive dominance.',
+            tags: ['SaaS', 'Strategy', 'Analytics', 'Advocacy'],
         },
         {
             id: 6,
-            title: 'Marketing Manager',
+            title: 'Growth Marketing Lead',
             department: 'Marketing',
             location: 'Remote',
             type: 'Full-time',
-            description: 'Build our brand and grow our community.',
-            tags: ['Content Marketing', 'SEO', 'Growth', 'Analytics'],
+            description: 'Scale the AuditAI brand and intelligence products into new enterprise markets.',
+            tags: ['Performance', 'Brand', 'Global Strategy'],
         },
     ];
 
     const benefits = [
         {
             icon: Globe,
-            title: 'Remote-First Culture',
-            description: 'Work from anywhere in the world with flexible hours.',
-            color: 'from-blue-500 to-cyan-500',
+            title: 'Sovereign-First Culture',
+            description: 'Absolute autonomy. Work from any node on the planet with fully flexible orbital hours.',
+            gradient: "from-blue-600 to-indigo-600",
         },
         {
             icon: TrendingUp,
-            title: 'Equity & Growth',
-            description: 'Stock options and clear career progression paths.',
-            color: 'from-purple-500 to-pink-500',
+            title: 'Equity Ownership',
+            description: 'Direct stake in the revolution. Seed-level equity grants and clear exponential paths.',
+            gradient: "from-purple-600 to-pink-600",
         },
         {
             icon: Heart,
-            title: 'Health & Wellness',
-            description: 'Comprehensive health insurance and wellness programs.',
-            color: 'from-red-500 to-orange-500',
+            title: 'High-Fidelity Health',
+            description: 'Military-grade medical coverage for you and your dependents, anywhere globally.',
+            gradient: "from-emerald-600 to-teal-600",
         },
         {
             icon: GraduationCap,
-            title: 'Learning Budget',
-            description: '$2,000 annual budget for courses, books, and conferences.',
-            color: 'from-green-500 to-emerald-500',
+            title: 'Intellectual Capital',
+            description: '$5,000 annual research budget for specialized training, advanced degrees, and conferences.',
+            gradient: "from-amber-600 to-orange-600",
         },
         {
-            icon: Coffee,
-            title: 'Unlimited PTO',
-            description: 'Take time off when you need it. We trust you.',
-            color: 'from-yellow-500 to-amber-500',
+            icon: Zap,
+            title: 'Asynchronous PTO',
+            description: 'Infinite leave protocol. We optimize for results, not hours logged at a terminal.',
+            gradient: "from-indigo-600 to-blue-600",
         },
-        {
-            icon: Gift,
-            title: 'Equipment Allowance',
-            description: 'Top-tier hardware and setup for your home office.',
-            color: 'from-indigo-500 to-blue-500',
-        },
-    ];
-
-    const values = [
         {
             icon: Rocket,
-            title: 'Innovation First',
-            description: 'We push boundaries and embrace cutting-edge technology.',
-        },
-        {
-            icon: Users,
-            title: 'Collaborative Spirit',
-            description: 'Great ideas come from diverse teams working together.',
-        },
-        {
-            icon: Heart,
-            title: 'Customer Obsessed',
-            description: 'Our users\' success is our success.',
-        },
-        {
-            icon: TrendingUp,
-            title: 'Growth Mindset',
-            description: 'We learn, adapt, and continuously improve.',
+            title: 'Infrastructure Stipend',
+            description: 'Initial-launch allowance for your high-performance home terminal and ergonomic setup.',
+            gradient: "from-rose-600 to-red-600",
         },
     ];
 
@@ -148,153 +126,121 @@ const Careers = () => {
         : openPositions.filter(job => job.department === selectedDepartment);
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-[#020408] font-sans text-white selection:bg-indigo-500/30">
             <Navigation />
 
-            {/* Hero Section */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-navy via-blue-900 to-navy">
-                {/* Animated Background */}
-                <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-75"></div>
-                </div>
+            {/* Premium Hero */}
+            <section className="relative pt-40 pb-32 overflow-hidden bg-slate-950">
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[150px] -mr-64 -mt-64 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px] -ml-64 -mb-64 pointer-events-none" />
 
                 <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 animate-fade-in">
-                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <span className="text-white text-sm font-medium">We're Hiring!</span>
+                    <div className="max-w-5xl mx-auto text-center">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-8 animate-fade-in">
+                            <Rocket className="w-3.5 h-3.5" />
+                            <span>Mission Control Seeking Talent</span>
                         </div>
 
-                        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
-                            Build the Future of <br />
-                            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                                Web Intelligence
-                            </span>
+                        <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-white">
+                            Architect the <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400">Future Intelligence.</span>
                         </h1>
 
-                        <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto animate-fade-in-up delay-100">
-                            Join our team of innovators, engineers, and designers who are transforming how businesses understand and optimize their web presence.
+                        <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+                            Join a global taskmask of elite engineers, researchers, and designers building the world's most advanced web integrity architecture.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up delay-200">
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                             <a
                                 href="#open-positions"
-                                className="px-8 py-4 bg-white text-navy font-bold rounded-xl hover:bg-slate-100 transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+                                className="h-16 px-10 bg-white text-black font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-3"
                             >
-                                View Open Positions
-                                <ArrowRight className="inline-block ml-2 w-5 h-5" />
+                                Browse Manifest
+                                <ChevronRight className="w-4 h-4" />
                             </a>
                             <a
                                 href="#benefits"
-                                className="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition-all border border-white/20 backdrop-blur-sm"
+                                className="h-16 px-10 bg-white/5 border border-white/10 text-white font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all backdrop-blur-md flex items-center justify-center"
                             >
-                                Why AuditAI?
+                                Operational Perks
                             </a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Stats Section */}
-            <section className="py-16 bg-white border-b">
+            {/* Performance Stats */}
+            <section className="py-20 border-y border-white/5 bg-[#05070a]">
                 <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
                         {[
-                            { number: '50+', label: 'Team Members', color: 'blue' },
-                            { number: '15+', label: 'Countries', color: 'purple' },
-                            { number: '98%', label: 'Retention Rate', color: 'green' },
-                            { number: '$150M', label: 'Series B Funding', color: 'orange' },
+                            { number: '75+', label: 'Global Operatives', color: 'indigo-400' },
+                            { number: '18', label: 'Nodes Worldwide', color: 'blue-400' },
+                            { number: '99%', label: 'Retention Rate', color: 'emerald-400' },
+                            { number: '$150M', label: 'Series B Capital', color: 'amber-400' },
                         ].map((stat, index) => (
-                            <div key={index} className="text-center animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                                <div className={`text-4xl md:text-5xl font-bold bg-gradient-to-r from-${stat.color}-500 to-${stat.color}-600 bg-clip-text text-transparent mb-2`}>
+                            <div key={index} className="group">
+                                <div className={`text-4xl md:text-5xl font-black text-${stat.color} mb-2`}>
                                     {stat.number}
                                 </div>
-                                <div className="text-slate-600 font-medium">{stat.label}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Our Values */}
-            <section className="py-24 bg-gradient-to-b from-white to-slate-50">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-navy mb-4">Our Core Values</h2>
-                        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                            These principles guide everything we do and shape our culture.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {values.map((value, index) => (
-                            <div
-                                key={index}
-                                className="corporate-card p-8 rounded-2xl group hover:shadow-2xl transition-all duration-300"
-                            >
-                                <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-6 group-hover:bg-blue-100 group-hover:border-blue-200 transition-all">
-                                    <value.icon className="w-8 h-8 text-blue-600 group-hover:text-blue-700 group-hover:scale-110 transition-all" strokeWidth={1.5} />
+                                <div className="text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                                    {stat.label}
                                 </div>
-                                <h3 className="text-xl font-bold text-navy mb-3">{value.title}</h3>
-                                <p className="text-slate-600">{value.description}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Benefits Section */}
-            <section id="benefits" className="py-24 bg-navy relative overflow-hidden">
-                {/* Background Animation */}
-                <div className="absolute inset-0 opacity-20">
-                    <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
-                    <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
-                </div>
-
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Perks & Benefits</h2>
-                        <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-                            We invest in our team because great people build great products.
-                        </p>
+            {/* Benefit Grid: Cinematic Pillars */}
+            <section id="benefits" className="py-32 bg-[#020408]">
+                <div className="container mx-auto px-6">
+                    <div className="text-center mb-24">
+                        <h2 className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em] mb-4">Total Compensation</h2>
+                        <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter">Elite Provisions.</h3>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {benefits.map((benefit, index) => (
                             <div
                                 key={index}
-                                className="glass-dark p-8 rounded-2xl hover:scale-105 transition-all duration-300 group"
+                                className="group relative"
                             >
-                                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 group-hover:border-white/20 transition-all">
-                                    <benefit.icon className="w-8 h-8 text-slate-300 group-hover:text-white group-hover:scale-110 transition-all" strokeWidth={1.5} />
+                                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[40px] -m-1 p-[1px]"
+                                    style={{ backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))` }} />
+                                <div className="relative h-full bg-[#05070a] border border-white/5 p-12 rounded-[40px] transition-all duration-500 hover:translate-y-[-8px]">
+                                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center mb-8 shadow-2xl group-hover:scale-110 transition-transform`}>
+                                        <benefit.icon className="w-8 h-8 text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-black text-white mb-6 uppercase tracking-tight">{benefit.title}</h3>
+                                    <p className="text-lg text-slate-500 leading-relaxed font-medium">
+                                        {benefit.description}
+                                    </p>
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
-                                <p className="text-slate-300">{benefit.description}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Open Positions */}
-            <section id="open-positions" className="py-24 bg-gradient-to-b from-slate-50 to-white">
+            {/* Position Manifest */}
+            <section id="open-positions" className="py-32 bg-[#05070a] border-y border-white/5">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-bold text-navy mb-4">Open Positions</h2>
-                        <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8">
-                            Find your next opportunity to make an impact.
-                        </p>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20">
+                        <div>
+                            <h2 className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em] mb-4">Current Manifest</h2>
+                            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter">Open Positions.</h3>
+                        </div>
 
-                        {/* Department Filter */}
-                        <div className="flex flex-wrap justify-center gap-3">
+                        {/* Department Filter Protocol */}
+                        <div className="flex flex-wrap gap-3">
                             {departments.map((dept) => (
                                 <button
                                     key={dept}
                                     onClick={() => setSelectedDepartment(dept)}
-                                    className={`px-6 py-2 rounded-full font-medium transition-all ${selectedDepartment === dept
-                                        ? 'bg-blue-500 text-white shadow-lg scale-105'
-                                        : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                                    className={`px-8 py-3 rounded-2xl font-black text-[9px] uppercase tracking-widest transition-all border ${selectedDepartment === dept
+                                            ? 'bg-indigo-600 border-indigo-400 text-white shadow-2xl scale-105'
+                                            : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
                                         }`}
                                 >
                                     {dept}
@@ -303,46 +249,41 @@ const Careers = () => {
                         </div>
                     </div>
 
-                    <div className="max-w-4xl mx-auto space-y-4">
-                        {filteredJobs.map((job, index) => (
-                            <div
+                    <div className="max-w-5xl mx-auto space-y-6">
+                        {filteredJobs.map((job) => (
+                            <motion.div
                                 key={job.id}
+                                layout
                                 onMouseEnter={() => setHoveredJob(job.id)}
                                 onMouseLeave={() => setHoveredJob(null)}
-                                className={`corporate-card p-6 rounded-2xl cursor-pointer transition-all duration-300 ${hoveredJob === job.id ? 'border-blue-300 shadow-xl scale-[1.02]' : ''
+                                className={`group glass-premium border border-white/5 p-8 md:p-12 rounded-[40px] cursor-pointer transition-all duration-500 hover:bg-white/[0.02] ${hoveredJob === job.id ? 'border-indigo-500/30 -translate-y-1' : ''
                                     }`}
                             >
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
                                     <div className="flex-1">
-                                        <div className="flex items-start gap-3 mb-3">
-                                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
-                                                <Briefcase className="w-6 h-6 text-white" />
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="bg-indigo-600/20 border border-indigo-500/30 px-3 py-1 rounded-lg">
+                                                <span className="text-[9px] font-black text-indigo-300 uppercase tracking-widest">{job.department}</span>
                                             </div>
-                                            <div>
-                                                <h3 className="text-xl font-bold text-navy mb-1">{job.title}</h3>
-                                                <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600">
-                                                    <span className="flex items-center gap-1">
-                                                        <MapPin className="w-4 h-4" />
-                                                        {job.location}
-                                                    </span>
-                                                    <span className="flex items-center gap-1">
-                                                        <Clock className="w-4 h-4" />
-                                                        {job.type}
-                                                    </span>
-                                                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                                                        {job.department}
-                                                    </span>
-                                                </div>
+                                            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                                <MapPin className="w-3.5 h-3.5" />
+                                                {job.location}
                                             </div>
                                         </div>
 
-                                        <p className="text-slate-600 mb-3">{job.description}</p>
+                                        <h3 className="text-3xl font-black text-white mb-6 group-hover:text-indigo-400 transition-colors">
+                                            {job.title}
+                                        </h3>
+
+                                        <p className="text-xl text-slate-500 leading-relaxed font-medium mb-8">
+                                            {job.description}
+                                        </p>
 
                                         <div className="flex flex-wrap gap-2">
-                                            {job.tags.map((tag, tagIndex) => (
+                                            {job.tags.map((tag) => (
                                                 <span
-                                                    key={tagIndex}
-                                                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium"
+                                                    key={tag}
+                                                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest"
                                                 >
                                                     {tag}
                                                 </span>
@@ -356,62 +297,60 @@ const Careers = () => {
                                             jobTitle: job.title,
                                             department: job.department,
                                         })}
-                                        className="px-6 py-3 bg-navy text-white font-bold rounded-xl hover:bg-blue-600 transition-all flex items-center gap-2 justify-center group"
+                                        className="h-20 px-12 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-3xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 group/btn"
                                     >
-                                        Apply Now
-                                        <ArrowRight className={`w-5 h-5 transition-transform ${hoveredJob === job.id ? 'translate-x-1' : ''}`} />
+                                        Initiate Protocol
+                                        <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center group-hover:bg-white/10 transition-colors group-hover/btn:translate-x-2 transition-transform">
+                                            <ChevronRight className="w-4 h-4" />
+                                        </div>
                                     </button>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
                     {filteredJobs.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-xl text-slate-500">No positions found in this department.</p>
-                            <button
-                                onClick={() => setSelectedDepartment('All')}
-                                className="mt-4 text-blue-600 font-semibold hover:underline"
-                            >
-                                View all positions
-                            </button>
+                        <div className="text-center py-40">
+                            <Briefcase className="w-20 h-20 text-white/10 mx-auto mb-8" />
+                            <h3 className="text-3xl font-black text-white mb-4 italic">Manifest-Empty</h3>
+                            <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">No openings found in this sector.</p>
                         </div>
                     )}
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 text-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-20">
-                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse"></div>
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse delay-75"></div>
-                </div>
+            {/* Sovereign Initiative CTA */}
+            <section className="py-40 bg-[#020408] overflow-hidden">
+                <div className="container mx-auto px-6 relative">
+                    <div className="max-w-4xl mx-auto rounded-[60px] p-16 md:p-24 border border-white/10 glass-premium text-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-indigo-600/5 pointer-events-none shadow-[inset_0_0_100px_rgba(79,70,229,0.1)]" />
 
-                <div className="container mx-auto px-6 relative z-10">
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                        Don't See the Perfect Role?
-                    </h2>
-                    <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                        We're always looking for talented people. Send us your resume and let's start a conversation.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href="mailto:careers@auditai.com"
-                            className="px-8 py-4 bg-white text-navy font-bold rounded-xl hover:bg-slate-100 transition-all shadow-xl hover:shadow-2xl hover:scale-105"
-                        >
-                            Send Your Resume
-                        </a>
-                        <a
-                            href="/contact"
-                            className="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition-all border border-white/20 backdrop-blur-sm"
-                        >
-                            Contact Us
-                        </a>
+                        <h2 className="text-4xl md:text-6xl font-black text-white mb-10 tracking-tighter leading-tight relative z-10">
+                            Elite <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Collaborator.</span>
+                        </h2>
+                        <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed relative z-10">
+                            If your specific expertise isn't listed in the manifest, engage our core recruitment node with your high-fidelity portfolio.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
+                            <a
+                                href="mailto:careers@auditai.com"
+                                className="h-16 px-10 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-3 group"
+                            >
+                                Dispatch Resume
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </a>
+                            <a
+                                href="/contact"
+                                className="h-16 px-10 bg-white/5 border border-white/10 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all backdrop-blur-md flex items-center justify-center"
+                            >
+                                Direct Intake
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Job Application Modal */}
             <JobApplicationModal
                 isOpen={applicationModal.isOpen}
                 onClose={() => setApplicationModal({ isOpen: false, jobTitle: '', department: '' })}
