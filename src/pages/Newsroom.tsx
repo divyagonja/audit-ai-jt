@@ -94,9 +94,9 @@ const Newsroom = () => {
     ];
 
     const stats = [
-        { number: '1.2B', label: 'Nodes Indexed', icon: Zap },
+        { number: '1.2B', label: 'Pages Analyzed', icon: Zap },
         { number: '500+', label: 'Global Brands', icon: Award },
-        { number: '99.99', label: 'Uptime Reliability', icon: Newspaper },
+        { number: '99.9%', label: 'Uptime Reliability', icon: Newspaper },
     ];
 
     const filteredNews = selectedCategory === 'All'
@@ -115,16 +115,16 @@ const Newsroom = () => {
                 <div className="container mx-auto px-6 relative z-10 text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-8 animate-fade-in">
                         <Newspaper className="w-3.5 h-3.5" />
-                        <span>Intelligence Central</span>
+                        <span>Latest News & Updates</span>
                     </div>
 
                     <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-white">
                         Official <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400">Broadcasting.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400">Newsroom.</span>
                     </h1>
 
                     <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-                        Latest dispatches from the edge of web intelligence. funding announcements, product breakthroughs, and global expansion updates.
+                        Stay updated with the latest stories from AuditAI, including funding news, product breakthroughs, and global expansion updates.
                     </p>
 
                     <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto pt-10 border-t border-white/5">
@@ -158,7 +158,7 @@ const Newsroom = () => {
                 </div>
             </section>
 
-            {/* News Grid: Cinematic Bento */}
+            {/* News Grid */}
             <section className="py-24 bg-[#020408]">
                 <div className="container mx-auto px-6">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -186,7 +186,7 @@ const Newsroom = () => {
                                     </div>
                                     {item.featured && (
                                         <div className="absolute top-6 right-6 z-20 px-3 py-1 rounded-lg bg-white text-black text-[9px] font-black uppercase tracking-widest">
-                                            Featured Dispatch
+                                            Featured Story
                                         </div>
                                     )}
                                 </div>
@@ -213,7 +213,7 @@ const Newsroom = () => {
                                     </div>
 
                                     <div className="flex items-center gap-3 text-white font-black text-[10px] uppercase tracking-widest pt-6 border-t border-white/5">
-                                        <span>Terminal Read</span>
+                                        <span>Read More</span>
                                         <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-600 group-hover:border-indigo-400 transition-all group-hover:translate-x-1">
                                             <ChevronRight className="w-3.5 h-3.5" />
                                         </div>
@@ -226,14 +226,14 @@ const Newsroom = () => {
                     {filteredNews.length === 0 && (
                         <div className="text-center py-40">
                             <Newspaper className="w-20 h-20 text-white/10 mx-auto mb-8" />
-                            <h3 className="text-3xl font-black text-white mb-4 italic">Dispatch-Null</h3>
-                            <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">No intelligence found in this vector.</p>
+                            <h3 className="text-3xl font-black text-white mb-4 italic">No News Found</h3>
+                            <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">There are no articles in this category currently.</p>
                         </div>
                     )}
                 </div>
             </section>
 
-            {/* Sovereign Press Support */}
+            {/* Media Inquiries */}
             <section className="py-32 bg-[#05070a] border-t border-white/5 overflow-hidden">
                 <div className="container mx-auto px-6 relative">
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] -mr-64 -mt-32 pointer-events-none" />
@@ -241,10 +241,10 @@ const Newsroom = () => {
                     <div className="max-w-4xl mx-auto rounded-[60px] p-16 md:p-24 border border-white/10 glass-premium text-center">
                         <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter leading-tight">
                             Media <br />
-                            <span className="text-indigo-400">Ambassador.</span>
+                            <span className="text-indigo-400">Inquiries.</span>
                         </h2>
                         <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed">
-                            For sovereign press inquiries, official media kits, or high-fidelity asset protocols, engage our strategic communication node.
+                            For press inquiries, official media kits, or high-quality brand assets, please contact our media relations team.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-6 justify-center">
                             <a
@@ -252,13 +252,13 @@ const Newsroom = () => {
                                 className="h-16 px-10 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-3 group"
                             >
                                 <ExternalLink className="w-4 h-4" />
-                                Access Press Vector
+                                Contact Press Team
                             </a>
                             <a
                                 href="#"
                                 className="h-16 px-10 bg-white/5 border border-white/10 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all backdrop-blur-md flex items-center justify-center"
                             >
-                                Asset Dossier
+                                Download Media Kit
                             </a>
                         </div>
                     </div>

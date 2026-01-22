@@ -13,26 +13,26 @@ const Enterprise = () => {
 
     const features = [
         {
-            title: "Planetary Scale Infrastructure",
-            description: "Crawl millions of pages without architectural limits. Our elastic infrastructure scales dynamically to handle the world's largest web properties.",
+            title: "Unlimited Scale",
+            description: "Audit millions of pages without limits. Our flexible infrastructure scales to handle the world's largest web properties.",
             icon: Globe,
             gradient: "from-blue-500 to-indigo-600"
         },
         {
-            title: "Dedicated Strategic Counsel",
-            description: "Direct access to enterprise SEO architects who understand high-stakes business goals and maximize your competitive alpha.",
+            title: "Dedicated Success Manager",
+            description: "Direct access to SEO experts who understand your business goals and help you get the most out of our platform.",
             icon: Users,
             gradient: "from-purple-500 to-pink-600"
         },
         {
-            title: "Military-Grade Governance",
-            description: "SOC 2 Type II certified infrastructure with support for custom InfoSec audits, SAML 2.0, and granular RBAC controls.",
+            title: "Advanced Security",
+            description: "SOC 2 Type II certified with support for custom security reviews, Single Sign-On (SSO), and granular access controls.",
             icon: Shield,
             gradient: "from-emerald-500 to-teal-600"
         },
         {
-            title: "Programmable Intelligence",
-            description: "Full API orchestration and real-time webhooks to integrate AuditAI directly into your CI/CD pipelines and custom analytics stacks.",
+            title: "API & Developer Tools",
+            description: "Full API access and real-time webhooks to integrate AuditAI directly into your existing development workflows.",
             icon: Terminal,
             gradient: "from-amber-500 to-orange-600"
         }
@@ -40,51 +40,114 @@ const Enterprise = () => {
 
     const capabilities = [
         "Single Sign-On (SSO) & SAML 2.0 Integration",
-        "Unlimited Global Crawl Budget & TB-Scale Storage",
-        "Strategic 24/7 Priority Support (Global Response)",
-        "Automated Data Retention & Multi-Region Policies",
-        "White-Label Executive Narrative Dashboards",
-        "Provisioned Dedicated Enterprise IP Clusters"
+        "Unlimited Global Crawl Budget & Storage",
+        "24/7 Priority Support with Global Coverage",
+        "Custom Data Retention & Compliance Policies",
+        "White-Label Reporting & Executive Dashboards",
+        "Dedicated IP Addresses for Secure Access"
     ];
 
     return (
         <div className="min-h-screen bg-[#020408] font-sans text-white selection:bg-indigo-500/30">
             <Navigation />
 
-            {/* Cinematic Hero */}
-            <section className="relative pt-40 pb-32 overflow-hidden bg-slate-950">
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[150px] -mr-64 -mt-64 pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px] -ml-64 -mb-64 pointer-events-none" />
+            {/* Cinematic Hero with Motion Gradient */}
+            <section className="relative pt-40 pb-32 overflow-hidden bg-[#020408]">
+                {/* Motion Gradient Background */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <motion.div
+                        animate={{
+                            x: [0, 60, 0],
+                            y: [0, -40, 0],
+                            scale: [1, 1.15, 1],
+                        }}
+                        transition={{
+                            duration: 18,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-indigo-600/20 rounded-full blur-[120px]"
+                    />
+                    <motion.div
+                        animate={{
+                            x: [0, -60, 0],
+                            y: [0, 60, 0],
+                            scale: [1, 1.25, 1],
+                        }}
+                        transition={{
+                            duration: 22,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute -bottom-40 -left-40 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[120px]"
+                    />
+                    <motion.div
+                        animate={{
+                            opacity: [0.1, 0.25, 0.1],
+                            scale: [0.85, 1.1, 0.85],
+                        }}
+                        transition={{
+                            duration: 12,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[700px] bg-purple-900/10 rounded-full blur-[150px]"
+                    />
+                </div>
 
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex flex-col lg:flex-row items-center gap-20">
                         <div className="flex-1 max-w-2xl text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-8 animate-fade-in">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-8 backdrop-blur-md"
+                            >
                                 <Building2 className="w-3.5 h-3.5" />
-                                <span>Enterprise Protocol</span>
-                            </div>
+                                <span>Enterprise Edition</span>
+                            </motion.div>
 
-                            <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-white">
-                                SEO at <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 italic">Planetary Scale.</span>
-                            </h1>
+                            <motion.h1
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-white"
+                            >
+                                SEO for <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F46E5] via-[#6366F1] to-[#818CF8] italic">Global Brands.</span>
+                            </motion.h1>
 
-                            <p className="text-xl text-slate-400 mb-10 leading-relaxed font-medium mx-auto lg:mx-0">
-                                The mission-critical platform for Fortune 500 digital ecosystems. Unleash high-fidelity auditing, military-grade security, and custom sovereign infrastructure.
-                            </p>
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="text-xl text-slate-400 mb-10 leading-relaxed font-medium mx-auto lg:mx-0"
+                            >
+                                The trusted platform for Fortune 500 companies. Get the scale, security, and dedicated support your organization needs to stay ahead.
+                            </motion.p>
 
-                            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start"
+                            >
                                 <Button className="h-16 px-10 bg-white text-black font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl hover:scale-105 active:scale-95">
-                                    Initialize Demo
+                                    Book a Demo
                                 </Button>
                                 <Button variant="outline" className="h-16 px-10 border-white/10 bg-white/5 text-white font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all backdrop-blur-md">
-                                    Security Briefing
+                                    View Security
                                 </Button>
-                            </div>
+                            </motion.div>
                         </div>
 
                         {/* Visual Asset: Animated Terminal/System Core */}
-                        <div className="flex-1 w-full max-w-xl">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+                            className="flex-1 w-full max-w-xl"
+                        >
                             <div className="relative group">
                                 <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full group-hover:bg-indigo-500/30 transition-all duration-1000" />
                                 <div className="relative glass-premium border border-white/10 rounded-[40px] p-2 overflow-hidden shadow-2xl">
@@ -95,15 +158,15 @@ const Enterprise = () => {
                                                 <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
                                                 <div className="w-3 h-3 rounded-full bg-green-500/20" />
                                             </div>
-                                            <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Global-Node-Sync: Active</div>
+                                            <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">System Status: Active</div>
                                         </div>
 
                                         <div className="p-8 space-y-8">
                                             <div className="space-y-2">
-                                                <div className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Aggregate Throughput</div>
+                                                <div className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Monthly Analysis Volume</div>
                                                 <div className="flex items-baseline gap-2">
                                                     <span className="text-5xl font-black text-white tracking-tighter">5.2B</span>
-                                                    <span className="text-slate-500 font-bold uppercase text-xs">Events/mo</span>
+                                                    <span className="text-slate-500 font-bold uppercase text-xs">Items/mo</span>
                                                 </div>
                                             </div>
 
@@ -129,23 +192,23 @@ const Enterprise = () => {
                                             <div className="flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest pt-4 border-t border-white/5">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                                    <span>Uptime: 99.999%</span>
+                                                    <span>Uptime: 99.9%</span>
                                                 </div>
-                                                <div>Region: US-East-Static</div>
+                                                <div>Region: Global</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
-            {/* Logo Wall: Trust Consensus */}
+            {/* Logo Wall: Trust */}
             <section className="py-20 border-y border-white/5 bg-[#05070a]">
                 <div className="container mx-auto px-6 text-center">
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-12">Consensus Architecture Trusted By</p>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-12">Trusted By Global Industry Leaders</p>
                     <div className="flex flex-wrap justify-center items-center gap-16 md:gap-24 opacity-40 grayscale group hover:grayscale-0 transition-all duration-700">
                         {['ACME', 'NEXUS', 'VERTEX', 'QUANTUM', 'ZENITH'].map((brand, i) => (
                             <span key={i} className="text-2xl font-black text-white tracking-widest hover:text-indigo-400 cursor-default transition-colors">{brand}</span>
@@ -154,7 +217,7 @@ const Enterprise = () => {
                 </div>
             </section>
 
-            {/* Strategic Pillars */}
+            {/* Features Section */}
             <section className="py-32 bg-[#020408]">
                 <div className="container mx-auto px-6">
                     <div className="grid md:grid-cols-2 gap-10">
@@ -177,7 +240,7 @@ const Enterprise = () => {
                 </div>
             </section>
 
-            {/* Sovereign Capabilities */}
+            {/* Support Capabilities */}
             <section className="py-32 bg-[#05070a]">
                 <div className="container mx-auto px-6">
                     <div className="max-w-5xl mx-auto rounded-[60px] overflow-hidden border border-white/10 glass-premium shadow-2xl relative">
@@ -186,11 +249,11 @@ const Enterprise = () => {
                         <div className="p-16 md:p-24 flex flex-col items-center text-center relative z-10">
                             <Cpu className="w-16 h-16 text-indigo-500 mb-8 opacity-20" />
                             <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter leading-tight">
-                                Integrated <br />
-                                <span className="text-indigo-400">Enterprise Core</span>
+                                Built for your <br />
+                                <span className="text-indigo-400">Organization</span>
                             </h2>
-                            <p className="text-xl text-slate-400 mb-16 max-w-2xl font-medium leading-relaxed">
-                                Deploy our full-spectrum analytics engine across your entire organizational infrastructure with native support for sovereign data governance.
+                            <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed">
+                                Deploy our powerful analytics tools across your entire company with full security and compliance support.
                             </p>
 
                             <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 w-full text-left">
@@ -208,7 +271,7 @@ const Enterprise = () => {
 
                             <div className="mt-20 flex flex-col sm:flex-row gap-6 w-full justify-center">
                                 <Button className="h-20 px-16 bg-white text-black font-black text-sm uppercase tracking-widest rounded-3xl hover:bg-indigo-600 hover:text-white transition-all shadow-2xl hover:scale-105 active:scale-95 group">
-                                    Contact Sales Protocol
+                                    Contact Sales
                                     <ArrowRight className="w-5 h-5 ml-4 group-hover:translate-x-2 transition-transform" />
                                 </Button>
                             </div>
