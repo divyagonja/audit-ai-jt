@@ -117,7 +117,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-slate-400 text-sm">
-            © 2024 AuditAI. All rights reserved.
+            © 2026 AuditAI. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <span className="text-slate-500 text-sm">SOC 2 Type II Certified</span>
