@@ -38,6 +38,7 @@ import AIAnalysis from "./pages/dashboard/AIAnalysis";
 import Roadmap from "./pages/dashboard/Roadmap";
 import Clients from "./pages/dashboard/Clients";
 import AIFeaturesDemo from "./pages/dashboard/AIFeaturesDemo";
+import KnowledgeArticle from "./pages/KnowledgeArticle";
 import QuickAuditDemo from "./pages/dashboard/QuickAuditDemo";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/features" element={<Features />} />
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
+          <Route path="/knowledge-base/:slug" element={<KnowledgeArticle />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/newsroom" element={<Newsroom />} />

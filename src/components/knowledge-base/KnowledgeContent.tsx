@@ -1,6 +1,14 @@
+import { Link } from "react-router-dom";
 import { Book, Rocket, Settings, Shield, Zap, Code } from "lucide-react";
 
 const KnowledgeContent = () => {
+    const toSlug = (text: string) =>
+        text.toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
     const categories = [
         {
             icon: Rocket,
@@ -47,13 +55,13 @@ const KnowledgeContent = () => {
                     {categories.map((category, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                            className="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
                         >
                             <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
                                 <category.icon className="h-6 w-6 text-primary" />
                             </div>
 
-                            <h3 className="text-xl font-bold text-navy mb-3 group-hover:text-primary transition-colors">
+                            <h3 className="text-xl font-bold text-navy mb-3">
                                 {category.title}
                             </h3>
                             <p className="text-slate-600 mb-6 text-sm leading-relaxed">
@@ -62,9 +70,14 @@ const KnowledgeContent = () => {
 
                             <ul className="space-y-3">
                                 {category.articles.map((article, i) => (
-                                    <li key={i} className="text-sm text-slate-500 hover:text-primary hover:underline transition-colors flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                                        {article}
+                                    <li key={i}>
+                                        <Link
+                                            to={`/knowledge-base/${toSlug(article)}`}
+                                            className="text-sm text-slate-500 hover:text-primary hover:underline transition-colors flex items-center gap-2"
+                                        >
+                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-primary/30 transition-colors" />
+                                            {article}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
