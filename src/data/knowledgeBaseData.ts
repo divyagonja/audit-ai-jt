@@ -226,9 +226,68 @@ export const knowledgeBaseData: Record<string, Article> = {
         category: "Account & Billing",
         lastUpdated: "January 14, 2026",
         content: `
-            <p class="mb-6">We support various payment methods to make your subscription management easy.</p>
-            <h2 class="text-2xl font-bold text-navy mt-8 mb-4">Supported Methods</h2>
-            <p class="mb-4">We currently accept all major credit cards (Visa, Mastercard, American Express), PayPal, and wire transfers for Enterprise plans.</p>
+            <p class="mb-6">We support various payment methods to make your subscription management easy. All transactions are secure and encrypted using industry-standard protocols.</p>
+            
+            <h2 class="text-2xl font-bold text-navy mt-8 mb-6">Supported Payment Methods</h2>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Visa" class="h-6 w-auto mb-3" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Credit/Debit</span>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-10 w-auto mb-1" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Mastercard</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="Amex" class="h-8 w-auto mb-2" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Amex</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" alt="Google Pay" class="h-8 w-auto mb-2" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Google Pay</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <div class="h-8 mb-2 flex items-center justify-center">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-8 w-auto">
+                            <path d="M17.18 0.16l-9 14.83h-3.33H0l11.53 16.85h3.33h4.85l-5.66-8.29 8.2-13.45h3.33h4.85L17.18 0.16z" fill="#3395FF"/>
+                            <path d="M13.86 19.36l-2.33-3.43 2.33-3.84 2.33 3.84-2.33 3.43z" fill="#002D58"/>
+                        </svg>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Razorpay</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-8 w-auto mb-2" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">PayPal</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay" class="h-8 w-auto mb-2" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Apple Pay</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-6 rounded-xl border border-slate-100 bg-white hover:shadow-lg transition-all group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" class="h-8 w-auto mb-2" />
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">UPI Payments</span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50/50 p-8 rounded-3xl border border-blue-100 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-navy font-bold text-lg mb-1">Secure Transactions</h4>
+                        <p class="text-slate-600 mb-0">Local currency payments are processed via Razorpay for Indian users and Stripe for international transactions. We never store your full card details on our servers.</p>
+                    </div>
+                </div>
+            </div>
         `
     },
     "invoices-receipts": {
