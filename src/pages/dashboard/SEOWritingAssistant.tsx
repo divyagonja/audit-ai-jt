@@ -204,7 +204,7 @@ const SEOWritingAssistant = () => {
                                                 <Type className="h-4 w-4" />
                                                 <span className="text-[10px] font-black uppercase tracking-wider">Tone: {analysis.tone.type}</span>
                                             </div>
-                                            <span className="text-[10px] font-bold text-slate-500">{analysis.tone.consistency}% Consistancy</span>
+                                            <span className="text-[10px] font-bold text-slate-500">{analysis.tone.consistency}% Consistency</span>
                                         </div>
                                         <Progress value={analysis.tone.consistency} className="h-2.5 bg-slate-800" indicatorClassName="bg-indigo-500" />
                                     </div>
