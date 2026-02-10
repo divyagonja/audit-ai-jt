@@ -61,7 +61,7 @@ const AllAudits = () => {
         { id: "4", url: "enterprise.com", name: "Main Site", overall_score: 91, created_at: new Date().toISOString(), status: "completed", critical_issues: 1, warning_issues: 4 },
     ];
 
-    const displayAudits = filteredAudits.length > 0 ? filteredAudits : (audits.length === 0 ? mockAudits : []);
+    const displayAudits = filteredAudits;
 
     return (
         <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30 max-w-full">

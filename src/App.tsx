@@ -40,6 +40,8 @@ import Clients from "./pages/dashboard/Clients";
 import AIFeaturesDemo from "./pages/dashboard/AIFeaturesDemo";
 import KnowledgeArticle from "./pages/KnowledgeArticle";
 import QuickAuditDemo from "./pages/dashboard/QuickAuditDemo";
+import KeywordMagic from "./pages/dashboard/KeywordMagic";
+import SEOWritingAssistant from "./pages/dashboard/SEOWritingAssistant";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +88,8 @@ const App = () => (
             <Route path="roadmap" element={<Roadmap />} />
             <Route path="ai-features" element={<AIFeaturesDemo />} />
             <Route path="quick-audit" element={<QuickAuditDemo />} />
+            <Route path="keyword-magic" element={<KeywordMagic />} />
+            <Route path="seo-writing-assistant" element={<SEOWritingAssistant />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

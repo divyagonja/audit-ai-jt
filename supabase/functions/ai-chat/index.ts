@@ -4,6 +4,8 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Max-Age": "86400",
 };
 
 serve(async (req) => {
@@ -12,14 +14,19 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, auditContext } = await req.json();
+    const { messages, auditContext, mode, systemPrompt: customSystemPrompt, stream = true } = await req.json();
     const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
     if (!OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are "AuditAI Intelligence", an elite digital strategy and SEO expert emulating the analytical depth of SEMrush, Ahrefs, and Google Search Console. 
+    let resolvedSystemPrompt = "";
+
+    if (mode === "keyword-magic" || customSystemPrompt) {
+      resolvedSystemPrompt = customSystemPrompt || "You are an expert SEO specialist and keyword researcher. Return responses in JSON format.";
+    } else {
+      resolvedSystemPrompt = `You are "AuditAI Intelligence", an elite digital strategy and SEO expert emulating the analytical depth of SEMrush, Ahrefs, and Google Search Console. 
 
 Your goal is to provide authoritative, data-backed, and highly technical answers to any questions about website optimization, SEO, performance, UX, and security.
 
@@ -41,6 +48,21 @@ GUIDELINES:
 5. Maintain a professional, executive-level tone.
 
 When providing code, ensure it is clean and production-ready. Use markdown for all formatting.`;
+    }
+
+    const payload: any = {
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: resolvedSystemPrompt },
+        ...messages,
+      ],
+      stream: stream,
+      max_tokens: 2000,
+    };
+
+    if (mode === "keyword-magic" || mode === "seo-writing") {
+      payload.response_format = { type: "json_object" };
+    }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -48,41 +70,28 @@ When providing code, ensure it is clean and production-ready. Use markdown for a
         Authorization: `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...messages,
-        ],
-        stream: true,
-        max_tokens: 2000,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Usage limit reached. Please check your OpenAI account." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       const errorText = await response.text();
       console.error("OpenAI API error:", response.status, errorText);
-      return new Response(JSON.stringify({ error: "AI service error" }), {
+      return new Response(JSON.stringify({ error: `AI service error: ${response.status}` }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    if (stream) {
+      return new Response(response.body, {
+        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      });
+    } else {
+      const data = await response.json();
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
   } catch (error) {
     console.error("AI chat error:", error);
     return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }), {

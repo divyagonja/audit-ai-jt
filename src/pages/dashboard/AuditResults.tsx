@@ -323,6 +323,9 @@ const AuditResults = () => {
       setAuditIssues(generatedIssues);
       setIsSyncing(false);
       return true;
+    } else if (currentAudit?.status === 'completed') {
+      setIsSyncing(false);
+      return true;
     }
 
     setIsSyncing(false);
@@ -349,31 +352,24 @@ const AuditResults = () => {
   };
 
   const startPolling = () => {
-    // Slower visual progress (4s per step) to prevent "hanging at 100%" sensation
-    // detailed analysis usually takes ~12-15s
-    const stepTimer = setInterval(() => {
+    // Detailed analysis usually takes ~12-15s
+    const statusStepTimer = setInterval(() => {
       setProcessingStep(prev => (prev < processingSteps.length - 1 ? prev + 1 : prev));
     }, 4000);
 
     let pollCount = 0;
-    const pollTimer = setInterval(async () => {
+    const pollInterval = setInterval(async () => {
       pollCount++;
       const { data } = await supabase.from("audits").select("*").eq("id", id).maybeSingle();
 
-      // If it's been over 2 minutes and still processing, something is likely stuck
-      if (pollCount > 40 && data && data.status === "processing") {
-        console.log("Polling timed out, likely background function failure.");
-        // We don't clear here, but we could show a message in the UI
-      }
-
       if (data && data.status === "failed") {
-        clearInterval(pollTimer);
-        clearInterval(stepTimer);
+        clearInterval(pollInterval);
+        clearInterval(statusStepTimer);
         setAudit(data);
         setLoading(false);
         toast({
           title: "Audit Failed",
-          description: data.error_message || "An error occurred during website analysis.",
+          description: data?.error_message || "An error occurred during website analysis.",
           variant: "destructive",
         });
         return;
@@ -384,22 +380,25 @@ const AuditResults = () => {
         const issuesFound = await fetchIssues(data);
 
         if (issuesFound) {
-          clearInterval(pollTimer);
-          clearInterval(stepTimer);
+          clearInterval(pollInterval);
+          clearInterval(statusStepTimer);
           setTimeout(() => setLoading(false), 1000);
         } else {
-          console.log("Audit complete but issues missing, retrying fetch...");
-          // Force a retry of the issues fetch specifically
+          // Retry fetch if issues hasn't synced yet
           await fetchIssues(data);
-          // If still no issues after 15 seconds of 'completed', something is wrong
           if (pollCount > 60) {
-            clearInterval(pollTimer);
+            clearInterval(pollInterval);
+            clearInterval(statusStepTimer);
             setLoading(false);
           }
         }
       }
     }, 3000);
-    return () => { clearInterval(pollTimer); clearInterval(stepTimer); };
+
+    return () => {
+      clearInterval(pollInterval);
+      clearInterval(statusStepTimer);
+    };
   };
 
   const handleRegenerate = async () => {
@@ -459,12 +458,12 @@ const AuditResults = () => {
   };
 
   const categories = [
-    { key: "seo", label: "SEO", score: audit?.seo_score || 72, icon: Search },
-    { key: "perf_desktop", label: "Desktop", score: audit?.performance_score_desktop || 62, icon: Monitor },
-    { key: "perf_mobile", label: "Mobile", score: audit?.performance_score_mobile || 58, icon: Smartphone },
-    { key: "ux", label: "UX", score: audit?.ux_score || 65, icon: Eye },
-    { key: "content", label: "Content", score: audit?.content_score || 71, icon: FileText },
-    { key: "security", label: "Security", score: audit?.security_score || 80, icon: Lock },
+    { key: "seo", label: "SEO", score: audit?.seo_score || 0, icon: Search },
+    { key: "perf_desktop", label: "Desktop", score: audit?.performance_score_desktop || 0, icon: Monitor },
+    { key: "perf_mobile", label: "Mobile", score: audit?.performance_score_mobile || 0, icon: Smartphone },
+    { key: "ux", label: "UX", score: audit?.ux_score || 0, icon: Eye },
+    { key: "content", label: "Content", score: audit?.content_score || 0, icon: FileText },
+    { key: "security", label: "Security", score: audit?.security_score || 0, icon: Lock },
   ];
 
   // Extract Market Intelligence from issues
@@ -569,7 +568,7 @@ const AuditResults = () => {
       if (loading && !audit?.status) setShowRetry(true);
     }, 45000); // 45 seconds
     return () => clearTimeout(timer);
-  }, [loading]);
+  }, [loading, audit?.status]);
 
   if (loading) {
     return (

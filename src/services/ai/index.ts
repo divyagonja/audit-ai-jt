@@ -4,6 +4,7 @@ export * from './roadmapGenerator';
 export * from './adRelevanceAnalyzer';
 export * from './instantAudit';
 export * from './comprehensiveReport';
+export * from './keywordMagic';
 
 // Re-export commonly used types
 export type {

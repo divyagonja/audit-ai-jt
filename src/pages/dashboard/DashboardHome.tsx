@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ScoreCircle from "@/components/dashboard/ScoreCircle";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   FileText,
   TrendingUp,
@@ -50,7 +51,8 @@ const DashboardHome = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       // Fetch User Name
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
       if (user?.user_metadata?.full_name) {
         setUserName(user.user_metadata.full_name.split(' ')[0]);
       }
@@ -125,10 +127,10 @@ const DashboardHome = () => {
             </div>
             <div className="space-y-1 relative z-10">
               <h3 className="text-slate-400 text-sm font-medium">Total Audits</h3>
-              <p className="text-3xl font-bold text-white tracking-tight">147</p>
+              <p className="text-3xl font-bold text-white tracking-tight">{Array.isArray(audits) ? audits.length : 0}</p>
             </div>
             <div className="mt-4 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-500 w-[70%] rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+              <div className="h-full bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${Math.min((Array.isArray(audits) ? audits.length : 0) * 1, 100)}%` }}></div>
             </div>
           </div>
 
@@ -147,10 +149,12 @@ const DashboardHome = () => {
             </div>
             <div className="space-y-1 relative z-10">
               <h3 className="text-slate-400 text-sm font-medium">Avg Score</h3>
-              <p className="text-3xl font-bold text-white tracking-tight">72</p>
+              <p className="text-3xl font-bold text-white tracking-tight">
+                {Array.isArray(audits) && audits.length > 0 ? Math.round(audits.reduce((acc, a) => acc + (a?.overall_score || 0), 0) / audits.length) : 0}
+              </p>
             </div>
             <div className="mt-4 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-              <div className="h-full bg-purple-500 w-[72%] rounded-full shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+              <div className="h-full bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.5)]" style={{ width: `${Array.isArray(audits) && audits.length > 0 ? Math.round(audits.reduce((acc, a) => acc + (a?.overall_score || 0), 0) / audits.length) : 0}%` }}></div>
             </div>
           </div>
 
@@ -169,10 +173,12 @@ const DashboardHome = () => {
             </div>
             <div className="space-y-1 relative z-10">
               <h3 className="text-slate-400 text-sm font-medium">Critical Issues</h3>
-              <p className="text-3xl font-bold text-white tracking-tight">23</p>
+              <p className="text-3xl font-bold text-white tracking-tight">
+                {Array.isArray(audits) ? audits.reduce((acc, a) => acc + (a?.critical_issues || 0), 0) : 0}
+              </p>
             </div>
             <div className="mt-4 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-              <div className="h-full bg-amber-500 w-[30%] rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+              <div className="h-full bg-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)]" style={{ width: `${Math.min((Array.isArray(audits) ? audits.reduce((acc, a) => acc + (a?.critical_issues || 0), 0) : 0) * 5, 100)}%` }}></div>
             </div>
           </div>
 
@@ -191,10 +197,12 @@ const DashboardHome = () => {
             </div>
             <div className="space-y-1 relative z-10">
               <h3 className="text-slate-400 text-sm font-medium">Potential Revenue</h3>
-              <p className="text-3xl font-bold text-white tracking-tight">$24.5K</p>
+              <p className="text-3xl font-bold text-white tracking-tight">
+                ${((Array.isArray(audits) ? audits.reduce((acc, a) => acc + (a?.revenue_impact || 0), 0) : 0) / 1000).toFixed(1)}K
+              </p>
             </div>
             <div className="mt-4 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-              <div className="h-full bg-emerald-500 w-[85%] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+              <div className="h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style={{ width: "15%" }} />
             </div>
           </div>
         </div>
@@ -318,21 +326,22 @@ const DashboardHome = () => {
             <div className="glass-card rounded-3xl p-6 animate-slide-in-right fill-mode-backwards" style={{ animationDelay: '100ms' }}>
               <h3 className="text-lg font-bold text-white mb-4">Latest Activity</h3>
               <div className="space-y-4">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+                {audits.slice(0, 3).map((audit) => (
+                  <div key={audit.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
                     <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center relative">
                       <Globe className="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors" />
-                      <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900"></div>
+                      <div className={cn("absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-slate-900", audit.status === 'completed' ? 'bg-emerald-500' : 'bg-blue-500')}></div>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">acme-corp.com</h4>
-                      <p className="text-xs text-slate-500">2 hours ago</p>
+                      <h4 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">{audit.url}</h4>
+                      <p className="text-xs text-slate-500">{new Date(audit.created_at).toLocaleDateString()}</p>
                     </div>
                     <div className="text-right">
-                      <span className="block text-sm font-bold text-emerald-400">92%</span>
+                      <span className="block text-sm font-bold text-emerald-400">{audit.overall_score || 0}%</span>
                     </div>
                   </div>
                 ))}
+                {audits.length === 0 && <p className="text-center py-4 text-slate-500 text-sm">No recent activity</p>}
               </div>
             </div>
           </div>

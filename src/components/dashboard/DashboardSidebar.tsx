@@ -19,6 +19,8 @@ import {
   Map,
   Sparkles,
   Zap,
+  Wand2,
+  PenTool,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -81,6 +83,8 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
     { to: "/dashboard/domain-overview", icon: Globe, label: "Domain Health" },
     { to: "/dashboard/competitors", icon: Target, label: "Competitors" },
     { to: "/dashboard/ai-analysis", icon: Brain, label: "AI Analysis" },
+    { to: "/dashboard/keyword-magic", icon: Wand2, label: "Keyword Magic" },
+    { to: "/dashboard/seo-writing-assistant", icon: PenTool, label: "SEO Assistant" },
     { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
 
