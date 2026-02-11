@@ -21,6 +21,9 @@ import {
   Zap,
   Wand2,
   PenTool,
+  Network,
+  Swords,
+  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -85,6 +88,9 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
     { to: "/dashboard/ai-analysis", icon: Brain, label: "AI Analysis" },
     { to: "/dashboard/keyword-magic", icon: Wand2, label: "Keyword Magic" },
     { to: "/dashboard/seo-writing-assistant", icon: PenTool, label: "SEO Assistant" },
+    { to: "/dashboard/topic-research", icon: Network, label: "Topic Research" },
+    { to: "/dashboard/keyword-gap", icon: Swords, label: "Keyword Gap" },
+    { to: "/dashboard/position-tracker", icon: TrendingUp, label: "Position Tracker" },
     { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
 

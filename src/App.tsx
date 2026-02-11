@@ -42,6 +42,9 @@ import KnowledgeArticle from "./pages/KnowledgeArticle";
 import QuickAuditDemo from "./pages/dashboard/QuickAuditDemo";
 import KeywordMagic from "./pages/dashboard/KeywordMagic";
 import SEOWritingAssistant from "./pages/dashboard/SEOWritingAssistant";
+import TopicResearch from "./pages/dashboard/TopicResearch";
+import KeywordGap from "./pages/dashboard/KeywordGap";
+import PositionTracker from "./pages/dashboard/PositionTracker";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +93,9 @@ const App = () => (
             <Route path="quick-audit" element={<QuickAuditDemo />} />
             <Route path="keyword-magic" element={<KeywordMagic />} />
             <Route path="seo-writing-assistant" element={<SEOWritingAssistant />} />
+            <Route path="topic-research" element={<TopicResearch />} />
+            <Route path="keyword-gap" element={<KeywordGap />} />
+            <Route path="position-tracker" element={<PositionTracker />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

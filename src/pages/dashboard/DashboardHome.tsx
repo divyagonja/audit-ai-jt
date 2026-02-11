@@ -77,37 +77,28 @@ const DashboardHome = () => {
   const displayAudits = audits;
 
   return (
-    <div className="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30">
-      <div className="relative z-10 p-6 md:p-8 space-y-8 max-w-[1600px] mx-auto">
+    <div className="min-h-screen flex flex-col">
+      <DashboardHeader
+        title="Dashboard"
+        subtitle={`System status: Online. Welcome back, ${userName}.`}
+      />
+      <div className="relative z-10 p-6 md:p-8 space-y-8 max-w-[1600px] mx-auto flex-1">
 
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-fade-in-up">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">
-              <span className="premium-gradient-text text-glow">
-                Dashboard
-              </span>
-            </h1>
-            <p className="text-slate-400 text-lg font-medium">
-              Welcome back, {userName}. Your system is running optimally.
-            </p>
+        {/* Quick Action Bar */}
+        <div className="flex justify-end items-center gap-4 animate-fade-in-up">
+          <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-slate-300 border-white/5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            System Online
           </div>
-
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-slate-300 border-white/5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              System Online
-            </div>
-            <Link to="/dashboard/new-audit">
-              <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/20 px-4 h-9 text-[11px] font-black uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 border-none ring-offset-0">
-                <Plus className="mr-1.5 h-3.5 w-3.5" />
-                New Audit
-              </Button>
-            </Link>
-          </div>
+          <Link to="/dashboard/new-audit">
+            <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/20 px-4 h-9 text-[11px] font-black uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 border-none ring-offset-0">
+              <Plus className="mr-1.5 h-3.5 w-3.5" />
+              New Audit
+            </Button>
+          </Link>
         </div>
 
         {/* Stats Grid */}

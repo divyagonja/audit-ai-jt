@@ -60,7 +60,8 @@ When providing code, ensure it is clean and production-ready. Use markdown for a
       max_tokens: 2000,
     };
 
-    if (mode === "keyword-magic" || mode === "seo-writing") {
+    const jsonModes = ["keyword-magic", "seo-writing", "topic-research", "keyword-gap", "position-tracker"];
+    if (jsonModes.includes(mode)) {
       payload.response_format = { type: "json_object" };
     }
 
