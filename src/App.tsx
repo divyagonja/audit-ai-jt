@@ -46,6 +46,9 @@ import TopicResearch from "./pages/dashboard/TopicResearch";
 import KeywordGap from "./pages/dashboard/KeywordGap";
 import PositionTracker from "./pages/dashboard/PositionTracker";
 
+import ContentBrief from "./pages/dashboard/ContentBrief";
+import BacklinkManager from "./pages/dashboard/BacklinkManager";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -96,6 +99,8 @@ const App = () => (
             <Route path="topic-research" element={<TopicResearch />} />
             <Route path="keyword-gap" element={<KeywordGap />} />
             <Route path="position-tracker" element={<PositionTracker />} />
+            <Route path="content-brief" element={<ContentBrief />} />
+            <Route path="backlink-manager" element={<BacklinkManager />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

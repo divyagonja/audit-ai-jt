@@ -29,3 +29,9 @@ export type {
 export type {
     ComprehensiveReport,
 } from './comprehensiveReport';
+
+export * from './contentStrategy';
+export * from './backlinkOutreach';
+
+export type { ContentBrief } from './contentStrategy';
+export type { OutreachCampaign } from './backlinkOutreach';
