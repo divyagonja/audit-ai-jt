@@ -29,16 +29,12 @@ export async function generateOutreach(
     Return the result in valid JSON format:
     {
         "subjectLines": ["Subject Option 1", "Subject Option 2", "Subject Option 3"],
-        "emailBody": "Full email body text with placeholders like [Name] if needed, but try to use ${targetName}",
+        "emailBody": "Full email body text with placeholders like [Name] if needed, but try to use ${targetName}. Include \\n for line breaks.",
         "followUp": "A short, polite follow-up email text 3 days later",
         "personalizationHook": "The specific observation made about their content"
     }`;
 
     try {
-        // Implement AI call here using existing pattern
-        // mocking success for now as we don't have a live backend endpoint for this specific prompt structure yet
-        // However, we can use the 'ai-chat' function if available.
-
         const { data, error } = await supabase.functions.invoke('ai-chat', {
             body: {
                 mode: "chat",
@@ -76,10 +72,10 @@ export async function generateOutreach(
             campaignType,
             subjectLines: [
                 `Question about your article on ${targetUrl.split('/')[2] || 'topic'}`,
-                `Quick favor regarding ${targetUrl.split('/')[2] || 'your post'}`,
+                `Quick favor regarding your content`,
                 `Resource suggestion for ${targetName}`
             ],
-            emailBody: `Hi ${targetName},\n\nI was just reading your article on ${targetUrl} and really enjoyed your take on [Topic]. The point about [Specific Detail] was particularly insightful.\n\nI noticed you linked to a few resources about [Topic]. I recently published a comprehensive guide on [Your Topic] that digs deeper into [Subtopic].\n\nHere it is: ${yourAssetUrl}\n\nIt might be a great addition to your resource list for your readers. No pressure at all, just thought it might add value.\n\nThanks,\n[Your Name]`,
+            emailBody: `Hi ${targetName},\n\nI was just reading your article on ${targetUrl} and really enjoyed your take on the topic. The point about specifics was particularly insightful.\n\nI noticed you linked to a few resources about the industry. I recently published a comprehensive guide on [Your Topic] that digs deeper into the subject.\n\nHere it is: ${yourAssetUrl}\n\nIt might be a great addition to your resource list for your readers. No pressure at all, just thought it might add value.\n\nThanks,\n[Your Name]`,
             followUp: `Hi ${targetName},\n\nJust bumping this to the top of your inbox in case you missed it. Would love to hear your thoughts on the resource I shared!\n\nBest,\n[Your Name]`,
             personalizationHook: "Complimented their specific take on the topic."
         };

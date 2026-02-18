@@ -48,6 +48,10 @@ import PositionTracker from "./pages/dashboard/PositionTracker";
 
 import ContentBrief from "./pages/dashboard/ContentBrief";
 import BacklinkManager from "./pages/dashboard/BacklinkManager";
+import SchemaGenerator from "./pages/dashboard/SchemaGenerator";
+import Cannibalization from "./pages/dashboard/Cannibalization";
+import LocalSeo from "./pages/dashboard/LocalSeo";
+import LinkToxicity from "./pages/dashboard/LinkToxicity";
 
 const queryClient = new QueryClient();
 
@@ -101,6 +105,10 @@ const App = () => (
             <Route path="position-tracker" element={<PositionTracker />} />
             <Route path="content-brief" element={<ContentBrief />} />
             <Route path="backlink-manager" element={<BacklinkManager />} />
+            <Route path="schema-generator" element={<SchemaGenerator />} />
+            <Route path="cannibalization" element={<Cannibalization />} />
+            <Route path="local-seo" element={<LocalSeo />} />
+            <Route path="link-toxicity" element={<LinkToxicity />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

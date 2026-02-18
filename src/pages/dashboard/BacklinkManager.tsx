@@ -208,7 +208,7 @@ const BacklinkManager = () => {
                                         <div className="relative">
                                             <div className="absolute top-0 left-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-transparent rounded-full opacity-50"></div>
                                             <div className="pl-6 pt-2">
-                                                <p className="text-slate-300 leading-relaxed whitespce-pre-wrap font-medium">
+                                                <p className="text-slate-300 leading-relaxed whitespace-pre-wrap font-medium">
                                                     {campaign.emailBody.split('\n').map((line, i) => (
                                                         <span key={i} className="block min-h-[1.5em]">{line}</span>
                                                     ))}

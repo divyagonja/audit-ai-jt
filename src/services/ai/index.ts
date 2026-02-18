@@ -32,6 +32,14 @@ export type {
 
 export * from './contentStrategy';
 export * from './backlinkOutreach';
+export * from './schemaGenerator';
+export * from './cannibalization';
+export * from './localSeo';
+export * from './linkToxicity';
 
 export type { ContentBrief } from './contentStrategy';
 export type { OutreachCampaign } from './backlinkOutreach';
+export type { SchemaField, SchemaType } from './schemaGenerator';
+export type { CannibalizationIssue } from './cannibalization';
+export type { LocalAuditIssue, NeighborhoodKeyword } from './localSeo';
+export type { ToxicLink } from './linkToxicity';
