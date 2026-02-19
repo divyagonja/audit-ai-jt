@@ -52,6 +52,9 @@ import SchemaGenerator from "./pages/dashboard/SchemaGenerator";
 import Cannibalization from "./pages/dashboard/Cannibalization";
 import LocalSeo from "./pages/dashboard/LocalSeo";
 import LinkToxicity from "./pages/dashboard/LinkToxicity";
+import LogAnalyzer from "./pages/dashboard/LogAnalyzer";
+import StrategyStealer from "./pages/dashboard/StrategyStealer";
+import BrandSentiment from "./pages/dashboard/BrandSentiment";
 
 const queryClient = new QueryClient();
 
@@ -109,6 +112,9 @@ const App = () => (
             <Route path="cannibalization" element={<Cannibalization />} />
             <Route path="local-seo" element={<LocalSeo />} />
             <Route path="link-toxicity" element={<LinkToxicity />} />
+            <Route path="log-analyzer" element={<LogAnalyzer />} />
+            <Route path="strategy-stealer" element={<StrategyStealer />} />
+            <Route path="brand-sentiment" element={<BrandSentiment />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

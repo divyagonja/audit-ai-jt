@@ -36,6 +36,9 @@ export * from './schemaGenerator';
 export * from './cannibalization';
 export * from './localSeo';
 export * from './linkToxicity';
+export * from './logAnalyzer';
+export * from './strategyStealer';
+export * from './brandSentiment';
 
 export type { ContentBrief } from './contentStrategy';
 export type { OutreachCampaign } from './backlinkOutreach';
@@ -43,3 +46,6 @@ export type { SchemaField, SchemaType } from './schemaGenerator';
 export type { CannibalizationIssue } from './cannibalization';
 export type { LocalAuditIssue, NeighborhoodKeyword } from './localSeo';
 export type { ToxicLink } from './linkToxicity';
+export type { LogAnalysis, CrawlIssue } from './logAnalyzer';
+export type { StrategyReport, CompetitorPattern } from './strategyStealer';
+export type { BrandIntelligence, Mention } from './brandSentiment';

@@ -28,7 +28,9 @@ import {
   Code,
   Split,
   MapPin,
-  Skull
+  Skull,
+  Terminal,
+  Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -102,6 +104,9 @@ const DashboardSidebar = ({ collapsed, setCollapsed }: DashboardSidebarProps) =>
     { to: "/dashboard/cannibalization", icon: Split, label: "Cannibalization" },
     { to: "/dashboard/local-seo", icon: MapPin, label: "Local SEO" },
     { to: "/dashboard/link-toxicity", icon: Skull, label: "Link Toxicity" },
+    { to: "/dashboard/log-analyzer", icon: Terminal, label: "Log Analyzer" },
+    { to: "/dashboard/strategy-stealer", icon: Target, label: "Strategy Stealer" },
+    { to: "/dashboard/brand-sentiment", icon: Heart, label: "Brand Intel" },
     { to: "/dashboard/roadmap", icon: Map, label: "Roadmap" },
   ];
 
