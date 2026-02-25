@@ -41,7 +41,32 @@ const Auth = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const initSession = async () => {
+    // Aggressively clear any stale tokens on mount to stop the retry loop
+    const clearAndInit = async () => {
+      // Check if there's a stuck token causing fetch loops
+      try {
+        const storedKeys = Object.keys(localStorage).filter(
+          (key) => key.startsWith("sb-") && key.endsWith("-auth-token")
+        );
+        for (const key of storedKeys) {
+          try {
+            const raw = localStorage.getItem(key);
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              // If token has expired or refresh token looks short/invalid, nuke it
+              const expiresAt = parsed?.expires_at;
+              if (expiresAt && expiresAt * 1000 < Date.now()) {
+                localStorage.removeItem(key);
+              }
+            }
+          } catch {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch {
+        // noop
+      }
+
       try {
         const {
           data: { session },
@@ -68,7 +93,7 @@ const Auth = () => {
       }
     });
 
-    void initSession();
+    void clearAndInit();
 
     return () => {
       isMounted = false;
