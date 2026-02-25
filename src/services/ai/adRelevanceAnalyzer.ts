@@ -1,7 +1,7 @@
-import openai from '@/lib/openai';
+import { supabase } from "@/integrations/supabase/client";
 
 export interface AdRelevanceAnalysis {
-    relevanceScore: number; // 0-100
+    relevanceScore: number;
     messageMatch: {
         score: number;
         analysis: string;
@@ -71,25 +71,23 @@ Provide a comprehensive analysis in JSON format:
   },
   "recommendations": ["Top 5 specific recommendations"],
   "summary": "Executive summary of the analysis"
-}
+}`;
 
-Focus on:
-1. Message match (does the landing page deliver on ad promise?)
-2. Keyword alignment (are ad keywords present on page?)
-3. Scent trail (visual and textual continuity)
-4. CTA consistency
-5. Trust signals and credibility`;
-
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.3,
-            max_tokens: 2000,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "ad-relevance",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        const analysis = JSON.parse(response.choices[0].message.content || '{}');
-        return analysis as AdRelevanceAnalysis;
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content;
+        if (!result) throw new Error("Empty response from AI");
+
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(result);
     } catch (error) {
         console.error('Error analyzing ad relevance:', error);
         throw new Error('Failed to analyze ad relevance');

@@ -1,4 +1,4 @@
-import openai from '@/lib/openai';
+import { supabase } from "@/integrations/supabase/client";
 import { AuditIssue } from './fixGenerator';
 
 export interface ComprehensiveReport {
@@ -67,54 +67,23 @@ ${JSON.stringify(auditData.accessibilityData, null, 2)}
 ${auditData.funnelData ? `**Funnel Analysis:**\n${JSON.stringify(auditData.funnelData, null, 2)}` : ''}
 ${auditData.adData ? `**Ad Relevance:**\n${JSON.stringify(auditData.adData, null, 2)}` : ''}
 
-Generate a comprehensive report in JSON format:
-{
-  "executiveSummary": "3-4 sentence high-level summary for executives",
-  "overallScore": number (0-100),
-  "categoryScores": {
-    "seo": {
-      "score": number (0-100),
-      "grade": "A+|A|B|C|D|F",
-      "summary": "One sentence summary"
-    },
-    // ... repeat for ux, performance, content, accessibility
-  },
-  "priorityMatrix": {
-    "quickWins": [{"id": "...", "type": "...", "severity": "...", "title": "...", "description": "..."}],
-    "majorProjects": [...],
-    "fillIns": [...],
-    "thankless": [...]
-  },
-  "topActionItems": ["Top 10 specific, actionable items"],
-  "roadmapSummary": {
-    "thirtyDay": "Focus for first 30 days",
-    "sixtyDay": "Focus for days 31-60",
-    "ninetyDay": "Focus for days 61-90"
-  },
-  "competitiveInsights": "How this site compares to industry standards",
-  "estimatedImpact": {
-    "trafficIncrease": "Estimated % increase",
-    "conversionImprovement": "Estimated % improvement",
-    "revenueImpact": "Estimated $ impact"
-  }
-}
+Generate a comprehensive report in JSON format with executiveSummary, overallScore, categoryScores, priorityMatrix, topActionItems, roadmapSummary, competitiveInsights, and estimatedImpact.`;
 
-Use the Impact/Effort matrix for priorityMatrix:
-- quickWins: High impact, low effort
-- majorProjects: High impact, high effort
-- fillIns: Low impact, low effort
-- thankless: Low impact, high effort`;
-
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.4,
-            max_tokens: 4000,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "comprehensive-report",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        const reportData = JSON.parse(response.choices[0].message.content || '{}');
-        return reportData as ComprehensiveReport;
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content;
+        if (!result) throw new Error("Empty response from AI");
+
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(result);
     } catch (error) {
         console.error('Error generating comprehensive report:', error);
         throw new Error('Failed to generate comprehensive report');

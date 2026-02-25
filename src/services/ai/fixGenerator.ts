@@ -1,4 +1,4 @@
-import openai from '@/lib/openai';
+import { supabase } from "@/integrations/supabase/client";
 
 export interface AuditIssue {
     id: string;
@@ -42,15 +42,21 @@ Provide a comprehensive fix in the following JSON format:
 
 Make the fix production-ready and follow best practices.`;
 
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.3,
-            max_tokens: 1500,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "fix-generator",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        const fixData = JSON.parse(response.choices[0].message.content || '{}');
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content;
+        if (!result) throw new Error("Empty response from AI");
+
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        const fixData = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(result);
 
         return {
             issue,
@@ -70,7 +76,7 @@ Make the fix production-ready and follow best practices.`;
  */
 export async function generateBatchFixes(issues: AuditIssue[]): Promise<AIFix[]> {
     const fixes = await Promise.all(
-        issues.slice(0, 5).map(issue => generateAIFixes(issue)) // Limit to 5 to avoid rate limits
+        issues.slice(0, 5).map(issue => generateAIFixes(issue))
     );
     return fixes;
 }

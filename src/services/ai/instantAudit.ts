@@ -1,4 +1,4 @@
-import openai from '@/lib/openai';
+import { supabase } from "@/integrations/supabase/client";
 import { AuditIssue } from './fixGenerator';
 
 export interface InstantAuditResult {
@@ -62,23 +62,26 @@ Provide a quick audit in JSON format:
       "description": "Detailed description"
     }
   ],
-  "quickWins": ["Top 3-5 quick wins that can be implemented immediately"],
-  "executiveSummary": "2-3 sentence summary of the audit",
-  "priorityActions": ["Top 3 priority actions to take"]
-}
+  "quickWins": ["Top 3-5 quick wins"],
+  "executiveSummary": "2-3 sentence summary",
+  "priorityActions": ["Top 3 priority actions"]
+}`;
 
-Focus on the most impactful issues. Be concise and actionable.`;
-
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.3,
-            max_tokens: 1500,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "instant-audit",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        const auditData = JSON.parse(response.choices[0].message.content || '{}');
-        return auditData as InstantAuditResult;
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content;
+        if (!result) throw new Error("Empty response from AI");
+
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(result);
     } catch (error) {
         console.error('Error generating instant audit:', error);
         throw new Error('Failed to generate instant audit');
@@ -95,19 +98,18 @@ export async function* streamInstantAudit(
     try {
         const prompt = `Perform a rapid website audit for ${url}. Provide concise, actionable insights.`;
 
-        const stream = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            stream: true,
-            max_tokens: 1000,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "instant-audit-stream",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content || '';
-            if (content) {
-                yield content;
-            }
-        }
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content || '';
+        yield result;
     } catch (error) {
         console.error('Error streaming instant audit:', error);
         throw new Error('Failed to stream instant audit');

@@ -5,8 +5,38 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+function isValidAuditUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return false;
+    }
+    const hostname = parsed.hostname.toLowerCase();
+    const blockedPatterns = [
+      /^localhost$/i,
+      /^127\./,
+      /^10\./,
+      /^172\.(1[6-9]|2[0-9]|3[0-1])\./,
+      /^192\.168\./,
+      /^169\.254\./,
+      /^\[::1\]$/,
+      /^\[fe80:/,
+      /^0\./,
+    ];
+    if (blockedPatterns.some(pattern => pattern.test(hostname))) {
+      return false;
+    }
+    if (url.length > 2048) {
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -15,18 +45,51 @@ serve(async (req) => {
   let supabase = null;
 
   try {
-    const { auditId, url } = await req.json();
-    activeAuditId = auditId;
+    // Authenticate the user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
 
     if (!supabaseUrl || !supabaseKey) {
       throw new Error("Missing Supabase configuration");
     }
 
+    // Verify user identity
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser();
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    const { auditId, url } = await req.json();
+    activeAuditId = auditId;
+
     supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Verify audit ownership
+    const { data: auditOwnership } = await supabase
+      .from('audits')
+      .select('user_id')
+      .eq('id', auditId)
+      .single();
+
+    if (!auditOwnership || auditOwnership.user_id !== user.id) {
+      return new Response(JSON.stringify({ error: 'Forbidden - audit not found or access denied' }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     // Initial status update
     await supabase.from("audits").update({
@@ -40,12 +103,16 @@ serve(async (req) => {
       targetUrl = "https://" + targetUrl;
     }
 
+    // Validate URL against SSRF
+    if (!isValidAuditUrl(targetUrl)) {
+      throw new Error("Invalid or disallowed URL");
+    }
+
     // Fetch site with AGGRESSIVE timeout for speed
-    // If site is slow, we skip downloading and just analyze the URL structure (Speed > Accuracy for this user request)
     let htmlClean = "";
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout (Faster)
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
 
       const response = await fetch(targetUrl, {
         headers: {
@@ -57,12 +124,11 @@ serve(async (req) => {
 
       if (response.ok) {
         const htmlFull = await response.text();
-        // STRIP heavy tags significantly to reduce token load
         htmlClean = htmlFull
           .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
           .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
           .replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, "")
-          .substring(0, 6000); // Reduced to 6k for speed
+          .substring(0, 6000);
       } else {
         console.log("Site returned non-200, proceeding with URL-only analysis");
       }
@@ -73,8 +139,6 @@ serve(async (req) => {
 
     const hasSSL = targetUrl.startsWith("https://");
 
-    // 3. AI Analysis - High Speed Configuration
-    // We ask for fewer issues (5-7) and let the frontend template engine fill the rest if needed.
     const analysisPrompt = `Analyze ${targetUrl} (SSL: ${hasSSL}). Context: ${htmlClean.slice(0, 5000)}
 
     Return exactly 5 CRITICAL technical issues.
@@ -116,14 +180,14 @@ serve(async (req) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini", // Fastest reliable model
+          model: "gpt-4o-mini",
           messages: [
             { role: "system", content: "JSON only. Speed is priority." },
             { role: "user", content: analysisPrompt }
           ],
           response_format: { type: "json_object" },
           temperature: 0.3,
-          max_tokens: 1000 // Limit output size for speed
+          max_tokens: 1000
         })
       });
 
@@ -134,14 +198,13 @@ serve(async (req) => {
       const aiData = await aiRes.json();
       analysis = JSON.parse(aiData.choices[0].message.content);
     } else {
-      // Fallback for no API key locally
       analysis = {
         overallScore: 65,
         issues: [{ title: "Demo Issue", category: "seo", severity: "warning", fix_code: "<!-- demo -->" }]
       };
     }
 
-    // 4. Insert Issues
+    // Insert Issues
     let issuesRaw = analysis.issues || [];
     if (issuesRaw.length === 0) issuesRaw = [{ title: "General Optimization", category: "performance", severity: "info", fix_code: "<!-- check logs -->" }];
 
@@ -162,7 +225,6 @@ serve(async (req) => {
       potential_score: 80
     }));
 
-    // Add Intelligence Data
     if (analysis.marketMetrics) {
       issuesToInsert.push({
         audit_id: activeAuditId,
@@ -183,7 +245,7 @@ serve(async (req) => {
       await supabase.from("audit_issues").insert(issuesToInsert);
     }
 
-    // 5. Finalize
+    // Finalize
     await supabase.from("audits").update({
       status: "completed",
       overall_score: analysis.overallScore || 60,
@@ -204,9 +266,8 @@ serve(async (req) => {
     if (activeAuditId && supabase) {
       await supabase.from("audits").update({
         status: "failed",
-        error_message: error.message
       }).eq("id", activeAuditId);
     }
-    return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: "An error occurred processing the audit" }), { status: 500, headers: corsHeaders });
   }
 });
