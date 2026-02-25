@@ -22,20 +22,58 @@ const Auth = () => {
     document.title = isLogin ? "Sign In - AuditAI" : "Sign Up - AuditAI";
   }, [isLogin]);
 
+  const clearStaleAuthSession = async () => {
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // noop
+    }
+
+    try {
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith("sb-") && key.endsWith("-auth-token"))
+        .forEach((key) => localStorage.removeItem(key));
+    } catch {
+      // noop
+    }
+  };
+
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
+    let isMounted = true;
+
+    const initSession = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        if (session && isMounted) {
+          navigate("/dashboard");
+        }
+      } catch (error: any) {
+        if (error?.message?.toLowerCase().includes("failed to fetch")) {
+          await clearStaleAuthSession();
+        }
+      }
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session && isMounted) {
         navigate("/dashboard");
       }
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/dashboard");
-      }
-    });
+    void initSession();
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
@@ -44,7 +82,14 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        let { error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error?.message?.toLowerCase().includes("failed to fetch")) {
+          await clearStaleAuthSession();
+          const retry = await supabase.auth.signInWithPassword({ email, password });
+          error = retry.error;
+        }
+
         if (error) throw error;
         toast({ title: "Welcome back!", description: "You've successfully signed in." });
       } else {
@@ -60,9 +105,13 @@ const Auth = () => {
         toast({ title: "Account created!", description: "Welcome to AuditAI." });
       }
     } catch (error: any) {
+      const isFetchError = error?.message?.toLowerCase().includes("failed to fetch");
+
       toast({
         title: "Error",
-        description: error.message,
+        description: isFetchError
+          ? "Unable to reach authentication service. Please refresh and try again."
+          : error.message,
         variant: "destructive",
       });
     } finally {
