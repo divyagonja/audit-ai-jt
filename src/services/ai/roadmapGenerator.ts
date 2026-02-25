@@ -1,4 +1,4 @@
-import openai from '@/lib/openai';
+import { supabase } from "@/integrations/supabase/client";
 import { AuditIssue } from './fixGenerator';
 
 export interface RoadmapPhase {
@@ -48,46 +48,23 @@ ${warnings.map(i => `- ${i.title}: ${i.description}`).join('\n')}
 **Opportunities (${opportunities.length}):**
 ${opportunities.map(i => `- ${i.title}: ${i.description}`).join('\n')}
 
-Create a strategic roadmap in JSON format:
-{
-  "summary": "Executive summary of the roadmap strategy",
-  "phases": [
-    {
-      "phase": "30-day",
-      "title": "Quick Wins & Critical Fixes",
-      "description": "Focus on high-impact, low-effort improvements",
-      "tasks": [
-        {
-          "id": "unique-id",
-          "title": "Task title",
-          "description": "Detailed description",
-          "priority": "high|medium|low",
-          "effort": "low|medium|high",
-          "impact": "low|medium|high",
-          "category": "SEO|Performance|UX|Content|Accessibility",
-          "estimatedHours": number,
-          "dependencies": ["task-id"] // optional
-        }
-      ],
-      "expectedImpact": "What results to expect from this phase"
-    }
-  ]
-}
+Create a strategic roadmap in JSON format with summary, phases (30-day, 60-day, 90-day), each with title, description, tasks, and expectedImpact.`;
 
-Prioritize tasks using the Impact/Effort matrix:
-- 30 Days: High impact, low effort (quick wins)
-- 60 Days: High impact, medium effort (strategic improvements)
-- 90 Days: High impact, high effort (transformational changes)`;
-
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.4,
-            max_tokens: 3000,
+        const { data, error } = await supabase.functions.invoke('ai-chat', {
+            body: {
+                mode: "roadmap",
+                messages: [{ role: 'user', content: prompt }],
+                stream: false
+            }
         });
 
-        const roadmapData = JSON.parse(response.choices[0].message.content || '{}');
+        if (error) throw error;
+
+        const result = data.choices[0]?.message?.content;
+        if (!result) throw new Error("Empty response from AI");
+
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        const roadmapData = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(result);
 
         const totalTasks = roadmapData.phases?.reduce(
             (sum: number, phase: RoadmapPhase) => sum + (phase.tasks?.length || 0),
