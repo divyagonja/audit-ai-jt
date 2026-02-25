@@ -1,0 +1,1 @@
+CREATE POLICY "Users can insert issues for their audits" ON audit_issues FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM audits WHERE audits.id = audit_issues.audit_id AND audits.user_id = auth.uid()));

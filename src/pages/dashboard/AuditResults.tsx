@@ -369,7 +369,7 @@ const AuditResults = () => {
         setLoading(false);
         toast({
           title: "Audit Failed",
-          description: data?.error_message || "An error occurred during website analysis.",
+          description: "An error occurred during website analysis.",
           variant: "destructive",
         });
         return;
